@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta http-equiv="imagetoolbar" content="no">
+<link rel="shortcut icon" href="/favicon.ico" >
+<title>菜单DEMO 超级系统管理平台</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<link rel="stylesheet" href="/static/css/bootstrap.min.css?2.3.2" rel="stylesheet" media="screen">
+<style type="text/css">
+</style>
+<link rel="stylesheet" href="/static/css/bootstrap-responsive.min.css?2.3.2" rel="stylesheet">
+
+<link rel="stylesheet" href="/static/font-awesome/css/font-awesome.min.css?3.2" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/plugin/jquery-ui.css?20130403" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/admin.css?20130418" rel="stylesheet">
+
+
+
+
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top navbar-inverse">
+  <div class="navbar-inner">
+    <div class="container">
+
+      <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+
+      <!-- Be sure to leave the brand out there if you want it shown -->
+      <a class="brand" href="#">Project</a>
+
+      <!-- Everything you want hidden at 940px or less, place within here -->
+      <div class="nav-collapse collapse">
+       <ul class="nav">
+        <li class="dropdown ">
+          <a  class="dropdown-toggle" data-toggle="dropdown" href="http://www.baidu.com">
+            审核操作 <b class="caret"></b>
+          </a>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+            <li><a href="/auditor/avatar/">用户审核</a></li>
+            <li><a href="/auditor/question/">问题审核</a></li>
+            <li><a href="/auditor/answer/">答案审核</a></li>
+            <li><a href="/auditor/answerComment/">答案评论审核</a></li>
+            <li><a href="/auditor/blogComment/">博文评论审核</a></li>
+            <li><a href="/auditor/answerReply/">继续问答审核</a></li>
+            <li><a href="/auditor/blog/">博文审核</a></li>
+            <li><a href="/auditor/album/">相册审核</a></li>
+            <li><a href="/auditor/message/">私信审核 <i class="icon-comment"></i></a></li>
+            <li class="divider"></li>
+            <li><a href="/other/feedbacks/">用户反馈</a></li>
+          </ul>
+        </li>
+      </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <h3>测试页面2</h3>
+</div>
+
+<script src="/static/js/jquery.min.js?1.10.1"></script>
+<script src="/static/js/bootstrap.min-2.3.1.js"></script><!-- 2.3.2有BUG，下拉菜单无法点击 -->
+
+<script type="text/javascript">
+$(function(){
+    $('.dropdown-toggle').dropdown();
+    $('.dropdown-submenu ul.dropdown-menu li a').on('touchstart', function(e) {
+    e.preventDefault();
+    window.location.href = $(this).attr('href');
+})
+});
+</script>
+</body>
+</html>

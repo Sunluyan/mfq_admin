@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<setting name="lazyLoadingEnabled" value="false" />
+	</settings>
+
+	<typeAliases>
+		<typeAlias alias="SysAcl" type="com.mfq.admin.web.models.SysAcl"/>
+		<typeAlias alias="SysUser" type="com.mfq.admin.web.models.SysUser" />
+		<typeAlias alias="SysRole" type="com.mfq.admin.web.models.SysRole" />
+		<typeAlias alias="SysPermission" type="com.mfq.admin.web.models.SysPermission"/>
+		<typeAlias alias="User" type="com.mfq.admin.web.models.user.User"/>
+		<typeAlias alias="UserQuota" type="com.mfq.admin.web.models.user.UserQuota"/>
+		<typeAlias alias="Product" type="com.mfq.admin.web.models.Product"/>
+		<typeAlias alias="ProductDetail" type="com.mfq.admin.web.models.ProductDetail"/>
+		<typeAlias alias="ProductClassify" type="com.mfq.admin.web.models.ProductClassify"/>
+		<typeAlias alias="SysPassport" type="com.mfq.admin.web.models.SysPassport"/>
+		<typeAlias alias="OpLog" type="com.mfq.admin.web.models.OpLog"/>
+		<typeAlias alias="Hospital" type="com.mfq.admin.web.models.Hospital"/>
+		<typeAlias alias="OrderInfo" type="com.mfq.admin.web.models.order.OrderInfo"/>
+		<typeAlias alias="WeChatMsg" type="com.mfq.admin.web.models.wechat.WeChatMsg"/>
+		<typeAlias alias="UserExtend" type="com.mfq.admin.web.models.user.UserExtend"/>
+		<typeAlias alias="Notification" type="com.mfq.admin.web.models.notification.Notification"/>
+		<typeAlias alias="ProductImg" type="com.mfq.admin.web.models.ProductImg"/>
+		<typeAlias alias="HomeBanner" type="com.mfq.admin.web.models.HomeBanner"/>
+		<typeAlias alias="HomeClassify" type="com.mfq.admin.web.models.HomeClassify"/>
+		<typeAlias alias="City" type="com.mfq.admin.web.models.City"/>
+		<typeAlias alias="Nurse" type="com.mfq.admin.web.models.user.Nurse"/>
+		<typeAlias alias="PayRecord" type="com.mfq.admin.web.models.PayRecord"/>
+	</typeAliases>
+
+	<typeHandlers>
+		<typeHandler javaType="com.mfq.admin.web.constants.Status"
+			handler="com.mfq.admin.web.handler.SysUserStatusEnumHandler" />
+		<typeHandler javaType="com.mfq.admin.web.models.user.Status"
+			handler="com.mfq.admin.web.handler.UserStatusEnumHandler"/>
+		<typeHandler javaType="com.mfq.admin.web.models.user.Gender"
+			handler="com.mfq.admin.web.handler.GenderEnumHandler"/>
+		<typeHandler javaType="com.mfq.admin.web.models.user.Grade"
+			handler="com.mfq.admin.web.handler.GradeEnumHandler"/>
+		<typeHandler javaType="com.mfq.admin.web.constants.ProductType"
+			handler="com.mfq.admin.web.handler.ProductTypeEnumHandler"/>
+		<typeHandler javaType="com.mfq.admin.web.constants.BannerType"
+			handler="com.mfq.admin.web.handler.BannerTypeEnumHandler"/>
+		
+	</typeHandlers>
+
+	<mappers>
+		<mapper resource="mybatis/mapping/sys_acl.xml" />
+		<mapper resource="mybatis/mapping/sys_user.xml" />
+		<mapper resource="mybatis/mapping/sys_permission.xml" />
+		<mapper resource="mybatis/mapping/sys_role.xml" />
+		<mapper resource="mybatis/mapping/user.xml" />
+		<mapper resource="mybatis/mapping/user_quota.xml" />
+		<mapper resource="mybatis/mapping/product.xml" />
+		<mapper resource="mybatis/mapping/product_detail.xml" />
+		<mapper resource="mybatis/mapping/product_classify.xml" />
+		<mapper resource="mybatis/mapping/sys_passport.xml" />
+		<mapper resource="mybatis/mapping/op_logs.xml" />
+		<mapper resource="mybatis/mapping/hospital.xml" />
+		<mapper resource="mybatis/mapping/order_info.xml" />
+		<mapper resource="mybatis/mapping/wechat_msg.xml" />
+		<mapper resource="mybatis/mapping/user_extend.xml" />
+		<mapper resource="mybatis/mapping/notification.xml" />
+		<mapper resource="mybatis/mapping/product_img.xml" />
+		<mapper resource="mybatis/mapping/home_banner.xml" />
+		<mapper resource="mybatis/mapping/home_classify.xml" />
+		<mapper resource="mybatis/mapping/city.xml" />
+		<mapper resource="mybatis/mapping/Nurse.xml" />
+		<mapper resource="mybatis/mapping/FinanceBillMapper.xml" />
+		<mapper resource="mybatis/mapping/PayRecord.xml" />
+	</mappers>
+
+</configuration>

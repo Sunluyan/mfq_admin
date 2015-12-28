@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mfq.admin.web.dao.NotificationMapper">
+	<sql id="selectsql">
+		id, img, title, msg, status, type, uid, created
+	</sql>
+	<sql id="insertsql">
+		img, title, msg, status, type, uid, created
+	</sql>
+
+	<insert id="insertNotification" parameterType="Notification"
+		useGeneratedKeys="true" keyProperty="uid">
+		<selectKey resultType="long" order="AFTER" keyProperty="uid">
+			SELECT LAST_INSERT_ID() AS uid
+		</selectKey>
+		insert into notification(
+		<include refid="insertsql" />
+		)values (
+			#{img}, #{title}, #{msg}, #{status}, #{type}, #{uid}, now()
+		)
+	</insert>
+
+</mapper>

@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mfq.admin.web.dao.FinanceBillMapper" >
+  <resultMap id="BaseResultMap" type="com.mfq.admin.web.models.order.FinanceBill" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="uid" property="uid" jdbcType="BIGINT" />
+    <result column="bill_no" property="billNo" jdbcType="VARCHAR" />
+    <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+    <result column="new_balance" property="newBalance" jdbcType="DECIMAL" />
+    <result column="late_fee" property="lateFee" jdbcType="DECIMAL" />
+    <result column="cur_period" property="curPeriod" jdbcType="INTEGER" />
+    <result column="all_period" property="allPeriod" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="trade_at" property="tradeAt" jdbcType="TIMESTAMP" />
+    <result column="charge_at" property="chargeAt" jdbcType="TIMESTAMP" />
+    <result column="bill_at" property="billAt" jdbcType="TIMESTAMP" />
+    <result column="due_at" property="dueAt" jdbcType="TIMESTAMP" />
+    <result column="pay_at" property="payAt" jdbcType="TIMESTAMP" />
+    <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, uid, bill_no, order_no, new_balance, late_fee, cur_period, all_period, status, 
+    trade_at, charge_at, bill_at, due_at, pay_at, updated_at
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.mfq.admin.web.models.order.FinanceBillExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from finance_bill
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from finance_bill
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from finance_bill
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.mfq.admin.web.models.order.FinanceBillExample" >
+    delete from finance_bill
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.mfq.admin.web.models.order.FinanceBill" >
+    insert into finance_bill (id, uid, bill_no, 
+      order_no, new_balance, late_fee, 
+      cur_period, all_period, status, 
+      trade_at, charge_at, bill_at, 
+      due_at, pay_at, updated_at
+      )
+    values (#{id,jdbcType=BIGINT}, #{uid,jdbcType=BIGINT}, #{billNo,jdbcType=VARCHAR}, 
+      #{orderNo,jdbcType=VARCHAR}, #{newBalance,jdbcType=DECIMAL}, #{lateFee,jdbcType=DECIMAL}, 
+      #{curPeriod,jdbcType=INTEGER}, #{allPeriod,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
+      #{tradeAt,jdbcType=TIMESTAMP}, #{chargeAt,jdbcType=TIMESTAMP}, #{billAt,jdbcType=TIMESTAMP}, 
+      #{dueAt,jdbcType=TIMESTAMP}, #{payAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.mfq.admin.web.models.order.FinanceBill" >
+    insert into finance_bill
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="billNo != null" >
+        bill_no,
+      </if>
+      <if test="orderNo != null" >
+        order_no,
+      </if>
+      <if test="newBalance != null" >
+        new_balance,
+      </if>
+      <if test="lateFee != null" >
+        late_fee,
+      </if>
+      <if test="curPeriod != null" >
+        cur_period,
+      </if>
+      <if test="allPeriod != null" >
+        all_period,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="tradeAt != null" >
+        trade_at,
+      </if>
+      <if test="chargeAt != null" >
+        charge_at,
+      </if>
+      <if test="billAt != null" >
+        bill_at,
+      </if>
+      <if test="dueAt != null" >
+        due_at,
+      </if>
+      <if test="payAt != null" >
+        pay_at,
+      </if>
+      <if test="updatedAt != null" >
+        updated_at,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=BIGINT},
+      </if>
+      <if test="billNo != null" >
+        #{billNo,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null" >
+        #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="newBalance != null" >
+        #{newBalance,jdbcType=DECIMAL},
+      </if>
+      <if test="lateFee != null" >
+        #{lateFee,jdbcType=DECIMAL},
+      </if>
+      <if test="curPeriod != null" >
+        #{curPeriod,jdbcType=INTEGER},
+      </if>
+      <if test="allPeriod != null" >
+        #{allPeriod,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="tradeAt != null" >
+        #{tradeAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="chargeAt != null" >
+        #{chargeAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="billAt != null" >
+        #{billAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dueAt != null" >
+        #{dueAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payAt != null" >
+        #{payAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null" >
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.mfq.admin.web.models.order.FinanceBillExample" resultType="java.lang.Integer" >
+    select count(*) from finance_bill
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update finance_bill
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.uid != null" >
+        uid = #{record.uid,jdbcType=BIGINT},
+      </if>
+      <if test="record.billNo != null" >
+        bill_no = #{record.billNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderNo != null" >
+        order_no = #{record.orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.newBalance != null" >
+        new_balance = #{record.newBalance,jdbcType=DECIMAL},
+      </if>
+      <if test="record.lateFee != null" >
+        late_fee = #{record.lateFee,jdbcType=DECIMAL},
+      </if>
+      <if test="record.curPeriod != null" >
+        cur_period = #{record.curPeriod,jdbcType=INTEGER},
+      </if>
+      <if test="record.allPeriod != null" >
+        all_period = #{record.allPeriod,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.tradeAt != null" >
+        trade_at = #{record.tradeAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.chargeAt != null" >
+        charge_at = #{record.chargeAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.billAt != null" >
+        bill_at = #{record.billAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.dueAt != null" >
+        due_at = #{record.dueAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.payAt != null" >
+        pay_at = #{record.payAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedAt != null" >
+        updated_at = #{record.updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update finance_bill
+    set id = #{record.id,jdbcType=BIGINT},
+      uid = #{record.uid,jdbcType=BIGINT},
+      bill_no = #{record.billNo,jdbcType=VARCHAR},
+      order_no = #{record.orderNo,jdbcType=VARCHAR},
+      new_balance = #{record.newBalance,jdbcType=DECIMAL},
+      late_fee = #{record.lateFee,jdbcType=DECIMAL},
+      cur_period = #{record.curPeriod,jdbcType=INTEGER},
+      all_period = #{record.allPeriod,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=INTEGER},
+      trade_at = #{record.tradeAt,jdbcType=TIMESTAMP},
+      charge_at = #{record.chargeAt,jdbcType=TIMESTAMP},
+      bill_at = #{record.billAt,jdbcType=TIMESTAMP},
+      due_at = #{record.dueAt,jdbcType=TIMESTAMP},
+      pay_at = #{record.payAt,jdbcType=TIMESTAMP},
+      updated_at = #{record.updatedAt,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mfq.admin.web.models.order.FinanceBill" >
+    update finance_bill
+    <set >
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=BIGINT},
+      </if>
+      <if test="billNo != null" >
+        bill_no = #{billNo,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null" >
+        order_no = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="newBalance != null" >
+        new_balance = #{newBalance,jdbcType=DECIMAL},
+      </if>
+      <if test="lateFee != null" >
+        late_fee = #{lateFee,jdbcType=DECIMAL},
+      </if>
+      <if test="curPeriod != null" >
+        cur_period = #{curPeriod,jdbcType=INTEGER},
+      </if>
+      <if test="allPeriod != null" >
+        all_period = #{allPeriod,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="tradeAt != null" >
+        trade_at = #{tradeAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="chargeAt != null" >
+        charge_at = #{chargeAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="billAt != null" >
+        bill_at = #{billAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dueAt != null" >
+        due_at = #{dueAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payAt != null" >
+        pay_at = #{payAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null" >
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mfq.admin.web.models.order.FinanceBill" >
+    update finance_bill
+    set uid = #{uid,jdbcType=BIGINT},
+      bill_no = #{billNo,jdbcType=VARCHAR},
+      order_no = #{orderNo,jdbcType=VARCHAR},
+      new_balance = #{newBalance,jdbcType=DECIMAL},
+      late_fee = #{lateFee,jdbcType=DECIMAL},
+      cur_period = #{curPeriod,jdbcType=INTEGER},
+      all_period = #{allPeriod,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      trade_at = #{tradeAt,jdbcType=TIMESTAMP},
+      charge_at = #{chargeAt,jdbcType=TIMESTAMP},
+      bill_at = #{billAt,jdbcType=TIMESTAMP},
+      due_at = #{dueAt,jdbcType=TIMESTAMP},
+      pay_at = #{payAt,jdbcType=TIMESTAMP},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <!--查询出所有  -->
+  <select id="selectFinanceByPage" resultMap = "BaseResultMap">
+  	select
+  	  <if test="count!=null and count!=''">
+  	  	count(*) as count
+  	  </if>
+      <if test="count == null or count == '' ">
+      	finance.id  , finance.uid , finance.bill_no as billNo ,finance.order_no as orderNo , 
+      	finance.new_balance as newBalance , finance.late_fee as  lateFee , finance.cur_period as curPeriod,
+      	finance.all_period as allPeriod ,finance.status,finance.trade_at as tradeAt,
+      	finance.charge_at as chargeAt , finance.bill_at as billAt , 
+      	finance.due_at as dueAt , finance.pay_at as payAt ,finance.updated_at as updatedAt
+      </if>
+	
+      from finance_bill finance left join users_quota quota on quota.uid = finance.uid 
+		left join users u on u.uid = finance.uid
+	
+	where 1=1
+      <if test="uid != null and uid != 0">
+      	and finance.uid = #{uid}
+      </if>
+      <if test="realname != null and realname != ''">
+      	and quota.realname like CONCAT('%',#{realname},'%')
+      </if>
+      
+      <if test="phone != null and phone != ''">
+      	and u.mobile like CONCAT('%',#{phone},'%')
+      </if>
+      <if test="idcard != null and idcard != ''">
+      	and quota.id_card = #{idcard}
+      </if>
+      <if test="applytimefrom != null and applytimefrom != '' and applytimeto != null and applytimeto != ''  ">
+      <![CDATA[
+      	and finance.bill_at >= #{applytimefrom} and finance.bill_at <= #{applytimeto}
+      ]]>
+      </if>
+      <if test="type != null and type != ''">
+      		<if test = "type == 1 ">
+      			and finance.status = 1
+      		</if>
+      		<if test = "type == 2 ">
+      			and finance.status = 2
+      		</if>
+      		<if test = "type == -1  ">
+      			and finance.status = -1
+      		</if>
+      		<if test = "type == 0 ">
+      		<![CDATA[
+      			and finance.status = 1 and finance.bill_at >= #{endTime}
+      		]]>
+      		</if>
+      </if>
+      group by finance.order_no
+      
+      limit #{start},#{size}
+  </select>
+  <!-- 
+  姓名：	小李
+手机号：	18888888888
+身份证号码：	220182738493827205
+分期总额：	12000元
+还款期数：	12期
+每期还款额：	1000元
+申请日期：	2015.12.10
+剩余日期：	11个月
+学籍/工作信息
+
+用户类型：	学生党
+学校：	北京某某大学
+入学时间：	2015.09.01
+备注：	北京某某大学北京某某大学北京某某大学北京某某大学北京某某大学北京某某大学北京某某大学北京某某大学北京某某大学北京某某大学北京某某大学北京某某大学北京某某大学北京某某大学北京某某大学
+  
+  
+  还款日期	还款额度	支付方式	还款期数
+  
+  
+  {career=0, late_fee=100.00, pay_at=2015-09-11 12:31:15.0, sign=0, bill_no=bl2015092417022424220001, 
+  pic=, salary=, location_id=0, charge_at=2015-08-07 12:29:11.0, faculty=, user_type=1, balance=0.00, 
+  school=北京工业大学, intro=, contact=15303700259, work_remark=, bill_at=2015-09-07 12:30:17.0, all_period=24, 
+  due_at=2015-09-07 12:30:44.0, auth_status=0, id=1, order_type=2, school_remark=, trade_at=2015-08-07 12:28:36.0, 
+  homesite=, grade=3, school_level=四年, trade_no=, present=0.00, startschool_at=2014-09-01 00:00:00.0,
+   quota_all=0.00, idcard_front=, status=0, birthday=0, idcard_reverse=, order_no=mn2015092512220673390001,
+    img=, gender=0, wish_plastic=0, origin=, classes=二班, icon=, id_card=411425199407139946, 
+    created_at=2015-09-08 19:19:05.0, nick=M96653866, uid=201, school_location=北京石景山, speciality=, 
+    social_insurance_id=, updated_at=2015-12-09 12:02:38.0, card_no=, interest=, company=, new_balance=195.00, 
+    email=F215C69B9E0F7A42C91C857AD42A51D4, bank_code=, amount=1.00, cur_period=1, mobile=18697129926, student_id=, 
+    card_type=0, work_years=, realname=, quota_left=0.00, tpp=, location=, school_location_id=1}
+  
+   -->
+  
+ <!--  <select id="queryFinanceDetail" resultType="map">
+  	select 
+  	*
+  	quota.realname , u.mobile , quota.id_card , orders.period_pay , orders.period , finance.all_period,
+  	finance.new_balance , finance.bill_at , finance.cur_period , 
+  	
+  	
+  	from users u , users_quota quota , finance_bill finance , pay_record pay ,order_info orders
+  	
+  	where u.uid = quota.uid and quota.uid = finance.uid and finance.uid = pay.uid and pay.uid = orders.uid
+  	
+  	and finance.id = #{id}
+  	
+  	limit 0,1
+  	
+  	
+  	
+  	
+  </select> -->
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+</mapper>

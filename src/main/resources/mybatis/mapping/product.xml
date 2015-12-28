@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mfq.admin.web.dao.ProductMapper">
+	<sql id="selectsql">
+		id, name, tid, hospital_id as hospitalId, city_id as
+		cityId, type2, price, market_price as marketPrice, p_price as pPrice, type, online_pay as onlinePay,
+		hospital_pay as hospitalPay, p_num as pNum, date_start as dateStart, is_fq as isFq, flag,
+		date_end as dateEnd, total_num as totalNum, remain_num as remainNum, view_num as viewNum, sale_num as saleNum,
+		online, img, created_at as createdAt, updated_at as updatedAt
+	</sql>
+	<sql id="insertsql">
+		name, tid, hospital_id, city_id, price, market_price, p_price, type,  type2, is_fq, online_pay,
+		hospital_pay, p_num, date_start, date_end, total_num, remain_num, view_num, flag,
+		sale_num, online, img, created_at, updated_at
+	</sql>
+
+	<select id="findById" resultType="Product">
+		select
+		<include refid="selectsql" />
+		from product where id=#{id}
+	</select>
+
+	<select id="findByIds" resultType="Product">
+		select
+		<include refid="selectsql" />
+		from product where id in 
+		<foreach collection="list" open="(" separator="," close=")"
+			item="id">
+			#{id}
+		</foreach>
+	</select>
+
+	<select id="findByPage" resultType="Product">
+		select
+		<include refid="selectsql" />
+		from product order by id desc limit #{start}, #{pagesize}
+	</select>
+
+	<select id="findByClass" resultType="Product">
+		select
+		<include refid="selectsql" />
+		from product where
+		now() BETWEEN product.date_start AND
+		product.date_end
+		<if test="city_id != 0">
+			and city_id=#{city_id}
+		</if>
+		and tid in
+		<foreach collection="list" open="(" separator="," close=")"
+			item="tid">
+			#{tid}
+		</foreach>
+	</select>
+
+	<select id="findCount" resultType="Long">
+		select count(1) from product
+	</select>
+
+	<insert id="insertProduct" parameterType="Product"
+		useGeneratedKeys="true" keyProperty="id">
+		<selectKey resultType="long" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		insert into product(
+		<include refid="insertsql" />
+		)values (
+		#{name}, #{tid}, #{hospitalId}, #{cityId}, #{price}, #{marketPrice},
+		#{pPrice}, #{type}, #{type2}, #{isFq}, #{onlinePay}, #{hospitalPay}, #{pNum}, #{dateStart}, #{dateEnd},
+		#{totalNum}, #{remainNum}, #{viewNum}, #{flag}, #{saleNum}, #{online}, #{img}, now(), now()
+		)
+	</insert>
+
+	<update id="updateProduct">
+		update product set name=#{name}, tid=#{tid},
+		hospital_id=#{hospitalId}, city_id=#{cityId}, price=#{price}, market_price=#{marketPrice}, p_price=#{pPrice}, type=#{type},
+		type2 = #{type2}, online_pay=#{onlinePay}, hospital_pay=#{hospitalPay}, total_num = #{totalNum},
+		p_num=#{pNum}, date_start=#{dateStart}, date_end=#{dateEnd}, flag = #{flag}, is_fq=#{isFq},
+		view_num=#{viewNum}, sale_num=#{saleNum},
+		online=#{online}, 
+		<if test="img != null and img != ''">
+		img=#{img}, 
+		</if>
+		created_at=now(), updated_at=now() where id=#{id}
+	</update>
+
+	<delete id="deleteProduct">
+		delete from product where id=#{id}
+	</delete>
+
+	<delete id="deleteProducts">
+		delete from product where id in
+		<foreach collection="list" open="(" separator="," close=")"
+			item="id">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

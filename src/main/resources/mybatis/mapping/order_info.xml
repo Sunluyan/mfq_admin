@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mfq.admin.web.dao.OrderInfoMapper">
+	<sql id="selectsql">
+		order_info.id, order_info.order_no as orderNo, order_info.price, order_info.uid, order_info.pid, order_info.pay_type as
+		payType, order_info.period_pay as periodPay, order_info.period, order_info.online_pay as onlinePay,
+		order_info.hospital_pay as hospitalPay, order_info.use_balance as useBalance, order_info.coupon_num as couponNum,
+		order_info.security_code as
+		securityCode, order_info.refund_type
+		as refundType, order_info.status, order_info.policy_status as policyStatus,
+		order_info.created_at as
+		createdAt, order_info.updated_at as updatedAt
+	</sql>
+	
+	<sql id="insertsql">
+		order_no, price, uid, pid, pay_type, period_pay, period,
+		online_pay,
+		hospital_pay, use_balance, coupon_num, security_code, status, policy,
+		refund_type, created_at,
+		updated_at
+	</sql>
+
+	<select id="findById" resultType="OrderInfo">
+		select
+		<include refid="selectsql" />
+		from order_info where id=#{id}
+	</select>
+
+	<select id="findByOrderNo" resultType="OrderInfo">
+		select
+		<include refid="selectsql" />
+		from order_info where order_no=#{orderNo}
+	</select>
+	
+	<select id="findCount" resultType="Long">
+		select count(1) from order_info where 1=1 
+		<if test="orderNo != null and orderNo != ''">
+			and order_no=#{orderNo}
+		</if>
+		<if test="uid != null and uid != 0">
+			and uid=#{uid}
+		</if>
+		<if test="securityCode != null and securityCode != ''">
+			and security_code =# {securityCode}
+		</if>
+		<if test="status != null and status != 100">
+			and status =# {status}
+		</if>
+		<if test="ob != null and ob != ''">
+			and created_at &gt;= #{ob}
+		</if>
+		<if test="oe != null and oe != ''">
+			and created_at &lt;= #{oe}
+		</if>
+	</select>
+	
+	<select id="findByPage" resultType="OrderInfo">
+		select
+		<include refid="selectsql" />
+		from order_info where 1=1 
+		<if test="orderNo != null and orderNo != ''">
+			and order_no=#{orderNo}
+		</if>
+		<if test="uid != null and uid != 0">
+			and uid=#{uid}
+		</if>
+		<if test="securityCode != null and securityCode != ''">
+			and security_code=#{securityCode}
+		</if>
+		<if test="status != null and status != 100">
+			and status=#{status}
+		</if>
+		<if test="ob != null and ob != ''">
+			and created_at &gt;= #{ob}
+		</if>
+		<if test="oe != null and oe != ''">
+			and created_at &lt;= #{oe}
+		</if>
+		order by id desc limit #{start}, #{pagesize}
+	</select>
+	
+	<select id="findByPageByHospital" resultType="OrderInfo">
+		select
+		<include refid="selectsql" />
+		from order_info inner join product on order_info.pid = product.id 
+		
+		and product.hospital_id = #{hospitalId} 
+		
+		<if test="orderNo != null and orderNo != ''">
+			and order_info.order_no=#{orderNo}
+		</if>
+		<if test="uid != null and uid != 0">
+			and order_info.uid=#{uid}
+		</if>
+		<if test="securityCode != null and securityCode != ''">
+			and order_info.security_code=#{securityCode}
+		</if>
+		<if test="status != null and status != 100">
+			and order_info.status=#{status}
+		</if>
+		order by id desc limit #{start}, #{pagesize}
+	</select>
+
+	<update id="updateOrderStatusSafe">
+		update order_info set status=#{newStatus} where
+		id=#{id} and status=#{oldStatus}
+	</update>
+	
+	<select id="findCountByFinanceOrder" resultType="Long">
+		select count(1) from pay_record as pay left join order_info as o on pay.order_no = o.order_no LEFT JOIN
+		product as p on o.pid=p.id LEFT JOIN users u on u.uid=o.uid LEFT JOIN hospital h on p.hospital_id=h.id where pay.status = 2
+		
+		<if test="orderNo != null and orderNo != ''">
+			and o.order_no like '%${orderNo}%'
+		</if>
+		<if test="mobile !=null and mobile != ''">
+			and u.mobile like '%${mobile}%'
+		</if>
+		<if test="hospitalName !=null and hospitalName != ''">
+			and h.name like '%${hospitalName}%'
+		</if>
+		<if test="payType !=null and payType!=-1">
+			and o.pay_type=#{payType}
+		</if>
+		<if test="payApi !=null and payApi!= ''">
+			and pay.tpp = #{payApi}
+		</if>
+		<if test="ob != null and ob != ''">
+			and o.created_at &gt;= #{ob}
+		</if>
+		<if test="oe != null and oe != ''">
+			and o.created_at &lt;= #{oe}
+		</if>
+		<if test="status != null and status != 100">
+			and o.status=#{status}
+		</if>
+		order by o.id desc limit #{start}, #{pagesize}
+		 
+	</select>
+	
+	<select id="findByFinancePage" resultType="java.util.HashMap">
+		
+		select 
+		pay.id, pay.order_no, u.mobile, h.name, p.type, pay.updated_at, pay.tpp, o.price, pay.status
+		from pay_record as pay left join order_info as o on pay.order_no = o.order_no LEFT JOIN
+		product as p on o.pid=p.id LEFT JOIN users u on u.uid=o.uid LEFT JOIN hospital h on p.hospital_id=h.id where pay.status = 2 
+		
+		<if test="orderNo != null and orderNo != ''">
+			and o.order_no like '%${orderNo}%'
+		</if>
+		<if test="mobile !=null and mobile != ''">
+			and u.mobile like '%${mobile}%'
+		</if>
+		<if test="hospitalName !=null and hospitalName != ''">
+			and h.name like '%${hospitalName}%'
+		</if>
+		<if test="payType !=null and payType!=-1">
+			and o.pay_type=#{payType}
+		</if>
+		<if test="payApi !=null and payApi!= ''">
+			and pay.tpp = #{payApi}
+		</if>
+		<if test="ob != null and ob != ''">
+			and o.created_at &gt;= #{ob}
+		</if>
+		<if test="oe != null and oe != ''">
+			and o.created_at &lt;= #{oe}
+		</if>
+		<if test="status != null">
+		    and o.status in 
+			<foreach collection="status" open="(" separator="," close=")"
+                 item="id">
+            #{id}
+            </foreach>
+		</if>
+		order by o.id desc 
+		limit #{start}, #{pagesize}
+		 
+	</select>
+	
+	<select id="findStatusByUid" resultType="map">
+		select uid,
+			sum(case when status=3 then 1 else 0 end) as three,
+			sum(case when status=1 then 1 else 0 end) as one,
+			sum(case when status=0 then 1 else 0 end) as zero
+		from order_info
+		
+		where uid in 
+		<foreach collection="uids" open = "(" close = ")" separator = "," item = "uid" >
+			#{uid}
+		</foreach>
+		group by uid
+
+	</select>
+	
+
+</mapper>

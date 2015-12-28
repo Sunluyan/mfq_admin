@@ -1,0 +1,53 @@
+body {
+	margin: 0;
+	padding: 0;
+}
+body,td,th {
+	color: #000000;
+	font-size: 14px;
+}
+.bold{
+	font-weight: bold;
+}
+.STYLE2 {
+	color: #CCCCCC;
+	margin-left: 110px;
+}
+#enlarge-body{
+	margin-left: 110px;
+	font-weight: bold;
+}
+.table_bk {
+	border: 1px solid #dcdcdc;
+	background-color: #f9f9f9;
+}
+.tit{
+	width:85%;
+	height:30px;
+	text-align:center;
+	line-height:30px;
+	margin: 0 auto;
+	background-color: #e6e6e6;
+	font-weight: bold;
+}
+#jbxx{
+	width: 90%;
+	margin: 0 auto;
+}
+#smrz{
+	width: 90%;
+	margin: 0 auto;
+}
+#ali{
+	width: 90%;
+	margin: 0 auto;
+}
+#zdxx{
+	width: 90%;
+	margin: 0 auto;
+}
+.STYLE4 {
+	font-size: 12px;
+	font-weight: bold;
+	color: red;
+}

@@ -1,0 +1,17 @@
+.navbar-btn-responsive {
+    display:none;
+}
+
+@media (max-width: 640px) {
+    .navbar-btn-responsive {
+        display:block;
+    }
+}
+.table.vcenter > thead > tr > th,
+.table.vcenter > tbody > tr > th,
+.table.vcenter > tfoot > tr > th,
+.table.vcenter > thead > tr > td,
+.table.vcenter > tbody > tr > td,
+.table.vcenter > tfoot > tr > td { 
+    vertical-align: middle;
+}

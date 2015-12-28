@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mfq.admin.web.dao.OperationLogMapper">
+	<sql id="selectsql">
+		id,user,type,description,created_at as createdAt,ip
+	</sql>
+
+	<sql id="insertsql">
+		user,type,description,created_at,ip
+	</sql>
+
+	<insert id="addLog" parameterType="OpLog">
+		insert into op_logs(
+		<include refid="insertsql" />
+		)values (
+		#{user}, #{type}, #{description}, now(), #{ip}
+		)
+	</insert>
+
+	<select id="queryOpLogs" resultType="OpLog">
+		select
+		<include refid="selectsql" />
+		from op_logs where 1=1
+		<if test="user != null and user != ''">
+			and `user`=#{user}
+		</if>
+		<if test="type != null and type != ''">
+			and `type`=#{type}
+		</if>
+		<if test="startTime != null and startTime != ''">
+			and `created_at` &gt; #{startTime}
+		</if>
+		<if test="endTime != null and endTime != ''">
+			and `created_at` &lt; #{endTime}
+		</if>
+		order by id desc limit #{start},#{size}
+	</select>
+</mapper>

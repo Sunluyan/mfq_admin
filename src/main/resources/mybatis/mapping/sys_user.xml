@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mfq.admin.web.dao.SysUserMapper">
+	<sql id="selectsql">
+		id, username, realname, mobile, role_id as roleId, hospital_id as hospitalId, status, created, updated
+	</sql>
+	<sql id="insertsql">
+		username, realname, mobile, role_id, hospital_id, status, created, updated
+	</sql>
+
+	<insert id="insertSysUser" parameterType="SysUser"
+		useGeneratedKeys="true" keyProperty="id">
+		<selectKey resultType="long" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS uid
+		</selectKey>
+		insert into sys_user(
+		<include refid="insertsql" />
+		)values ( #{username}, #{realname}, #{mobile}, #{roleId}, #{hospitalId}, #{status}, now(), now() )
+	</insert>
+
+	<select id="querySysUserByPage" resultType="SysUser">
+		select
+		<include refid="selectsql" />
+		from sys_user limit #{start}, #{limit}
+	</select>
+	
+	<select id="querySysUser" resultType="SysUser">
+		select
+		<include refid="selectsql" />
+		from sys_user where id=#{id}
+	</select>
+	
+	<select id="querySysUserByName" resultType="SysUser">
+		select
+		<include refid="selectsql" />
+		from sys_user where username=#{username}
+	</select>
+
+	<update id="updateStatus">
+		update sys_user set status=#{status}, updated=now() where id=#{id}
+	</update>
+
+</mapper>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mfq.admin.web.dao.HospitalMapper">
+	<sql id="selectsql">
+		hospital.id, hospital.name, img, address, city_id as cityId,created_at as createdAt, updated_at as updatedAt
+	</sql>
+	<sql id="insertsql">
+		name, img, address, created_at, updated_at
+	</sql>
+
+	<select id="findByName" resultType="Hospital">
+		select
+		<include refid="selectsql" />,
+		city.name as cityName
+		from hospital,area_city city 
+		where city.id = hospital.city_id 
+		<if test="name != null and name != ''">
+			and hospital.name like CONCAT('%',#{name},'%')
+		</if>
+		
+		<if test="cityid != null and cityid != 0">
+			and hospital.city_id = #{cityid}
+		</if>
+	</select>
+	
+	<select id="findById" resultType="Hospital">
+		select
+		<include refid="selectsql" />
+		from hospital where id=#{id}
+	</select>
+	
+	<select id="queryAll" resultType="Hospital">
+		select 
+		<include refid="selectsql"/>
+		from hospital
+	</select>
+
+	<insert id="insertDetail" parameterType="Hospital">
+		insert into hospital(
+		<include refid="insertsql" />,city_id
+		)values (
+		#{name}, #{img}, #{address}, now(), now(),#{cityId}
+		)
+	</insert>
+	
+	<update id="updateHospital">
+		update hospital set name=#{name}, img=#{img}, 
+		address=#{address}, updated_at =now(),city_id = #{cityId}
+		 where id=#{id} 
+	</update>
+
+</mapper>

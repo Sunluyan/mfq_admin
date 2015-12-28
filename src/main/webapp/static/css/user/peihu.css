@@ -1,0 +1,47 @@
+html,body{
+	height:100%;
+	width:100%;
+}
+.add{
+	margin:20px 90%;
+}
+.noborder{
+	border:none;
+}
+.add-page{
+	width:50%;
+	height:50%;
+	background:lightblue;
+	position:fixed;
+	left:50%;
+	top:50%;
+	margin-top:-10%;
+	margin-left:-25%;
+	text-align: center;
+	padding-top:1%;
+	border-radius: 10px;
+	display: none;
+}
+.add-page span{
+	display: inline-block;
+	width:20%;
+	text-align: center;
+	margin-bottom: 1%;
+
+
+}
+.add-page i{
+	color:red;
+}
+.add-page input{
+
+	width:67%;
+	margin-bottom: 1%;
+
+
+}
+
+.add-page button{
+		margin-top:1%;
+		margin-right:20px;
+}

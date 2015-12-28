@@ -1,0 +1,80 @@
+body {
+	margin: 0;
+	padding: 0; 
+}
+body,td,th {
+	font-size: 12px;
+}
+.title01{
+	float: left;
+	font-size: 16px;
+	font-weight: bold;
+	margin-left: 20px;
+}
+.STYLE1 {
+	color: #000000;
+	margin-left: 10px;
+}
+.STYLE2 {color: #CCCCCC; margin-left: 50px;}
+.shaixuan{
+	background-color: #e6e6e6;
+}
+.table_bk {
+	border: 1px solid #dcdcdc;
+	background-color: #f9f9f9;
+}
+.table_bk_over{
+	background-color: red;
+	font-weight: bold;
+	color: #fff;
+}
+.STYLE3 {
+	font-size: 16px;
+	font-weight: bold;
+}
+.er{
+	border: solid 1px #dcdcdc;
+	text-align: center;
+}
+.er .biaoti{
+	background-color: #e6e6e6;
+	font-weight: bold;
+}
+.er .hang01{
+	background-color: #f9f9f9;
+}
+.er .hang02{
+	background-color: #fff;
+}
+input{
+	border: solid 1px #f0f0f0;
+	height: 20px;
+}
+select{
+	border: solid 1px #f0f0f0;
+	height: 25px;
+	width: 80px;
+}
+#enlarge-body{
+	overflow: hidden;
+}
+.startsearch{
+	float: right;
+	margin-right: 40px;
+	width: 120px;
+	height: 25px;
+	background-color: red;
+	color: #fff;
+	border: none;
+	font-weight: bold;
+}
+.startsearch_01{
+	width: 120px;
+	height: 25px;
+	display: table;
+	margin: 0 auto ;
+	background-color: #969696;
+	color: #fff;
+	border: none;
+	box-shadow: 0px 2px 0px #323232;
+}

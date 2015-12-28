@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:context="http://www.springframework.org/schema/context" xmlns:mvc="http://www.springframework.org/schema/mvc"
+  xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+  <context:component-scan base-package="com.mfq.admin.web" />
+  <mvc:resources mapping="/js/**" location="/js/" />
+  <mvc:resources mapping="/crossdomain.xml" location="/WEB-INF/crossdomain.xml"/>
+  <mvc:resources mapping="/static/**" location="/static/" cache-period="86400"/>
+  <mvc:resources mapping="/upload/**" location="/upload/" cache-period="86400"/>
+  <mvc:resources mapping="/*.ico" location="/"  cache-period="86400"/>
+  
+  <!-- bean id="authInterceptor" class="com.mfq.admin.web.interceptors.AuthInterceptor">
+    <property name="staticlist" value="/static/**" />
+    <property name="whitelist" value="/error/**,/login/,/xlogin/,/logout/,/favicon.ico,/upload/**,/op/upload/**,/op/opfileupload/**,/op/opimageupload/**,/trip/cover/upload/**,/prom/pic/upload/**,/partner/so/xml/,/user/referer/,/outcall/taskinfo/new/auto/,/token/,/api/**,/op/pack/upload/**,/comment_trust/upload/**,/op/topics/upload/**" />
+    <property name="loginUrlPrefix" value="http://c.5imfq.com/login/?referer=" />
+  </bean-->
+  
+  <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
+    <property name="interceptors">
+      <list>
+        <ref bean="authInterceptor" />
+        <bean class="com.mfq.admin.web.interceptors.UserInterceptor" />
+        <bean class="com.mfq.admin.web.interceptors.SalesInterceptor" />
+      </list>
+    </property>
+  </bean>
+  <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+    <property name="exceptionMappings">
+      <map>
+        <entry key="IOException" value="error/index" />
+      </map>
+    </property>
+    <property name="defaultErrorView" value="error/index" />
+  </bean>
+
+  <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+    <property name="messageConverters">
+      <list>
+        <bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter" />
+        <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+          <property name="writeAcceptCharset" value="false" />
+          <property name="supportedMediaTypes">
+            <list>
+              <value>text/plain;charset=UTF-8</value>
+              <value>application/json;charset=UTF-8</value>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="freeMarkerConfigurer" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+    <property name="templateLoaderPath" value="/WEB-INF/pages/" />
+    <property name="defaultEncoding" value="UTF-8"></property>
+    <property name="freemarkerSettings">
+      <props>
+        <!-- 处理变量中的null值，自动转为空字符串 -->
+        <prop key="classic_compatible">true</prop>
+        <!--异常处理 暂时ignore -->
+        <prop key="template_exception_handler">ignore</prop>
+        <!-- 防止出现1,234这样的数字格式 -->
+        <prop key="number_format">#</prop>
+        <prop key="datetime_format">yyyy-MM-dd HH:mm:ss</prop>
+        <prop key="date_format">yyyy-MM-dd</prop>
+        <prop key="time_format">HH:mm:ss</prop>
+        <prop key="boolean_format">true,false</prop>
+        <!-- 清除空白 -->
+        <prop key="whitespace_stripping">true</prop>
+        <prop key="template_update_delay">1</prop>
+        <prop key="defaultEncoding">UTF-8</prop>
+        <prop key="cache_storage">strong:20,soft:250</prop>
+        <prop key="localized_lookup">false</prop><!-- 禁止Freemark多语言查询，因为有一个bug -->
+      </props>
+    </property>
+    <property name="freemarkerVariables">
+      <map>
+        <entry key="xml_escape" value-ref="fmXmlEscape" />
+        <entry key="base62" value-ref="base62" />
+        <entry key="sub" value-ref="sub" />
+        <entry key="sub_ultra" value-ref="sub_ultra" />
+        <entry key="lgetCname" value-ref="lgetCname" />
+        <entry key="timeDuration" value-ref="timeDuration" />
+          <entry key="image" value-ref="image" />
+      </map>
+    </property>
+  </bean>
+
+  <bean id="fmXmlEscape" class="freemarker.template.utility.XmlEscape" />
+  <bean id="base62" class="com.mfq.admin.web.freemarker.Base62MethodModel" />
+  <bean id="sub" class="com.mfq.admin.web.freemarker.SubstringMethodModel" />
+  <bean id="sub_ultra" class="com.mfq.admin.web.freemarker.SubstringByWordWidthMethodModel" />
+
+    <!-- Resolves view names to protected .jsp resources within the /WEB-INF/views directory -->
+  <bean class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+    <property name="prefix" value="" />
+    <property name="suffix" value=".ftl" />
+    <property name="order" value="1" />
+    <property name="contentType" value="text/html;charset=UTF-8" />
+  </bean>
+  <import resource="spring-quartz.xml"></import>
+  
+</beans>

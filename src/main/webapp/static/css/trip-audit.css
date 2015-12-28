@@ -1,0 +1,154 @@
+.lara-container {
+    font-size:13px;
+    position:relative;
+}
+.trip-audit-add-box {
+    background:#fff;
+}
+.trip-audit-add-box td{
+    text-align:left;
+}
+.trip-audit-add-box .type-name {
+   font-weight:bold; 
+   margin-bottom:5px
+}
+.trip-audit-add-box .trip-audit-c-type {
+    margin-bottom:10px;
+}
+.trip-audit-add-box input {
+    position:relative;
+    top: -2px;
+    margin: 0 3px 0 3px;
+}
+.trip-audit-add-box .btn {
+    margin-left:10px;
+}
+.trip-audit-add-box textarea {
+    width: 400px;
+}
+.trip-audit-add-box .icon-info-sign {
+    visibility:hidden;
+    margin-left:3px;
+}
+.trip-audit-add-box .lara-btn-3 {
+    margin:15px;
+}
+.trip-audit-c-title {
+    font-weight:bold;
+    font-size:16px;
+    margin-bottom:8px;
+}
+.trip-audit-category {
+}
+.trip-audit-category table th,.trip-audit-category table td{
+    border:none;
+    padding:3px 0;
+    font-weight:bold;
+}
+.trip-audit-category label {
+    margin-bottom:0;
+}
+.trip-audit-category .trip-category-type {
+    text-align:right;
+}
+.ntrip-poa-dialog .poa-detail {
+    margin-top:0;
+}
+.lara-header {
+    border-radius:3px;
+    height:50px;
+    line-height:50px;
+    color:#fff;
+    background-image:linear-gradient(to right, #50c5d6, #2e7fc1);
+}
+.lara-header .title {
+    line-height:50px;
+}
+.lara-header .pull-right {
+    margin-right:15px;
+}
+.lara-title {
+    color: #3aaacf;
+}
+[class^="lara-btn"] {
+    color:#fff;
+    opacity:.8;
+    padding:5px 25px;
+    font-weight:normal;
+    font-size:12px;
+    cursor:pointer;
+}
+.lara-btn-1 {
+    background-color:#94d5d1;
+    border:1px solid #94d5d1;
+}
+.lara-btn-2 {
+    background-color:#7fb8e5;
+    border:1px solid #7fb8e5;
+}
+.lara-btn-3 {
+    background-color:#2ebcbe;
+    border:1px solid #2ebcbe;
+}
+.lara-btn-11 {
+    background-color:#fff;
+    border:1px solid #58585a;
+    color:#58585a;
+}
+.lara-table {
+    background:#f4f7fc;
+    border-color:#fff;
+    border-width:1px;
+}
+.lara-table th,.lara-table td {
+    border-left:4px solid #fff;
+    border-top:4px solid #fff;
+}
+.poa-type-Transit,
+.poa-type-Train,
+.poa-type-RentCar,
+.poa-type-Walk,
+.poa-type-Bus,
+.poa-type-Flight,
+.poa-type-Telpher,
+.poa-type-CityTrain,
+.poa-type-CruiseShip,
+.poa-type-FerryBoat,
+.poa-type-DriveCars{
+    background:#f89406;
+    background:#468847;
+}
+.poa-name-txt {
+    color:#58585a;
+}
+#thunder-go {
+    position:absolute;
+    border:1px solid #ccc;
+    background:#f4f7fc;
+    right:-75px;
+    top:0;
+    width:60px;
+    text-align:center;
+    border-radius:30px;
+    overflow:hidden;
+}
+#thunder-go div {
+    cursor:pointer;
+    padding:3px 6px;
+    border-top:1px solid #fff;
+}
+#thunder-go span {
+    cursor:pointer;
+    display:inline-block;
+    padding:3px 0;
+    width:25px;
+    border-top:1px solid #fff;
+} 
+#thunder-go span:hover, 
+#thunder-go div:hover {
+    background:#7fb8e5;
+    color:#fff;
+}
+#thunder-go div:first-child {
+    border-top:none;
+}

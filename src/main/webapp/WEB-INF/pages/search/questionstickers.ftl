@@ -1,0 +1,79 @@
+<#include "commons/header.ftl" />
+<#assign toolbar="search" />
+<#include "commons/toolbar.ftl" />
+
+
+
+<div class="container" xmlns="http://www.w3.org/1999/html">
+    <div class="container-fluid">
+
+        <div class="row-fluid">
+        <#assign tab="${item}" />
+        <#include "/search/tabs.ftl" />
+            <div class="span10">
+                <form action="/question/" class="well form-inline" method="GET">
+                    <select id="type-select" name="field" class="select input-medium">
+                        <option value="qid">qid</option>
+
+                    </select>
+                    <input name="qid" type="text" class="input-medium search-query">
+                    <button type="submit" class="btn">查询</button>
+                </form>
+                <ul class="pager" style="float:left;">
+                    <li>
+                        <a class="<#if sticker=0>btn-success</#if> " href="/search/questionstickers/?sticker=0">未标记</a>
+                        <a class="<#if sticker=1>btn-success</#if> " href="/search/questionstickers/?sticker=1">已分配</a>
+                        <a class="<#if sticker=2>btn-success</#if> " href="/search/questionstickers/?sticker=2">可推商品</a>
+                        <a class="<#if sticker=3>btn-success</#if> " href="/search/questionstickers/?sticker=3">1周后跟进</a>
+                        <a class="<#if sticker=4>btn-success</#if> " href="/search/questionstickers/?sticker=4">已推商品</a>
+                    </li>
+                </ul>
+                <ul class="pager" style="float:right;">
+                <#if num &gt; 1>
+                    <li>
+                        <a href="/search/questionstickers/?sticker=${sticker}&page=${num-1}">前一页</a>
+                    </li>
+                </#if>
+                    <li>
+                        <a href="/search/questionstickers/?sticker=${sticker}&page=${num+1}">后一页</a>
+                    </li>
+                    <li><span>问题总数:${total}</span></li>
+                </ul>
+
+                <table class="table table-striped table-bordered table-condensed">
+                    <thead>
+                    <tr>
+                        <th width="100px">提问者id</th>
+                        <th>问题标题</th>
+                        <th>标签</th>
+                        <th>回复数</th>
+                        <th>最佳</th>
+                        <th width="120px">提问时间</th>
+                        <th >操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <#list questions as question>
+                    <tr>
+                        <td>
+                            <a target="_blank" href="http://shijiebang.com/u${question.uid}/">${question.uid}</a>
+                        </td>
+                        <td>
+                            <a target="_blank" href="http://shijiebang.com/question/${base62(question.qid)}/">${question.title}</a>
+                        </td>
+                        <td><#list question.tags as tag>${tag}</#list></td>
+                        <td>${question.answerNum}</td>
+                        <td>${(question.bestAid==0)?string("无","有")}</td>
+                        <td>${question.createdAt?number_to_datetime}</td>
+                        <td> <a  href="/question/${question.qid}/">操作</a> </td>
+                    </tr>
+                    </#list>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<#include "commons/footer.ftl" />

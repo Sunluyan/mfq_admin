@@ -1,0 +1,78 @@
+html,body{
+	height:100%;
+	width:100%;
+}
+.answer{
+	width:27%;
+	height:20%;
+	margin:0 auto;
+}
+.child{
+	float:left;
+	margin:40px;
+}
+.agree-1,.refuse-1{
+	-position:relative;
+}
+.refuse-information,.shenpi-information{
+	position:fixed;
+	display: none;
+	background:lightblue;
+}
+
+.refuse-information{
+	left:50%;
+	top:70%;
+	width:50%;
+	height:65%;
+	margin-top:-37%;
+	margin-left:-26%;
+	background:lightblue;
+	border-radius:10px;
+	border:1px solid #ccc;
+	text-align: center;
+	padding:10px;
+}
+.refuse-information div{
+	height:14%;
+	font-size: 18px;
+}
+.reason{
+	width:80%;
+	height:20%;
+}
+.tijiao-2{
+	margin-top: 10px;
+}
+.body{
+	width:80%;
+	height:20%;
+}
+.shenpi-information{
+	left:-264px;
+	top:-89px;
+}
+.shenpi-information div{
+	height:14%;
+	font-size: 18px;
+}
+.tijiao{
+	margin-top: 10px;
+}
+.quxiao{
+	margin-top:10px;
+	margin-left:50px;
+}
+.shenpi-information{
+	left:50%;
+	top:70%;
+	width:50%;
+	height:65%;
+	margin-top:-37%;
+	margin-left:-26%;
+	background:lightblue;
+	border-radius:10px;
+	border:1px solid #ccc;
+	text-align: center;
+	padding:10px;
+}
