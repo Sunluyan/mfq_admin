@@ -7,6 +7,12 @@ import java.util.Set;
 
 import javax.annotation.Resource;
 
+import com.mfq.admin.web.bean.SysAcl;
+import com.mfq.admin.web.bean.SysPermission;
+import com.mfq.admin.web.bean.SysRole;
+import com.mfq.admin.web.bean.example.SysPassportExample;
+import com.mfq.admin.web.bean.example.SysPermissionExample;
+import com.mfq.admin.web.dao.SysPermissionMapper;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,10 +23,6 @@ import org.springframework.util.CollectionUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.mfq.admin.web.dao.SysPermissionMapper;
-import com.mfq.admin.web.models.SysAcl;
-import com.mfq.admin.web.models.SysPermission;
-import com.mfq.admin.web.models.SysRole;
 
 @Service
 public class SysPermissionService {
@@ -153,34 +155,49 @@ public class SysPermissionService {
     }
 
     public long insertOne(SysPermission model) {
-        return mapper.insertOne(model);
+
+        return mapper.insert(model);
     }
 
-    public List<SysPermission> queryAll() {
-        return mapper.queryAll();
+    public List<SysPermission> queryAll()
+    {
+        SysPermissionExample example = new SysPermissionExample();
+        return mapper.selectByExample(example);
     }
 
-    public List<SysPermission> queryByAcls(List<Long> list) {
-        return mapper.queryByAcls(list);
+    public List<SysPermission> queryByAcls(List<Long> list){
+        SysPermissionExample example = new SysPermissionExample();
+        example.or().andAclIn(list);
+        return mapper.selectByExample(example);
     }
 
     public List<SysPermission> queryByAcl(long acl) {
-        return mapper.queryByAcl(acl);
+        SysPermissionExample example = new SysPermissionExample();
+        example.or().andAclEqualTo(acl);
+        return mapper.selectByExample(example);
     }
 
     public List<SysPermission> queryByRole(long role) {
-        return mapper.queryByRole(role);
+        SysPermissionExample example = new SysPermissionExample();
+        example.or().andRoleEqualTo(role);
+        return mapper.selectByExample(example);
     }
 
-    public List<SysPermission> deleteOne(long role, long acl) {
-        return mapper.deleteOne(role, acl);
+    public int deleteOne(long role, long acl) {
+        SysPermissionExample example = new SysPermissionExample();
+        example.or().andRoleEqualTo(role).andAclEqualTo(acl);
+        return mapper.deleteByExample(example);
     }
 
     public long deleteByRole(long role) {
-        return mapper.deleteByRole(role);
+        SysPermissionExample example = new SysPermissionExample();
+        example.or().andRoleEqualTo(role);
+        return mapper.deleteByExample(example);
     }
 
     public long deleteByAcl(long acl) {
-        return mapper.deleteByAcl(acl);
+        SysPermissionExample example = new SysPermissionExample();
+        example.or().andAclEqualTo(acl);
+        return mapper.deleteByExample(example);
     }
 }

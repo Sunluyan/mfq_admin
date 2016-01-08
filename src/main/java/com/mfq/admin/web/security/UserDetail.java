@@ -3,8 +3,8 @@ package com.mfq.admin.web.security;
 import java.util.Collection;
 import java.util.Collections;
 
+import com.mfq.admin.web.bean.SysUser;
 import com.mfq.admin.web.constants.Status;
-import com.mfq.admin.web.models.SysUser;
 
 /**
  * 管理后台用户上下文信息

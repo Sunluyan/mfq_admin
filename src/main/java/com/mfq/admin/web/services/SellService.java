@@ -6,6 +6,11 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.mfq.admin.web.bean.*;
+import com.mfq.admin.web.bean.example.ProductClassifyExample;
+import com.mfq.admin.web.bean.example.ProductImgExample;
+import com.mfq.admin.web.dao.ProductClassifyMapper;
+import com.mfq.admin.web.dao.ProductImgMapper;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,14 +18,6 @@ import org.springframework.ui.Model;
 
 import com.mfq.admin.web.constants.PFlag;
 import com.mfq.admin.web.constants.ProductType;
-import com.mfq.admin.web.dao.ClassifyMapper;
-import com.mfq.admin.web.dao.ProductImgMapper;
-import com.mfq.admin.web.models.HomeClassify;
-import com.mfq.admin.web.models.Hospital;
-import com.mfq.admin.web.models.Product;
-import com.mfq.admin.web.models.ProductClassify;
-import com.mfq.admin.web.models.ProductDetail;
-import com.mfq.admin.web.models.ProductImg;
 import com.mfq.admin.web.utils.DateUtil;
 
 @Service
@@ -31,7 +28,7 @@ public class SellService {
     @Resource
     HospitalService hospitalService;
     @Resource
-    ClassifyMapper classifyMapper;
+    ProductClassifyMapper classifyMapper;
     @Resource
     HomeClassifyService homeClassifyService; 
     @Resource
@@ -45,9 +42,9 @@ public class SellService {
         if (id == null || id == 0) {
             item = new Product();
             detail = new ProductDetail();
-            item.setTotalNum(0);
-            item.setViewNum(0);
-            item.setSaleNum(0);
+            item.setTotalNum(0l);
+            item.setViewNum(0l);
+            item.setSaleNum(0l);
             item.setFlag(PFlag.DEFAULT.getValue());
             item.setImg("");
             item.setOnline(false);
@@ -61,14 +58,16 @@ public class SellService {
         model.addAttribute("detail", detail); // 产品详情
         
         model.addAttribute("types", ProductType.values());
-        
-        List<ProductClassify> classify = classifyMapper.findAll();
+
+        ProductClassifyExample productClassifyExample = new ProductClassifyExample();
+        List<ProductClassify> classify = classifyMapper.selectByExample(productClassifyExample);
         model.addAttribute("classify", classify); // 分类
 
         List<Hospital> hospitals = hospitalService.findAll(); // 医院
         model.addAttribute("hospitals", hospitals);
 
-        List<ProductImg> imgs = productImgMapper.findByPid(id);
+        ProductImgExample productImgExample = new ProductImgExample();
+        List<ProductImg> imgs = productImgMapper.selectByExample(productImgExample);
         
         model.addAttribute("item_img", imgs);
         
@@ -98,8 +97,8 @@ public class SellService {
         // 商品列表
         List<Product> items = productService.findByPage(start, PageSize);
         model.addAttribute("items", items);
-
-        List<ProductClassify> classify = classifyMapper.findAll();
+        ProductClassifyExample productClassifyExample = new ProductClassifyExample();
+        List<ProductClassify> classify = classifyMapper.selectByExample(productClassifyExample);
         model.addAttribute("classify", classify);
 
         List<Hospital> hospitals = hospitalService.findAll(); // 医院
@@ -160,11 +159,11 @@ public class SellService {
         p.setCityId(cityId);
         p.setType(type);
         if(fq == 1){
-        	p.setFq(true);
+        	p.setIsFq(true);
         }else{
-        	p.setFq(false);
+        	p.setIsFq(false);
         }
-        p.setHospitalId(hospitalId);
+        p.setHospitalId((long)hospitalId);
         p.setPrice(price);
         p.setMarketPrice(marketPrice);
         p.setDateStart(dateStart);
@@ -228,7 +227,7 @@ public class SellService {
 		}
 		if(imgs.length > 0){
 			if(!"".equals(imgs[0])){
-				productImgMapper.delImg(id);
+				productImgMapper.deleteByPrimaryKey(id);
 			}
 		}
 		
@@ -238,7 +237,7 @@ public class SellService {
 			pimg.setImg(img);
 			if("".equals(img))
 				continue;			
-			long i = productImgMapper.insertImg(pimg);
+			long i = productImgMapper.insert(pimg);
 			if(i>0){
 				System.out.println("insert img "+i);
 			}

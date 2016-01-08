@@ -1,24 +1,36 @@
 package com.mfq.admin.web.dao;
 
-import java.util.List;
-
-import org.apache.ibatis.annotations.Param;
-
 import com.mfq.admin.web.annotation.MQMDao;
-import com.mfq.admin.web.constants.Status;
-import com.mfq.admin.web.models.SysUser;
+import com.mfq.admin.web.bean.SysUser;
+import com.mfq.admin.web.bean.example.SysUserExample;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 @MQMDao
 public interface SysUserMapper {
+    int countByExample(SysUserExample example);
 
-	public long insertSysUser(SysUser user);
+    int deleteByExample(SysUserExample example);
 
-	public List<SysUser> querySysUserByPage(@Param("start") long start, @Param("limit") long limit);
+    int deleteByPrimaryKey(Long id);
 
-	public SysUser querySysUser(@Param("id") long id);
+    int insert(SysUser record);
 
-	public SysUser querySysUserByName(@Param("username") String username);
+    int insertSelective(SysUser record);
 
-	public boolean updateStatus(@Param("id") long id,
-            @Param("status") Status status);
+    List<SysUser> selectByExample(SysUserExample example);
+
+    SysUser selectByPrimaryKey(Long id);
+
+    int updateByExampleSelective(@Param("record") SysUser record, @Param("example") SysUserExample example);
+
+    int updateByExample(@Param("record") SysUser record, @Param("example") SysUserExample example);
+
+    int updateByPrimaryKeySelective(SysUser record);
+
+    int updateByPrimaryKey(SysUser record);
+
+
+    List<SysUser> querySysUserByPage(@Param("start") long start, @Param("limit") long limit);
+
 }

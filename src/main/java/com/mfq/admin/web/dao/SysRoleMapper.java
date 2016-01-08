@@ -1,24 +1,31 @@
 package com.mfq.admin.web.dao;
 
-import java.util.List;
-import java.util.Set;
-
-import org.apache.ibatis.annotations.Param;
-
 import com.mfq.admin.web.annotation.MQMDao;
-import com.mfq.admin.web.models.SysRole;
-
+import com.mfq.admin.web.bean.SysRole;
+import com.mfq.admin.web.bean.example.SysRoleExample;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
 @MQMDao
 public interface SysRoleMapper {
+    int countByExample(SysRoleExample example);
 
-    public long insertRole(SysRole model);
+    int deleteByExample(SysRoleExample example);
 
-    public List<SysRole> queryAll();
-    
-    public List<SysRole> queryRoles(@Param("list") Set<Long> list);
-    
-    public SysRole queryRole(@Param("id") long id);
+    int deleteByPrimaryKey(Long id);
 
-    public SysRole queryRoleByName(@Param("rolename") String rolename);
+    int insert(SysRole record);
 
+    int insertSelective(SysRole record);
+
+    List<SysRole> selectByExample(SysRoleExample example);
+
+    SysRole selectByPrimaryKey(Long id);
+
+    int updateByExampleSelective(@Param("record") SysRole record, @Param("example") SysRoleExample example);
+
+    int updateByExample(@Param("record") SysRole record, @Param("example") SysRoleExample example);
+
+    int updateByPrimaryKeySelective(SysRole record);
+
+    int updateByPrimaryKey(SysRole record);
 }

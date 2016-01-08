@@ -11,13 +11,13 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.mfq.admin.web.bean.SysPassport;
+import com.mfq.admin.web.bean.SysUser;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.MDC;
 
 import com.mfq.admin.web.cache.SysUserCache;
 import com.mfq.admin.web.constants.AdminConstants;
-import com.mfq.admin.web.models.SysPassport;
-import com.mfq.admin.web.models.SysUser;
 import com.mfq.admin.web.security.UserDetail;
 import com.mfq.admin.web.security.UserHolder;
 import com.mfq.admin.web.utils.Base62;

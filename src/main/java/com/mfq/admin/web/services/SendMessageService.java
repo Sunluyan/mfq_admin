@@ -5,11 +5,12 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.mfq.admin.web.bean.User;
+import com.mfq.admin.web.bean.example.UsersExample;
+import com.mfq.admin.web.dao.UsersMapper;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Maps;
-import com.mfq.admin.web.dao.UserMapper;
-import com.mfq.admin.web.models.user.User;
 import com.mfq.admin.web.utils.HttpUtil;
 import com.mfq.admin.web.utils.JSONUtil;
 import com.mfq.admin.web.utils.MFQAdminUtil;
@@ -20,14 +21,15 @@ import com.mfq.admin.web.utils.SignHelper;
 public class SendMessageService {
 
     @Resource
-    UserMapper userMapper;
+	UsersMapper userMapper;
 
 	public int sendMessageToAll(String content) {
 		
 		int size = 10;
 		List<User>  users = null;
 		int page = 1;
-		long total = userMapper.queryUserCount();
+		UsersExample example = new UsersExample();
+		long total = userMapper.countByExample(example);
 		long start = 0;
 		do{
 			start = (page - 1) * size;

@@ -4,6 +4,10 @@ import java.util.Date;
 
 import javax.annotation.Resource;
 
+import com.mfq.admin.web.bean.Notification;
+import com.mfq.admin.web.bean.User;
+import com.mfq.admin.web.bean.UserExtend;
+import com.mfq.admin.web.dao.NotificationMapper;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,10 +15,6 @@ import org.springframework.stereotype.Service;
 
 import com.baidu.yun.push.exception.PushClientException;
 import com.baidu.yun.push.exception.PushServerException;
-import com.mfq.admin.web.dao.NotificationMapper;
-import com.mfq.admin.web.models.notification.Notification;
-import com.mfq.admin.web.models.user.User;
-import com.mfq.admin.web.models.user.UserExtend;
 import com.mfq.admin.web.services.push.PushMsg;
 import com.mfq.admin.web.utils.JSONUtil;
 
@@ -38,6 +38,7 @@ public class NotificationService {
 	}
 
 
+
 	public String saveMsg(String mobile, String title, int type, String desc, String url) throws PushClientException, PushServerException {
 		Notification no = new Notification();
 		no.setImg(url);
@@ -49,11 +50,11 @@ public class NotificationService {
 		
 		long uid = 0;
 		if(type == 2){
-			User user = userService.queryUserByMobile(mobile);		
+			User user = userService.queryUserByMobile(mobile);
 			uid = user.getUid();
 		}
 		no.setUid(uid);	
-		int result = mapper.insertNotification(no);
+		int result = mapper.insert(no);
 		if(result > 0){
 			pushMsg(title, desc, url, type, uid);
 			

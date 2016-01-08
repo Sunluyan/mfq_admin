@@ -9,6 +9,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
+import com.mfq.admin.web.dao.OpLogsMapper;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +19,6 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerConfig;
 
 import com.google.common.collect.Maps;
 import com.mfq.admin.web.constants.AdminConstants;
-import com.mfq.admin.web.dao.OperationLogMapper;
 import com.mfq.admin.web.helper.SignHelper;
 import com.mfq.admin.web.security.UserHolder;
 import com.mfq.admin.web.utils.HttpUtil;
@@ -38,7 +38,7 @@ public class BaseController {
     protected final String APPLICATION_JSON_MIME_TYPE = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8";
 
     @Resource
-    protected OperationLogMapper operationLogDao;
+    protected OpLogsMapper operationLogDao;
     
     @Resource
     protected FreeMarkerConfig freeMarkerConfigurer;

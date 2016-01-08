@@ -6,12 +6,12 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.mfq.admin.web.bean.SysPassport;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mfq.admin.web.constants.AdminConstants;
-import com.mfq.admin.web.models.SysPassport;
 
 public class CookieUtils {
 
@@ -47,7 +47,7 @@ public class CookieUtils {
      *            cookie域名，默认是'c.5imfq.com'
      */
     public static void setLoginCookie(HttpServletRequest req,
-            HttpServletResponse resp, SysPassport passport, boolean autoLogin) {
+                                      HttpServletResponse resp, SysPassport passport, boolean autoLogin) {
         String xid = Base62.encode(passport.getUid());
         String sessionValue = passport.getTicket() + "-" + xid;
         int maxAge = !autoLogin ? -1

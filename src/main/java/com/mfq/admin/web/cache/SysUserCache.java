@@ -1,16 +1,16 @@
 package com.mfq.admin.web.cache;
 
+import java.awt.*;
 import java.util.concurrent.TimeUnit;
 
+import com.mfq.admin.web.bean.SysPassport;
+import com.mfq.admin.web.bean.SysUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.mfq.admin.web.context.SpringWrapper;
-import com.mfq.admin.web.models.Menu;
-import com.mfq.admin.web.models.SysPassport;
-import com.mfq.admin.web.models.SysUser;
 import com.mfq.admin.web.services.PassportService;
 import com.mfq.admin.web.services.SysUserService;
 
@@ -31,10 +31,6 @@ public class SysUserCache {
      * 
      * @param cookiePassport
      *            cookie中票据(只有uid/ticket)
-     * @param userService
-     *            用户服务
-     * @param passportService
-     *            票据服务
      * @param cacheable
      *            是否缓存结果（如果验票成功，缓存用户信息）
      * @return 用户信息或者null
@@ -60,7 +56,7 @@ public class SysUserCache {
                     + "-------------");
             if (validPassport == null || validPassport.getUid() <= 0) {
                 // 无效的票据，加入黑名单
-                DEAD_USER.setId(0);
+                DEAD_USER.setId(0l);
                 cache.put(ticket, DEAD_USER);
                 return null;
             }

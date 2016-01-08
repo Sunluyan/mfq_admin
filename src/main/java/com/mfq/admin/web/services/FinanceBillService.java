@@ -1,25 +1,22 @@
 package com.mfq.admin.web.services;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.quartz.spi.ThreadPool;
+import com.mfq.admin.web.bean.FinanceBill;
+import com.mfq.admin.web.bean.example.FinanceBillExample;
+import com.mfq.admin.web.dao.FinanceBillMapper;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
-
-import com.mfq.admin.web.dao.FinanceBillMapper;
-import com.mfq.admin.web.models.order.FinanceBill;
-import com.mfq.admin.web.models.order.FinanceBillExample;
 
 @Service
 public class FinanceBillService {
 	@Resource
 	FinanceBillMapper mapper ;
 	@Resource
-	FinanceBillExample  example ;
+	FinanceBillExample example ;
 
 	
 	public FinanceBill selectByPrimaryKey(long id){

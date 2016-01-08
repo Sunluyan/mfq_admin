@@ -1,4 +1,4 @@
-package com.mfq.admin.web.models;
+package com.mfq.admin.web.bean;
 
 import java.util.ArrayList;
 import java.util.Collection;

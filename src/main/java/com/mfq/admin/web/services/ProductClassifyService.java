@@ -1,46 +1,58 @@
 package com.mfq.admin.web.services;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
-import com.google.common.collect.Maps;
+import com.mfq.admin.web.bean.ProductClassify;
+import com.mfq.admin.web.bean.example.ProductClassifyExample;
+import com.mfq.admin.web.dao.ProductClassifyMapper;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
-import com.mfq.admin.web.dao.ClassifyMapper;
-import com.mfq.admin.web.models.ProductClassify;
 
 @Service
 public class ProductClassifyService {
 
     @Resource
-    ClassifyMapper mapper;
+	ProductClassifyMapper mapper;
 
     public ProductClassify findById(int id) {
-        return mapper.findById(id);
+        return mapper.selectByPrimaryKey(id);
     }
     
-    public List<ProductClassify> findClassifys(){
-    	return mapper.findAll();
+    public List<ProductClassify> findClassifys()
+	{
+		ProductClassifyExample example = new ProductClassifyExample();
+    	return mapper.selectByExample(example);
     }
     
-    public List<ProductClassify> findByRootId(int rootId){
-    	return mapper.findByRootId(rootId);
+    public List<ProductClassify> findByRootId(int rootId)
+	{
+		ProductClassifyExample example = new ProductClassifyExample();
+		example.or().andRootIdEqualTo(rootId);
+    	return mapper.selectByExample(example);
     }
     
-    public List<ProductClassify> findByLevel(int rootId){
-    	return mapper.findByLevel(rootId);
-    }
+    public List<ProductClassify> findByLevel(int rootId)
+	{
+		ProductClassifyExample example = new ProductClassifyExample();
+		if(rootId == 0){
+			example.or().andRootIdEqualTo(rootId);
+		}else{
+			example.or().andRootIdNotEqualTo(rootId);
+		}
 
-
+		return mapper.selectByExample(example);
+    }
 
 	public long delClassify(int id) {
 		
-		long t = mapper.delClassify(id);
+		long t = mapper.deleteByPrimaryKey(id);
 		if(t > 0){
-			mapper.delClassifyByRoot(id);
+			ProductClassifyExample example = new ProductClassifyExample();
+			example.or().andRootIdEqualTo(id);
+			mapper.deleteByExample(example);
 			return 1;
 		}else{
 			return 0;
@@ -58,16 +70,18 @@ public class ProductClassifyService {
 			p.setRootId(0);
 			p.setIcon("");
 			p.setDesp(name);
-			return mapper.insertOne(p);
+			return mapper.insert(p);
 		}else{
-			p = mapper.findByIdAndRoodId(id, 0);
+			ProductClassifyExample example = new ProductClassifyExample();
+			example.or().andIdEqualTo(id).andRootIdEqualTo(0);
+			p = mapper.selectByExample(example).get(0);
 			
 			p.setName(name);
 			if(!StringUtils.isBlank(imgs)){
 				p.setHgImage(imgs);
 			}
 			p.setFlag("1");
-			return mapper.updateClassify(p);
+			return mapper.updateByPrimaryKeySelective(p);
 		}
 	}
 
@@ -81,36 +95,17 @@ public class ProductClassifyService {
 			p.setRootId(root_id);
 			p.setIcon("");
 			p.setDesp(name);
-			return mapper.insertOne(p);
+			return mapper.insert(p);
 		}else{
-			p = mapper.findById(id);
+			p = mapper.selectByPrimaryKey(id);
 			p.setName(name);
 			p.setHgImage("");
 			p.setFlag("1");
 			p.setRootId(root_id);
-			return mapper.updateClassify(p);
+			return mapper.updateByPrimaryKeySelective(p);
 		}
 	}
 
 
-	public Map<String,Object> findClassifyLevelById(int id) {
-		Map<String,Object> data = Maps.newHashMap();
 
-		ProductClassify classify = mapper.findById(id);
-		if(classify.getRootId()==0){
-			data.put("root",classify.getId());
-			List<ProductClassify> lclassifys=mapper.findByRootId(id);
-			data.put("level",lclassifys);
-			data.put("L",0);
-		}else {
-			ProductClassify classifyRoot = mapper.findById(classify.getRootId());
-			List<ProductClassify> lclassifys=mapper.findByRootId(classify.getRootId());
-			data.put("root",classifyRoot.getId());
-			data.put("level", lclassifys);
-			data.put("L",1);
-		}
-		data.put("roots",mapper.findByRootId(0));
-
-		return data;
-	}
 }

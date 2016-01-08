@@ -7,6 +7,7 @@ import java.util.UUID;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import com.mfq.admin.web.bean.HomeBanner;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.mfq.admin.web.constants.ImageType;
 import com.mfq.admin.web.constants.QiniuBucketEnum;
-import com.mfq.admin.web.models.HomeBanner;
 import com.mfq.admin.web.services.HomeBannerService;
 import com.mfq.admin.web.services.QiniuManipulater;
 

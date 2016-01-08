@@ -5,12 +5,12 @@ package com.mfq.admin.web.controllers;
 
 import java.util.List;
 
+import com.mfq.admin.web.bean.SysRole;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.google.common.collect.Lists;
-import com.mfq.admin.web.models.SysRole;
 
 /**
  * 权限控制功能

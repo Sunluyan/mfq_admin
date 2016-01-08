@@ -5,16 +5,18 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.mfq.admin.web.bean.Product;
+import com.mfq.admin.web.bean.UserQuota;
+import com.mfq.admin.web.bean.example.UsersQuotaExample;
+import com.mfq.admin.web.constants.Status;
+import com.mfq.admin.web.dao.ProductMapper;
+import com.mfq.admin.web.dao.UsersQuotaMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
 
-import com.mfq.admin.web.dao.ProductMapper;
-import com.mfq.admin.web.dao.UserQuotaMapper;
-import com.mfq.admin.web.models.Product;
-import com.mfq.admin.web.models.user.UserQuota;
 
 @Service
 public class UserQuotaService {
@@ -23,7 +25,7 @@ public class UserQuotaService {
             .getLogger(UserQuotaService.class);
 
     @Resource
-    UserQuotaMapper mapper;
+    UsersQuotaMapper mapper;
 
     /**
      * 
@@ -43,7 +45,12 @@ public class UserQuotaService {
         if (quota.getBalance().add(num).compareTo(new BigDecimal(0)) < 0) {
             throw new Exception("用于余额不足以支付购物抵扣额度");
         }
-        long l = mapper.updateUserBalance(uid, num, quota.getBalance());
+        num = quota.getBalance().add(num);
+        UserQuota record = new UserQuota();
+        record.setBalance(num);
+        UsersQuotaExample example = new UsersQuotaExample();
+        example.or().andUidEqualTo(uid);
+        long l = mapper.updateByExampleSelective(record,example);
         logger.info("更新用户{}余额度由{}到{}", uid, quota.getBalance(),
                 quota.getBalance().add(num));
         return l;
@@ -67,7 +74,13 @@ public class UserQuotaService {
         if (quota.getPresent().add(num).compareTo(new BigDecimal(0)) < 0) {
             throw new Exception("用于余额不足以支付购物抵扣额度");
         }
-        long l = mapper.updateUserPresent(uid, num, quota.getPresent());
+
+        num = quota.getBalance().add(num);
+        UserQuota record = new UserQuota();
+        record.setPresent(num);
+        UsersQuotaExample example = new UsersQuotaExample();
+        example.or().andUidEqualTo(uid);
+        long l = mapper.updateByExampleSelective(record,example);
         logger.info("更新用户{}赠送金额由{}到{}", uid, quota.getPresent(),
                 quota.getPresent().add(num));
         return l;
@@ -86,19 +99,28 @@ public class UserQuotaService {
             throw new Exception("用户可用额度不足！");
         }
         quota.setQuotaLeft(quota.getQuotaLeft().subtract(usedQuota));
-        return mapper.updateUserQuota(quota);
+        UsersQuotaExample example = new UsersQuotaExample();
+        example.or().andUidEqualTo(uid);
+        return mapper.updateByExampleSelective(quota,example);
     }
 
     public long updateUserWish(long uid, int wish) {
-        return mapper.updateUserWish(uid, wish);
+        UsersQuotaExample example = new UsersQuotaExample();
+        example.or().andUidEqualTo(uid);
+        UserQuota userQuota = new UserQuota();
+        userQuota.setWishPlastic(wish);
+        return mapper.updateByExampleSelective(userQuota,example);
     }
 
-    public long insertUserQuota(UserQuota quota) {
-        return mapper.insertUserQuota(quota);
+    public long insertUserQuota(UserQuota quota)
+    {
+        return mapper.insert(quota);
     }
 
     public UserQuota queryUserQuota(long userId) {
-        return mapper.queryUserQuota(userId);
+        UsersQuotaExample example = new UsersQuotaExample();
+        example.or().andUidEqualTo(userId);
+        return mapper.selectByExample(example).get(0);
     }
     
     /**
@@ -107,6 +129,7 @@ public class UserQuotaService {
      * @return
      */
     public Map<String,Object> queryCertifyQuota(long uid){
+
     	return mapper.queryCertifyQuota(uid);
     }
     
@@ -119,14 +142,18 @@ public class UserQuotaService {
     * @return
     */
     public Integer updateAuthStatus(long uid,String remark,Integer status){
-    	
-    	return mapper.updateAuthStatus(uid, remark, status);
+        UserQuota userQuota = new UserQuota();
+        userQuota.setSchoolRemark(remark);
+        userQuota.setAuthStatus(status);
+        UsersQuotaExample example = new UsersQuotaExample();
+        example.or().andUidEqualTo(uid);
+    	return mapper.updateByExampleSelective(userQuota,example);
     }
     
     public static void main(String[] args) {
 		ApplicationContext ac = new ClassPathXmlApplicationContext("spring/spring.xml");
 		ProductMapper mapper = ac.getBean(ProductMapper.class);
-		Product pro = mapper.findById(195);
+		Product pro = mapper.selectByPrimaryKey(195l);
 		System.out.println(pro.toString());
 	}
 

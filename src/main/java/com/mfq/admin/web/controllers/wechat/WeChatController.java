@@ -5,13 +5,13 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import com.mfq.admin.web.bean.WechatMsg;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.mfq.admin.web.controllers.BaseController;
-import com.mfq.admin.web.models.wechat.WeChatMsg;
 import com.mfq.admin.web.services.wechat.WeChatService;
 
 /**
@@ -37,7 +37,7 @@ public class WeChatController extends BaseController {
     @RequestMapping("/message/list/")
     public String msglist(HttpServletRequest request, Model model) throws Exception {
     	String openId = request.getParameter("openid");
-    	List<WeChatMsg> list =weChatService.queryMsgByOpenId(openId);
+    	List<WechatMsg> list =weChatService.queryMsgByOpenId(openId);
     	model.addAttribute("msgs",list);
     	model.addAttribute("openid",openId);
     	return "/wechat/message";

@@ -1,18 +1,20 @@
 package com.mfq.admin.web.services.wechat;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.mfq.admin.web.bean.User;
+import com.mfq.admin.web.bean.UserExtend;
+import com.mfq.admin.web.bean.WechatMsg;
+import com.mfq.admin.web.bean.example.WechatMsgExample;
+import com.mfq.admin.web.dao.WechatMsgMapper;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Maps;
 import com.mfq.admin.web.constants.Constants;
-import com.mfq.admin.web.dao.WeChatMsgMapper;
-import com.mfq.admin.web.models.user.User;
-import com.mfq.admin.web.models.user.UserExtend;
-import com.mfq.admin.web.models.wechat.WeChatMsg;
 import com.mfq.admin.web.services.UserExtendService;
 import com.mfq.admin.web.services.UserService;
 import com.mfq.admin.web.utils.HttpUtil;
@@ -25,18 +27,26 @@ import com.mfq.admin.web.utils.VerifyUtils;
 public class WeChatService {
 
     @Resource
-    WeChatMsgMapper mapper;
+	WechatMsgMapper mapper;
     @Resource
     UserExtendService userExtendService;
     @Resource
     UserService userService;
     
     public List<String> queryOpenIds(){
-    	return mapper.queryOpenIds();
+		WechatMsgExample example = new WechatMsgExample();
+		List<WechatMsg> list = mapper.selectByExample(example);
+		List<String> openIds = new ArrayList<>();
+		for (WechatMsg wechatMsg : list) {
+			openIds.add(wechatMsg.getOpenId());
+		}
+		return openIds;
     }
     
-    public List<WeChatMsg> queryMsgByOpenId(String openId){
-    	return mapper.queryWeChatMsgByOpenId(openId);
+    public List<WechatMsg> queryMsgByOpenId(String openId){
+		WechatMsgExample example = new WechatMsgExample();
+		example.or().andOpenIdEqualTo(openId);
+    	return mapper.selectByExample(example);
     }
 
 	public String setInviteCode(String mobile, String openId) {
@@ -52,7 +62,7 @@ public class WeChatService {
 		if(extend== null || extend.getUid() <0){
 			extend = new UserExtend();
 			extend.setUid(user.getUid());
-			extend.setBind(false);
+			extend.setIsBind(false);
 			extend.setInviteCode(code);
 			extend.setOpenId(openId);
 			extend.setRemark("");

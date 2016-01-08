@@ -1,6 +1,7 @@
 package com.mfq.admin.web.handler;
 
-import com.mfq.admin.web.models.user.Gender;
+
+import com.mfq.admin.web.bean.Gender;
 
 public class GenderEnumHandler extends EnumOrdinalTypeHandler<Gender> {
 

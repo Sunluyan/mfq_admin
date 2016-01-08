@@ -1,6 +1,7 @@
 package com.mfq.admin.web.handler;
 
-import com.mfq.admin.web.models.user.Status;
+
+import com.mfq.admin.web.bean.Status;
 
 public class UserStatusEnumHandler extends EnumOrdinalTypeHandler<Status>{
 

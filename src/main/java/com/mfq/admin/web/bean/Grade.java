@@ -1,4 +1,4 @@
-package com.mfq.admin.web.models.user;
+package com.mfq.admin.web.bean;
 
 /**
  * 学生年级

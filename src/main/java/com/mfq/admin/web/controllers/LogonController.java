@@ -6,13 +6,14 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.mfq.admin.web.bean.SysPassport;
+import com.mfq.admin.web.bean.SysUser;
+import com.mfq.admin.web.bean.example.SysUserExample;
+import com.mfq.admin.web.dao.SysUserMapper;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.mfq.admin.web.dao.SysUserMapper;
-import com.mfq.admin.web.models.SysPassport;
-import com.mfq.admin.web.models.SysUser;
 import com.mfq.admin.web.security.UserHolder;
 import com.mfq.admin.web.services.PassportService;
 import com.mfq.admin.web.utils.CookieUtils;
@@ -64,7 +65,9 @@ public class LogonController extends BaseController {
         	System.out.println("come to if , username="+username);
             String passwordMd5 = PasswordUtils.encode(password);
             System.out.println(passwordMd5);
-            SysUser user = sysUserMapper.querySysUserByName(username);
+            SysUserExample example = new SysUserExample();
+            example.or().andUsernameEqualTo(username);
+            SysUser user = sysUserMapper.selectByExample(example).get(0);
             System.out.println(user+"logon");
             if (user != null) {
                 SysPassport passport = passportService.login(user.getId(),

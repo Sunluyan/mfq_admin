@@ -5,49 +5,60 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.mfq.admin.web.bean.Hospital;
+import com.mfq.admin.web.bean.example.HospitalExample;
+import com.mfq.admin.web.dao.HospitalMapper;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
-import com.mfq.admin.web.dao.HospitalMapper;
-import com.mfq.admin.web.models.Hospital;
 
 @Service
 public class HospitalService {
 
     @Resource
-    HospitalMapper mapper;
+	HospitalMapper mapper;
 
     public Hospital findById(long id) {
-        return mapper.findById(id);
+        return mapper.selectByPrimaryKey(id);
     }
 
     public List<Hospital> findAll() {
-        return mapper.findByName(null,null);
+		HospitalExample example = new HospitalExample();
+        return mapper.selectByExample(example);
     }
     
     public List<Hospital> findByNameAndCity(String name,Integer id) {
-    	List<Hospital> list = mapper.findByName(name,id);
+		HospitalExample example = new HospitalExample();
+		if(StringUtils.isNotBlank(name)){
+			example.or().andNameLike("%"+name+"%");
+		}
+		if(id != null){
+			example.or().andIdEqualTo((long)id);
+		}
+		System.out.println(example);
+		List<Hospital> list = mapper.selectByExample(example);
         return list;
     }
 
     public long insertDetail(Hospital h) {
-        return mapper.insertDetail(h);
+        return mapper.insert(h);
     }
 
 	public List<Hospital> queryAll() {
-		return mapper.queryAll();
+		HospitalExample example = new HospitalExample();
+		return mapper.selectByExample(example);
 	}
 
 	public Hospital saveHospital(long hospitalId, String name, String img, String address,long cityid) {
 		Hospital hospital = null;
 		if(hospitalId > 0){
-			hospital = mapper.findById(hospitalId);
+			hospital = mapper.selectByPrimaryKey(hospitalId);
 			saveOrUpdateHospital(hospital, name, img, address, cityid);
-			mapper.updateHospital(hospital);
+			mapper.updateByPrimaryKey(hospital);
 		}else{
 			hospital = new Hospital();
 			saveOrUpdateHospital(hospital, name, img, address, cityid);
-			mapper.insertDetail(hospital);
+			mapper.insert(hospital);
 		}
 		return hospital;
 	}

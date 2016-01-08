@@ -1,10 +1,6 @@
 package com.mfq.admin.web.controllers;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +8,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.mfq.admin.web.bean.Gender;
+import com.mfq.admin.web.bean.Nurse;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,10 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.mfq.admin.web.dao.NurseMapper;
-import com.mfq.admin.web.models.user.Gender;
-import com.mfq.admin.web.models.user.Nurse;
-import com.mfq.admin.web.models.user.UserQuota;
 import com.mfq.admin.web.services.UserQuotaService;
 import com.mfq.admin.web.services.UserService;
 import com.mfq.admin.web.utils.JSONUtil;

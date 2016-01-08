@@ -1,27 +1,42 @@
 package com.mfq.admin.web.dao;
 
-import java.util.Date;
-
-import org.apache.ibatis.annotations.Param;
-
 import com.mfq.admin.web.annotation.MQMDao;
-import com.mfq.admin.web.models.SysPassport;
+import com.mfq.admin.web.bean.SysPassport;
+import com.mfq.admin.web.bean.example.SysPassportExample;
 
+import java.util.Date;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
 @MQMDao
 public interface SysPassportMapper {
+    int countByExample(SysPassportExample example);
 
-    public long insertPassport(SysPassport passport);
+    int deleteByExample(SysPassportExample example);
 
-    public SysPassport queryPassport(@Param("uid") long uid);
+    int deleteByPrimaryKey(Long uid);
 
-    public SysPassport queryValidPassportByTicket(@Param("uid") long uid,
-            @Param("ticket") String ticket, @Param("status") int status);
+    int insert(SysPassport record);
 
-    public boolean updateExpired(@Param("uid") long uid,
-            @Param("expiredAt") long expiredAt);
+    int insertSelective(SysPassport record);
 
-    public boolean updateDefaultTicket(@Param("uid") long uid,
-            @Param("ticket") String ticket, @Param("createdAt") Date createdAt,
-            @Param("expiredAt") Date expiredAt);
+    List<SysPassport> selectByExample(SysPassportExample example);
 
+    SysPassport selectByPrimaryKey(Long uid);
+
+    int updateByExampleSelective(@Param("record") SysPassport record, @Param("example") SysPassportExample example);
+
+    int updateByExample(@Param("record") SysPassport record, @Param("example") SysPassportExample example);
+
+    int updateByPrimaryKeySelective(SysPassport record);
+
+    int updateByPrimaryKey(SysPassport record);
+
+
+    SysPassport queryValidPassportByTicket(@Param("uid") long uid,
+                                                  @Param("ticket") String ticket, @Param("status") int status);
+
+
+    int updateDefaultTicket(@Param("uid") long uid,
+                                       @Param("ticket") String ticket, @Param("createdAt") Date createdAt,
+                                       @Param("expiredAt") Date expiredAt);
 }

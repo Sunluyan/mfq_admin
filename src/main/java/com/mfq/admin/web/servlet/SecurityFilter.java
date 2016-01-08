@@ -1,26 +1,34 @@
 package com.mfq.admin.web.servlet;
 
-import com.mfq.admin.web.models.Menu;
+import static java.lang.String.format;
+
+import java.io.IOException;
+
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.mfq.admin.web.bean.Menu;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.mfq.admin.web.security.UserDetail;
 import com.mfq.admin.web.security.UserHolder;
 import com.mfq.admin.web.services.SysAclCache;
 import com.mfq.admin.web.utils.DnsUtil;
 import com.mfq.admin.web.utils.RequestUtils;
-import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-
-import static java.lang.String.format;
 
 /**
  * 权限相关控制
- *
+ * 
  * @author xingyongshan
+ *
  */
 public class SecurityFilter implements Filter {
 
@@ -34,7 +42,7 @@ public class SecurityFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response,
-                         FilterChain chain) throws IOException, ServletException {
+            FilterChain chain) throws IOException, ServletException {
         try {
             HttpServletRequest req = (HttpServletRequest) request;
             HttpServletResponse resp = (HttpServletResponse) response;
@@ -44,7 +52,6 @@ public class SecurityFilter implements Filter {
             request.setAttribute("_rhost", DnsUtil.getAllLocalSiteAddress());
             // 权限检测 放在这里
             if (isStaticResource(req) || isBlackUrl(req)) {
-                logger.info("is static resource or black url");
                 // do nothing
             } else if (!checkAuth(req, UserHolder.currentUserDetail())) {
                 // 校验资源权限失败
@@ -62,7 +69,7 @@ public class SecurityFilter implements Filter {
                 }
                 return;
             } else { // 校验成功的情况，成功登录用户！！
-                // 资源权限校验成功,设置上下文
+                     // 资源权限校验成功,设置上下文
                 _prepareConext(req, UserHolder.currentUserDetail());
             }
 
@@ -74,8 +81,9 @@ public class SecurityFilter implements Filter {
 
     /**
      * do nothing now, need fix!!!!!!!!
-     *
+     * 
      * @param req
+     * @param _userDetail
      * @return
      */
     private boolean checkAuth(HttpServletRequest req, UserDetail _userDetail) {
@@ -98,7 +106,7 @@ public class SecurityFilter implements Filter {
      * @param _userdetail
      */
     private void _prepareConext(HttpServletRequest request,
-                                UserDetail _userdetail) {
+            UserDetail _userdetail) {
         if (_userdetail == null) {
             logger.warn("_userdetail is null");
         } else {
@@ -120,17 +128,17 @@ public class SecurityFilter implements Filter {
 
     /**
      * 是否是白名单的URL
-     *
+     * 
      * @return
      */
     private boolean isBlackUrl(HttpServletRequest req) {
         if (StringUtils.startsWithIgnoreCase(req.getRequestURI(), "/login/")
                 || StringUtils.startsWithIgnoreCase(req.getRequestURI(),
-                "/xlogin/")
+                        "/xlogin/")
                 || StringUtils.startsWithIgnoreCase(req.getRequestURI(),
-                "/logout/")
+                        "/logout/")
                 || StringUtils.startsWithIgnoreCase(req.getRequestURI(),
-                "/mobile/check")) {
+                        "/mobile/check")) {
             return true;
         }
         return false;
@@ -139,9 +147,9 @@ public class SecurityFilter implements Filter {
     private boolean isStaticResource(HttpServletRequest req) {
         if (StringUtils.startsWithIgnoreCase(req.getRequestURI(), "/static/")
                 || StringUtils.startsWithIgnoreCase(req.getRequestURI(),
-                "/upload/")
+                        "/upload/")
                 || StringUtils.startsWithIgnoreCase(req.getRequestURI(),
-                "/favicon.ico")) {
+                        "/favicon.ico")) {
             return true;
         }
         return false;

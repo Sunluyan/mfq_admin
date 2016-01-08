@@ -4,72 +4,83 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.springframework.stereotype.Service;
-
+import com.mfq.admin.web.bean.Product;
+import com.mfq.admin.web.bean.ProductDetail;
+import com.mfq.admin.web.bean.example.ProductDetailExample;
+import com.mfq.admin.web.bean.example.ProductExample;
 import com.mfq.admin.web.dao.ProductDetailMapper;
 import com.mfq.admin.web.dao.ProductMapper;
-import com.mfq.admin.web.models.Product;
-import com.mfq.admin.web.models.ProductDetail;
+import org.springframework.stereotype.Service;
+
 
 @Service
 public class ProductService {
 
     @Resource
-    ProductMapper pmapper;
+    ProductMapper mapper;
     
     @Resource
-    ProductDetailMapper pdmapper;
+    ProductDetailMapper productDetailMapper;
     
     public long insertProduct(Product model){
-        return pmapper.insertProduct(model);
+        return mapper.insert(model);
     }
     
-    public long findCount(){
-        return pmapper.findCount();
+    public long findCount() {
+        return mapper.countByExample(new ProductExample());
     }
     
     public Product findById(long id){
-        return pmapper.findById(id);
+        return mapper.selectByPrimaryKey(id);
     }
-    
+
     public List<Product> findByIds(List<Long> ids){
-        return pmapper.findByIds(ids);
+        ProductExample example = new ProductExample();
+        example.or().andIdIn(ids);
+        return mapper.selectByExample(example);
     }
 
     public List<Product> findByPage(long start, long pagesize){
-        return pmapper.findByPage(start, pagesize);
+        return mapper.findByPage(start, pagesize);
     }
 
     public void updateProduct(Product model){
-        pmapper.updateProduct(model);
+        mapper.updateByPrimaryKey(model);
     }
     
     public long deleteProduct(long id){
-        return pmapper.deleteProduct(id);
+        return mapper.deleteByPrimaryKey(id);
     }
     
     public long deleteProducts(List<Long> list){
-        return pmapper.deleteProducts(list);
+        ProductExample example = new ProductExample();
+        example.or().andIdIn(list);
+        return mapper.deleteByExample(example);
     }
     
 
     public ProductDetail findDetailByPid(long pid){
-        return pdmapper.findByPid(pid);
+        ProductDetailExample example = new ProductDetailExample();
+        example.or().andPidEqualTo(pid);
+        return productDetailMapper.selectByExample(example).get(0);
     }
     
     public long insertDetail(ProductDetail model){
-        return pdmapper.insertDetail(model);
+        return productDetailMapper.insert(model);
     }
     
     public void updateOne(ProductDetail model){
     	if(model.getPid() < 1){
     		return;
     	}
-    	ProductDetail d = pdmapper.findByPid(model.getPid());
+
+    	ProductDetail d  = findDetailByPid(model.getPid());
     	if(d == null ){
     		insertDetail(model);			 
     	}else{
-    		pdmapper.updateOne(model);
+            ProductDetailExample example = new ProductDetailExample();
+            example.or().andPidEqualTo(model.getPid());
+            productDetailMapper.updateByExampleSelective(model,example);
     	}
     }
 

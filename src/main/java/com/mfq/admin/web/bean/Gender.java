@@ -1,4 +1,4 @@
-package com.mfq.admin.web.models.user;
+package com.mfq.admin.web.bean;
 
 
 public enum Gender {

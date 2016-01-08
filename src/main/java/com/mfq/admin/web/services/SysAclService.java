@@ -4,11 +4,11 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.mfq.admin.web.bean.SysAcl;
+import com.mfq.admin.web.dao.SysAclMapper;
 import org.springframework.stereotype.Service;
 
 import com.mfq.admin.web.constants.AclTypeEnum;
-import com.mfq.admin.web.dao.SysAclMapper;
-import com.mfq.admin.web.models.SysAcl;
 
 @Service
 public class SysAclService {
@@ -19,7 +19,7 @@ public class SysAclService {
     SysAclMapper mapper;
 
     public SysAcl findById(long id){
-        return mapper.findById(id);
+        return mapper.selectByPrimaryKey(id);
     }
     
     
@@ -62,14 +62,14 @@ public class SysAclService {
     }
     
     public long updateOne(SysAcl model){
-        return mapper.updateOne(model);
+        return mapper.updateByPrimaryKeySelective(model);
     }
     
     public long insertOne(SysAcl model){
-        return mapper.insertOne(model);
+        return mapper.insert(model);
     }
     
     public boolean deleteOne(long id){
-        return mapper.deleteOne(id);
+        return mapper.deleteByPrimaryKey(id) == 1;
     }
 }

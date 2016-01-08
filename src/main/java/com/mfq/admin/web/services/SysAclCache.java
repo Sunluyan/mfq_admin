@@ -4,6 +4,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import com.mfq.admin.web.bean.Menu;
+import com.mfq.admin.web.bean.SysAcl;
+import com.mfq.admin.web.bean.SysPermission;
+import com.mfq.admin.web.bean.SysRole;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,10 +18,6 @@ import com.google.common.collect.Maps;
 import com.mfq.admin.web.constants.AclTypeEnum;
 import com.mfq.admin.web.constants.AdminConstants;
 import com.mfq.admin.web.context.SpringWrapper;
-import com.mfq.admin.web.models.Menu;
-import com.mfq.admin.web.models.SysAcl;
-import com.mfq.admin.web.models.SysPermission;
-import com.mfq.admin.web.models.SysRole;
 
 /**
  * ActionURL－权限缓存
@@ -129,7 +129,6 @@ public class SysAclCache {
 
     /**
      * 
-     * @param id
      * @return acl id list
      */
     public List<Long> getSysAcl(long roleId) {

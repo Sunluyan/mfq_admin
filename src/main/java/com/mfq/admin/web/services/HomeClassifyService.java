@@ -4,37 +4,43 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.mfq.admin.web.bean.HomeClassify;
+import com.mfq.admin.web.bean.example.HomeClassifyExample;
+import com.mfq.admin.web.dao.HomeClassifyMapper;
 import org.springframework.stereotype.Service;
 
-import com.mfq.admin.web.dao.HomeClassifyMapper;
-import com.mfq.admin.web.models.HomeClassify;
 
 @Service
 public class HomeClassifyService {
 
     @Resource
-    HomeClassifyMapper mapper;
+	HomeClassifyMapper mapper;
 
-    public HomeClassify findById(long id) {
-        return mapper.findById(id);
+    public HomeClassify findById(long id)
+	{
+        return mapper.selectByPrimaryKey((int)id);
     }
 
 
-    public long insertHomeClassify(HomeClassify h) {
-        return mapper.insertHomeClassify(h);
+    public long insertHomeClassify(HomeClassify h)
+	{
+        return mapper.insert(h);
     }
     
-    public long updateHomeClassify(HomeClassify classify){
-    	return mapper.updateHomeClassify(classify);
+    public long updateHomeClassify(HomeClassify classify)
+	{
+    	return mapper.updateByPrimaryKey(classify);
     }
 
-	public List<HomeClassify> queryAll() {
-		return mapper.queryAll();
+	public List<HomeClassify> queryAll()
+	{
+		HomeClassifyExample example = new HomeClassifyExample();
+		return mapper.selectByExample(example);
 	}
 
 
 	public long delHomeClassify(int id) {
-		return mapper.deleteHomeClassify(id);
+		return mapper.deleteByPrimaryKey(id);
 	}
 
 

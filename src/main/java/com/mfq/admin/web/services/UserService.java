@@ -1,14 +1,19 @@
 package com.mfq.admin.web.services;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.mfq.admin.web.bean.Nurse;
+import com.mfq.admin.web.bean.User;
+import com.mfq.admin.web.bean.example.NurseExample;
+import com.mfq.admin.web.bean.example.UsersExample;
+import com.mfq.admin.web.dao.NurseMapper;
+import com.mfq.admin.web.dao.OrderInfoMapper;
+import com.mfq.admin.web.dao.UsersMapper;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
@@ -17,20 +22,12 @@ import org.springframework.util.CollectionUtils;
 
 import com.google.common.collect.Lists;
 import com.mfq.admin.web.constants.AuthStatus;
-import com.mfq.admin.web.context.SpringWrapper;
-import com.mfq.admin.web.dao.NurseMapper;
-import com.mfq.admin.web.dao.OrderInfoMapper;
-import com.mfq.admin.web.dao.UserMapper;
-import com.mfq.admin.web.handler.GenderEnumHandler;
-import com.mfq.admin.web.models.user.Gender;
-import com.mfq.admin.web.models.user.Nurse;
-import com.mfq.admin.web.models.user.User;
 
 @Service
 public class UserService {
 
     @Resource
-    UserMapper mapper;
+    UsersMapper mapper;
     @Resource
     NurseMapper nurseMapper;
 
@@ -39,7 +36,9 @@ public class UserService {
     public int PageSize = 50;
 
     public User queryUserByMobile(String mobile) {
-        User user = mapper.queryUserByMobile(mobile);
+        UsersExample example = new UsersExample();
+        example.or().andMobileEqualTo(mobile);
+        User user = mapper.selectByExample(example).get(0);
         if (user == null) {
             user = new User();
         }
@@ -47,7 +46,9 @@ public class UserService {
     }
 
     public List<User> queryUsers(List<Long> list) {
-        List<User> users = mapper.queryUsers(list);
+        UsersExample example = new UsersExample();
+        example.or().andUidIn(list);
+        List<User> users = mapper.selectByExample(example);
         if (CollectionUtils.isEmpty(users)) {
             users = Lists.newArrayList();
         }
@@ -56,7 +57,8 @@ public class UserService {
 
 
     public User queryUser(Long id) {
-        User user = mapper.queryUser(id);
+
+        User user = mapper.selectByPrimaryKey(id);
         if (user == null) {
             user = new User();
         }
@@ -111,7 +113,6 @@ public class UserService {
      * @param phone    手机
      * @param inviteid 邀请人id（暂查询邀请码）
      * @param alipay   支付宝
-     * @param isReal   是否已实名认证
      * @param fromtime 按照起始和结束时间查询
      * @param totime
      */
@@ -224,7 +225,8 @@ public class UserService {
     }
 
     public List<Nurse> getAllNurse() {
-        return nurseMapper.selectAll();
+        NurseExample example = new NurseExample();
+        return nurseMapper.selectByExample(example);
     }
 
     public Nurse getNurseById(Integer id) {
@@ -249,7 +251,6 @@ public class UserService {
         ApplicationContext ac = new ClassPathXmlApplicationContext("spring/spring.xml");
         UserService service = ac.getBean(UserService.class);
         List<Nurse> list = service.getAllNurse();
-
 
     }
 }

@@ -1,5 +1,6 @@
 package com.mfq.admin.web.controllers;
 
+import java.awt.geom.Area;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +9,8 @@ import java.util.UUID;
 
 import javax.annotation.Resource;
 
+import com.mfq.admin.web.bean.AreaCity;
+import com.mfq.admin.web.bean.Hospital;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -18,8 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.mfq.admin.web.models.City;
-import com.mfq.admin.web.models.Hospital;
 import com.mfq.admin.web.services.CityService;
 import com.mfq.admin.web.services.HospitalService;
 import com.mfq.admin.web.services.QiniuManipulater;
@@ -39,8 +40,6 @@ public class HospitalController {
      * 医院管理
      * 
      * @param page
-     * @param orderNo
-     * @param status
      * @param model
      * @return
      */
@@ -53,9 +52,10 @@ public class HospitalController {
     	if(cityid==0){
     		cityid = null;
     	}
-        List<Hospital> list = service.findByNameAndCity(hosname,cityid);
+        List<Hospital> list;
+        list = service.findByNameAndCity(hosname,cityid);
         //通过数据库查询，得到所有已有citys，并去重
-        List<City> citys = cityService.findAllExistCity();
+        List<AreaCity> citys = cityService.findAllExistAreaCity();
         
         model.addAttribute("citys",citys);
         model.addAttribute("hospitals", list);
@@ -69,8 +69,6 @@ public class HospitalController {
     
     /**
      * 医院信息
-     * @param page
-     * @param hosname
      * @param model
      * @return
      */
@@ -86,8 +84,6 @@ public class HospitalController {
     
     /**
      * 医院信息
-     * @param page
-     * @param hosname
      * @param model
      * @return
      */
@@ -121,7 +117,7 @@ public class HospitalController {
 	        } else { // 判断是否需要更新img
 	            img = "";
 	        }
-	        City city = cityService.findByName(cityname);
+	        AreaCity city = cityService.findByName(cityname);
 	    	Hospital hospital = service.saveHospital(hospitalId, name, img, address,city.getId());
 	    	model.addAttribute("hospital", hospital);
 	    	return "redirect:/hospital/list/";

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.mfq.admin.web.dao.FinanceBillMapper" >
-  <resultMap id="BaseResultMap" type="com.mfq.admin.web.models.order.FinanceBill" >
+  <resultMap id="BaseResultMap" type="com.mfq.admin.web.bean.FinanceBill" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="uid" property="uid" jdbcType="BIGINT" />
     <result column="bill_no" property="billNo" jdbcType="VARCHAR" />
@@ -80,7 +80,7 @@
     id, uid, bill_no, order_no, new_balance, late_fee, cur_period, all_period, status, 
     trade_at, charge_at, bill_at, due_at, pay_at, updated_at
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.mfq.admin.web.models.order.FinanceBillExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.mfq.admin.web.bean.example.FinanceBillExample" >
     select
     <if test="distinct" >
       distinct
@@ -104,13 +104,13 @@
     delete from finance_bill
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.mfq.admin.web.models.order.FinanceBillExample" >
+  <delete id="deleteByExample" parameterType="com.mfq.admin.web.bean.example.FinanceBillExample" >
     delete from finance_bill
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.mfq.admin.web.models.order.FinanceBill" >
+  <insert id="insert" parameterType="com.mfq.admin.web.bean.FinanceBill" >
     insert into finance_bill (id, uid, bill_no, 
       order_no, new_balance, late_fee, 
       cur_period, all_period, status, 
@@ -124,7 +124,7 @@
       #{dueAt,jdbcType=TIMESTAMP}, #{payAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.mfq.admin.web.models.order.FinanceBill" >
+  <insert id="insertSelective" parameterType="com.mfq.admin.web.bean.FinanceBill" >
     insert into finance_bill
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -221,7 +221,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.mfq.admin.web.models.order.FinanceBillExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.mfq.admin.web.bean.example.FinanceBillExample" resultType="java.lang.Integer" >
     select count(*) from finance_bill
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -301,7 +301,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.mfq.admin.web.models.order.FinanceBill" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.mfq.admin.web.bean.FinanceBill" >
     update finance_bill
     <set >
       <if test="uid != null" >
@@ -349,7 +349,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.mfq.admin.web.models.order.FinanceBill" >
+  <update id="updateByPrimaryKey" parameterType="com.mfq.admin.web.bean.FinanceBill" >
     update finance_bill
     set uid = #{uid,jdbcType=BIGINT},
       bill_no = #{billNo,jdbcType=VARCHAR},
@@ -367,128 +367,61 @@
       updated_at = #{updatedAt,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  
-  <!--查询出所有  -->
+
+
   <select id="selectFinanceByPage" resultMap = "BaseResultMap">
-  	select
-  	  <if test="count!=null and count!=''">
-  	  	count(*) as count
-  	  </if>
-      <if test="count == null or count == '' ">
-      	finance.id  , finance.uid , finance.bill_no as billNo ,finance.order_no as orderNo , 
-      	finance.new_balance as newBalance , finance.late_fee as  lateFee , finance.cur_period as curPeriod,
-      	finance.all_period as allPeriod ,finance.status,finance.trade_at as tradeAt,
-      	finance.charge_at as chargeAt , finance.bill_at as billAt , 
-      	finance.due_at as dueAt , finance.pay_at as payAt ,finance.updated_at as updatedAt
-      </if>
-	
-      from finance_bill finance left join users_quota quota on quota.uid = finance.uid 
-		left join users u on u.uid = finance.uid
-	
-	where 1=1
-      <if test="uid != null and uid != 0">
-      	and finance.uid = #{uid}
-      </if>
-      <if test="realname != null and realname != ''">
-      	and quota.realname like CONCAT('%',#{realname},'%')
-      </if>
-      
-      <if test="phone != null and phone != ''">
-      	and u.mobile like CONCAT('%',#{phone},'%')
-      </if>
-      <if test="idcard != null and idcard != ''">
-      	and quota.id_card = #{idcard}
-      </if>
-      <if test="applytimefrom != null and applytimefrom != '' and applytimeto != null and applytimeto != ''  ">
+    select
+    <if test="count!=null and count!=''">
+      count(*) as count
+    </if>
+    <if test="count == null or count == '' ">
+      finance.id  , finance.uid , finance.bill_no as billNo ,finance.order_no as orderNo ,
+      finance.new_balance as newBalance , finance.late_fee as  lateFee , finance.cur_period as curPeriod,
+      finance.all_period as allPeriod ,finance.status,finance.trade_at as tradeAt,
+      finance.charge_at as chargeAt , finance.bill_at as billAt ,
+      finance.due_at as dueAt , finance.pay_at as payAt ,finance.updated_at as updatedAt
+    </if>
+
+    from finance_bill finance left join users_quota quota on quota.uid = finance.uid
+    left join users u on u.uid = finance.uid
+
+    where 1=1
+    <if test="uid != null and uid != 0">
+      and finance.uid = #{uid}
+    </if>
+    <if test="realname != null and realname != ''">
+      and quota.realname like CONCAT('%',#{realname},'%')
+    </if>
+
+    <if test="phone != null and phone != ''">
+      and u.mobile like CONCAT('%',#{phone},'%')
+    </if>
+    <if test="idcard != null and idcard != ''">
+      and quota.id_card = #{idcard}
+    </if>
+    <if test="applytimefrom != null and applytimefrom != '' and applytimeto != null and applytimeto != ''  ">
       <![CDATA[
       	and finance.bill_at >= #{applytimefrom} and finance.bill_at <= #{applytimeto}
       ]]>
+    </if>
+    <if test="type != null and type != ''">
+      <if test = "type == 1 ">
+        and finance.status = 1
       </if>
-      <if test="type != null and type != ''">
-      		<if test = "type == 1 ">
-      			and finance.status = 1
-      		</if>
-      		<if test = "type == 2 ">
-      			and finance.status = 2
-      		</if>
-      		<if test = "type == -1  ">
-      			and finance.status = -1
-      		</if>
-      		<if test = "type == 0 ">
-      		<![CDATA[
+      <if test = "type == 2 ">
+        and finance.status = 2
+      </if>
+      <if test = "type == -1  ">
+        and finance.status = -1
+      </if>
+      <if test = "type == 0 ">
+        <![CDATA[
       			and finance.status = 1 and finance.bill_at >= #{endTime}
       		]]>
-      		</if>
       </if>
-      group by finance.order_no
-      
-      limit #{start},#{size}
-  </select>
-  <!-- 
-  姓名：	小李
-手机号：	18888888888
-身份证号码：	220182738493827205
-分期总额：	12000元
-还款期数：	12期
-每期还款额：	1000元
-申请日期：	2015.12.10
-剩余日期：	11个月
-学籍/工作信息
+    </if>
+    group by finance.order_no
 
-用户类型：	学生党
-学校：	北京某某大学
-入学时间：	2015.09.01
-备注：	北京某某大学北京某某大学北京某某大学北京某某大学北京某某大学北京某某大学北京某某大学北京某某大学北京某某大学北京某某大学北京某某大学北京某某大学北京某某大学北京某某大学北京某某大学
-  
-  
-  还款日期	还款额度	支付方式	还款期数
-  
-  
-  {career=0, late_fee=100.00, pay_at=2015-09-11 12:31:15.0, sign=0, bill_no=bl2015092417022424220001, 
-  pic=, salary=, location_id=0, charge_at=2015-08-07 12:29:11.0, faculty=, user_type=1, balance=0.00, 
-  school=北京工业大学, intro=, contact=15303700259, work_remark=, bill_at=2015-09-07 12:30:17.0, all_period=24, 
-  due_at=2015-09-07 12:30:44.0, auth_status=0, id=1, order_type=2, school_remark=, trade_at=2015-08-07 12:28:36.0, 
-  homesite=, grade=3, school_level=四年, trade_no=, present=0.00, startschool_at=2014-09-01 00:00:00.0,
-   quota_all=0.00, idcard_front=, status=0, birthday=0, idcard_reverse=, order_no=mn2015092512220673390001,
-    img=, gender=0, wish_plastic=0, origin=, classes=二班, icon=, id_card=411425199407139946, 
-    created_at=2015-09-08 19:19:05.0, nick=M96653866, uid=201, school_location=北京石景山, speciality=, 
-    social_insurance_id=, updated_at=2015-12-09 12:02:38.0, card_no=, interest=, company=, new_balance=195.00, 
-    email=F215C69B9E0F7A42C91C857AD42A51D4, bank_code=, amount=1.00, cur_period=1, mobile=18697129926, student_id=, 
-    card_type=0, work_years=, realname=, quota_left=0.00, tpp=, location=, school_location_id=1}
-  
-   -->
-  
- <!--  <select id="queryFinanceDetail" resultType="map">
-  	select 
-  	*
-  	quota.realname , u.mobile , quota.id_card , orders.period_pay , orders.period , finance.all_period,
-  	finance.new_balance , finance.bill_at , finance.cur_period , 
-  	
-  	
-  	from users u , users_quota quota , finance_bill finance , pay_record pay ,order_info orders
-  	
-  	where u.uid = quota.uid and quota.uid = finance.uid and finance.uid = pay.uid and pay.uid = orders.uid
-  	
-  	and finance.id = #{id}
-  	
-  	limit 0,1
-  	
-  	
-  	
-  	
-  </select> -->
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+    limit #{start},#{size}
+  </select>
 </mapper>

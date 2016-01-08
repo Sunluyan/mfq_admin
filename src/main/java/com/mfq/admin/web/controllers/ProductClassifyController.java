@@ -6,6 +6,8 @@ import java.util.UUID;
 
 import javax.annotation.Resource;
 
+import com.mfq.admin.web.bean.HomeClassify;
+import com.mfq.admin.web.bean.ProductClassify;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -16,8 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.google.common.collect.Lists;
-import com.mfq.admin.web.models.HomeClassify;
-import com.mfq.admin.web.models.ProductClassify;
 import com.mfq.admin.web.services.HomeClassifyService;
 import com.mfq.admin.web.services.ProductClassifyService;
 import com.mfq.admin.web.services.QiniuManipulater;

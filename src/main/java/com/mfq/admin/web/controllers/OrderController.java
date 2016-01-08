@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import com.mfq.admin.web.bean.*;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -19,11 +20,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mfq.admin.web.constants.OrderStatus;
-import com.mfq.admin.web.models.PayRecord;
-import com.mfq.admin.web.models.order.FinanceBill;
-import com.mfq.admin.web.models.order.OrderInfo;
-import com.mfq.admin.web.models.user.User;
-import com.mfq.admin.web.models.user.UserQuota;
 import com.mfq.admin.web.security.UserHolder;
 import com.mfq.admin.web.services.FinanceBillService;
 import com.mfq.admin.web.services.OrderService;

@@ -1,18 +1,24 @@
 package com.mfq.admin.web.services;
 
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Resource;
 
+import com.mfq.admin.web.bean.SysPassport;
+import com.mfq.admin.web.bean.SysUser;
+import com.mfq.admin.web.bean.example.SysPassportExample;
+import com.mfq.admin.web.dao.SysPassportMapper;
+import com.mfq.admin.web.dao.SysUserMapper;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
 
 import com.mfq.admin.web.constants.Status;
-import com.mfq.admin.web.dao.SysPassportMapper;
-import com.mfq.admin.web.models.SysPassport;
 import com.mfq.admin.web.utils.CommonUtil;
 import com.mfq.admin.web.utils.DateUtil;
 import com.mfq.admin.web.utils.PasswordUtils;
@@ -29,24 +35,25 @@ public class PassportService {
 
     @Resource
     SysPassportMapper mapper;
+    @Resource
+    SysUserMapper sysUserMapper;
     
     /**
      * 新的登录方式
      * 返回的passport中uid大于0成功，等于0验证失败，小于0用户不存在
-     * @param uid用户uid
      * @param password-md5( md5(plainPassword+salt))
      * @return 登录信息，登录成功后会更新时间
      */
     public SysPassport login(long uid, String password) {
         SysPassport passport = queryPassport(uid);
         if (passport.getUid() == 0) {
-            passport.setUid(-1); // 用户不存在
+            passport.setUid(-1l); // 用户不存在
             return passport;
         }
         // 验证密码是否成功
         if (!StringUtils.equalsIgnoreCase(passport.getPassword(), PasswordUtils.encode(password))) {
             // 验证不通过, 登录失败
-            passport.setUid(0);
+            passport.setUid(0l);
             passport.setPassword("");
             passport.setTicket("");
         }
@@ -54,11 +61,21 @@ public class PassportService {
     }
 
     public SysPassport validateTicket(long uid, String ticket) {
+        //TODO 暂用该方法,试试别的
         SysPassport passport = mapper.queryValidPassportByTicket(uid, ticket, Status.DELETED.getValue());
+
+       // SysPassport passport = null;
+        SysUser sysUser = sysUserMapper.selectByPrimaryKey(uid);
+        if(sysUser.getStatus().getValue() != Status.DELETED.getValue()){
+           // SysPassportExample example = new SysPassportExample();
+           // example.or().andUidEqualTo(uid).andTicketEqualTo(ticket).andExpiredAtLessThan(new Date());
+            //System.out.println("--------------"+mapper.selectByExample(example));
+            //passport = mapper.selectByExample(example).get(0);
+        }
         logger.info("validate from db passport={}", passport);
         if (passport == null) {
             passport = new SysPassport();
-            passport.setUid(0);
+            passport.setUid(0l);
         } else {
             // 验证票据成功，此时要刷新票据有效期为新value
             defaultFlushTicketTime(passport, false, false, false);
@@ -77,21 +94,29 @@ public class PassportService {
         passport.setActivedAt(new Date());
         passport.setExpiredAt(DateUtil.addDay(new Date(), 7));
         passport.setPassword(PasswordUtils.encode(plainPassword));
-        mapper.insertPassport(passport);
+        mapper.insert(passport);
         return passport;
     }
 
     public SysPassport queryPassport(long uid) {
-        SysPassport passport = mapper.queryPassport(uid);
-        return passport == null ? new SysPassport() : passport;
+
+        return mapper.selectByPrimaryKey(uid);
     }
 
-    public boolean flushTicketTime(long uid, long expiredTime) {
-        return mapper.updateExpired(uid, expiredTime);
+    public boolean flushTicketTime(long uid, long expiredTime)
+    {
+        SysPassport passport = new SysPassport();
+        passport.setUid(uid);
+        passport.setExpiredAt(new Date(expiredTime));
+        return mapper.updateByPrimaryKeySelective(passport) == 1;
     }
 
-    public boolean destroyPassport(long uid) {
-        return mapper.updateExpired(uid, System.currentTimeMillis());
+    public boolean destroyPassport(long uid)
+    {
+        SysPassport passport = new SysPassport();
+        passport.setUid(uid);
+        passport.setExpiredAt(new Date());
+        return mapper.updateByPrimaryKeySelective(passport) == 1;
     }
 
     /**
@@ -117,7 +142,6 @@ public class PassportService {
      *            是否自动登录 (当前仅当登录操作并且是自动登录)
      * @param resetPassword
      *            是否修改密码,如果是修改密码，则用户强制退出登录
-     * @return 刷新ticket逻辑参考 {@link #login(long, String, boolean)}
      */
     private SysPassport defaultFlushTicketTime(SysPassport passport, boolean isLogin,
             boolean autoLogin, boolean resetPassword) {
@@ -150,5 +174,16 @@ public class PassportService {
                     passport.getCreatedAt(), passport.getExpiredAt());
         }
         return passport;
+    }
+
+    public static void main(String[] args) {
+        ApplicationContext ac = new ClassPathXmlApplicationContext("spring/spring.xml");
+        SysPassportMapper mapper = ac.getBean(SysPassportMapper.class);
+
+        SysPassportExample example = new SysPassportExample();
+        List<SysPassport> list = mapper.selectByExample(example);
+        for (SysPassport sysPassport : list) {
+            System.out.println(sysPassport.toString());
+        }
     }
 }

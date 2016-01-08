@@ -1,23 +1,31 @@
 package com.mfq.admin.web.dao;
 
-import java.util.List;
-
-import org.apache.ibatis.annotations.Param;
-
 import com.mfq.admin.web.annotation.MQMDao;
-import com.mfq.admin.web.models.Hospital;
-
+import com.mfq.admin.web.bean.Hospital;
+import com.mfq.admin.web.bean.example.HospitalExample;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
 @MQMDao
 public interface HospitalMapper {
+    int countByExample(HospitalExample example);
 
-    public Hospital findById(@Param("id") long id);
-    
-    public List<Hospital> findByName(@Param("name") String name,@Param("cityid") Integer cityid);
-    
-    public long insertDetail(Hospital hospital);
+    int deleteByExample(HospitalExample example);
 
-	public List<Hospital> queryAll();
+    int deleteByPrimaryKey(Long id);
 
-	public long updateHospital(Hospital hospital);
-    
+    int insert(Hospital record);
+
+    int insertSelective(Hospital record);
+
+    List<Hospital> selectByExample(HospitalExample example);
+
+    Hospital selectByPrimaryKey(Long id);
+
+    int updateByExampleSelective(@Param("record") Hospital record, @Param("example") HospitalExample example);
+
+    int updateByExample(@Param("record") Hospital record, @Param("example") HospitalExample example);
+
+    int updateByPrimaryKeySelective(Hospital record);
+
+    int updateByPrimaryKey(Hospital record);
 }

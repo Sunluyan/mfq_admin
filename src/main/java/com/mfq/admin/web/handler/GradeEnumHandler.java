@@ -1,6 +1,7 @@
 package com.mfq.admin.web.handler;
 
-import com.mfq.admin.web.models.user.Grade;
+
+import com.mfq.admin.web.bean.Grade;
 
 public class GradeEnumHandler extends EnumOrdinalTypeHandler<Grade> {
 
