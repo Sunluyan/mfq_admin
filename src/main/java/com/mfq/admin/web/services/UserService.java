@@ -14,6 +14,7 @@ import com.mfq.admin.web.bean.example.UsersExample;
 import com.mfq.admin.web.dao.NurseMapper;
 import com.mfq.admin.web.dao.OrderInfoMapper;
 import com.mfq.admin.web.dao.UsersMapper;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
@@ -38,10 +39,8 @@ public class UserService {
     public User queryUserByMobile(String mobile) {
         UsersExample example = new UsersExample();
         example.or().andMobileEqualTo(mobile);
-        User user = mapper.selectByExample(example).get(0);
-        if (user == null) {
-            user = new User();
-        }
+        List<User> users = mapper.selectByExample(example);
+        User user = (users.size() != 0)? users.get(0) : new User();
         return user;
     }
 

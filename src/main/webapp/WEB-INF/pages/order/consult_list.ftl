@@ -52,7 +52,7 @@
                         <td>
                         	<#list pmap?keys as key>
                         		<#if key == order.pid>
-                        		${pmap.get(key)!}
+                        		${pmap.get(key).name!}
                         		</#if>
 	                        </#list>
                         </td>

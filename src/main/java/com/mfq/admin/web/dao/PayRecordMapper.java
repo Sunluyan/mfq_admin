@@ -4,11 +4,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import com.mfq.admin.web.bean.PayRecord;
+import com.mfq.admin.web.bean.example.PayRecordExample;
 import org.apache.ibatis.annotations.Param;
 
 import com.mfq.admin.web.annotation.MQMDao;
-import com.mfq.admin.web.models.PayRecord;
-import com.mfq.admin.web.models.PayRecordExample;
 
 
 @MQMDao

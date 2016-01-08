@@ -219,6 +219,10 @@
         },
         dataType:'json',
         success:function (json) {
+            if(json.code != 0 || json.data.length==0){
+                alert(json.msg=="success"?"没有数据":json.msg)
+                return false;
+            }
           insertTable(json.data)
         }
       })
@@ -316,10 +320,13 @@
         },
         dataType:'json',
         success:function (json) {
-          console.log(json.data[0].count)
-          $(".total").html(json.data[0].count)
+            if(json.code != 0 || json.data.length==0){
+                return false;
+            }
+            console.log(json.data[0].count)
+            $(".total").html(json.data[0].count)
 
-          $(".totalpage").html(Math.ceil(parseInt(json.data[0].count)/50))
+            $(".totalpage").html(Math.ceil(parseInt(json.data[0].count)/50))
         }
       })
     }
