@@ -1,0 +1,580 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mfq.admin.web.dao.UsersQuotaMapper" >
+  <resultMap id="BaseResultMap" type="com.mfq.admin.web.bean.UserQuota" >
+    <result column="uid" property="uid" jdbcType="BIGINT" />
+    <result column="realname" property="realname" jdbcType="VARCHAR" />
+    <result column="school" property="school" jdbcType="VARCHAR" />
+    <result column="contact" property="contact" jdbcType="VARCHAR" />
+    <result column="grade" property="grade" jdbcType="INTEGER" />
+    <result column="classes" property="classes" jdbcType="VARCHAR" />
+    <result column="startschool_at" property="startschoolAt" jdbcType="TIMESTAMP" />
+    <result column="gender" property="gender" jdbcType="TINYINT" />
+    <result column="id_card" property="idCard" jdbcType="VARCHAR" />
+    <result column="idcard_front" property="idcardFront" jdbcType="VARCHAR" />
+    <result column="idcard_reverse" property="idcardReverse" jdbcType="VARCHAR" />
+    <result column="balance" property="balance" jdbcType="DECIMAL" />
+    <result column="quota_all" property="quotaAll" jdbcType="DECIMAL" />
+    <result column="quota_left" property="quotaLeft" jdbcType="DECIMAL" />
+    <result column="school_location_id" property="schoolLocationId" jdbcType="INTEGER" />
+    <result column="school_location" property="schoolLocation" jdbcType="VARCHAR" />
+    <result column="origin" property="origin" jdbcType="VARCHAR" />
+    <result column="location" property="location" jdbcType="VARCHAR" />
+    <result column="homesite" property="homesite" jdbcType="VARCHAR" />
+    <result column="auth_status" property="authStatus" jdbcType="TINYINT" />
+    <result column="present" property="present" jdbcType="DECIMAL" />
+    <result column="wish_plastic" property="wishPlastic" jdbcType="TINYINT" />
+    <result column="school_remark" property="schoolRemark" jdbcType="VARCHAR" />
+    <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+    <result column="student_id" property="studentId" jdbcType="VARCHAR" />
+    <result column="school_level" property="schoolLevel" jdbcType="VARCHAR" />
+    <result column="scholastic_years" property="scholasticYears" jdbcType="INTEGER" />
+    <result column="company" property="company" jdbcType="VARCHAR" />
+    <result column="salary" property="salary" jdbcType="VARCHAR" />
+    <result column="faculty" property="faculty" jdbcType="VARCHAR" />
+    <result column="speciality" property="speciality" jdbcType="VARCHAR" />
+    <result column="user_type" property="userType" jdbcType="BIGINT" />
+    <result column="social_insurance_id" property="socialInsuranceId" jdbcType="VARCHAR" />
+    <result column="work_remark" property="workRemark" jdbcType="VARCHAR" />
+    <result column="work_years" property="workYears" jdbcType="VARCHAR" />
+    <result column="position" property="position" jdbcType="VARCHAR" />
+    <result column="department" property="department" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    uid, realname, school, contact, grade, classes, startschool_at, gender, id_card, 
+    idcard_front, idcard_reverse, balance, quota_all, quota_left, school_location_id, 
+    school_location, origin, location, homesite, auth_status, present, wish_plastic, 
+    school_remark, created_at, updated_at, student_id, school_level, scholastic_years, 
+    company, salary, faculty, speciality, user_type, social_insurance_id, work_remark, 
+    work_years, position, department
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.mfq.admin.web.bean.example.UsersQuotaExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from users_quota
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.mfq.admin.web.bean.example.UsersQuotaExample" >
+    delete from users_quota
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.mfq.admin.web.bean.UserQuota" >
+    insert into users_quota (uid, realname, school, 
+      contact, grade, classes, 
+      startschool_at, gender, id_card, 
+      idcard_front, idcard_reverse, balance, 
+      quota_all, quota_left, school_location_id, 
+      school_location, origin, location, 
+      homesite, auth_status, present, 
+      wish_plastic, school_remark, created_at, 
+      updated_at, student_id, school_level, 
+      scholastic_years, company, salary, 
+      faculty, speciality, user_type, 
+      social_insurance_id, work_remark, work_years, 
+      position, department)
+    values (#{uid,jdbcType=BIGINT}, #{realname,jdbcType=VARCHAR}, #{school,jdbcType=VARCHAR}, 
+      #{contact,jdbcType=VARCHAR}, #{grade,jdbcType=INTEGER}, #{classes,jdbcType=VARCHAR}, 
+      #{startschoolAt,jdbcType=TIMESTAMP}, #{gender,jdbcType=TINYINT}, #{idCard,jdbcType=VARCHAR}, 
+      #{idcardFront,jdbcType=VARCHAR}, #{idcardReverse,jdbcType=VARCHAR}, #{balance,jdbcType=DECIMAL}, 
+      #{quotaAll,jdbcType=DECIMAL}, #{quotaLeft,jdbcType=DECIMAL}, #{schoolLocationId,jdbcType=INTEGER}, 
+      #{schoolLocation,jdbcType=VARCHAR}, #{origin,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, 
+      #{homesite,jdbcType=VARCHAR}, #{authStatus,jdbcType=TINYINT}, #{present,jdbcType=DECIMAL}, 
+      #{wishPlastic,jdbcType=TINYINT}, #{schoolRemark,jdbcType=VARCHAR}, #{createdAt,jdbcType=TIMESTAMP}, 
+      #{updatedAt,jdbcType=TIMESTAMP}, #{studentId,jdbcType=VARCHAR}, #{schoolLevel,jdbcType=VARCHAR}, 
+      #{scholasticYears,jdbcType=INTEGER}, #{company,jdbcType=VARCHAR}, #{salary,jdbcType=VARCHAR}, 
+      #{faculty,jdbcType=VARCHAR}, #{speciality,jdbcType=VARCHAR}, #{userType,jdbcType=BIGINT}, 
+      #{socialInsuranceId,jdbcType=VARCHAR}, #{workRemark,jdbcType=VARCHAR}, #{workYears,jdbcType=VARCHAR}, 
+      #{position,jdbcType=VARCHAR}, #{department,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mfq.admin.web.bean.UserQuota" >
+    insert into users_quota
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="realname != null" >
+        realname,
+      </if>
+      <if test="school != null" >
+        school,
+      </if>
+      <if test="contact != null" >
+        contact,
+      </if>
+      <if test="grade != null" >
+        grade,
+      </if>
+      <if test="classes != null" >
+        classes,
+      </if>
+      <if test="startschoolAt != null" >
+        startschool_at,
+      </if>
+      <if test="gender != null" >
+        gender,
+      </if>
+      <if test="idCard != null" >
+        id_card,
+      </if>
+      <if test="idcardFront != null" >
+        idcard_front,
+      </if>
+      <if test="idcardReverse != null" >
+        idcard_reverse,
+      </if>
+      <if test="balance != null" >
+        balance,
+      </if>
+      <if test="quotaAll != null" >
+        quota_all,
+      </if>
+      <if test="quotaLeft != null" >
+        quota_left,
+      </if>
+      <if test="schoolLocationId != null" >
+        school_location_id,
+      </if>
+      <if test="schoolLocation != null" >
+        school_location,
+      </if>
+      <if test="origin != null" >
+        origin,
+      </if>
+      <if test="location != null" >
+        location,
+      </if>
+      <if test="homesite != null" >
+        homesite,
+      </if>
+      <if test="authStatus != null" >
+        auth_status,
+      </if>
+      <if test="present != null" >
+        present,
+      </if>
+      <if test="wishPlastic != null" >
+        wish_plastic,
+      </if>
+      <if test="schoolRemark != null" >
+        school_remark,
+      </if>
+      <if test="createdAt != null" >
+        created_at,
+      </if>
+      <if test="updatedAt != null" >
+        updated_at,
+      </if>
+      <if test="studentId != null" >
+        student_id,
+      </if>
+      <if test="schoolLevel != null" >
+        school_level,
+      </if>
+      <if test="scholasticYears != null" >
+        scholastic_years,
+      </if>
+      <if test="company != null" >
+        company,
+      </if>
+      <if test="salary != null" >
+        salary,
+      </if>
+      <if test="faculty != null" >
+        faculty,
+      </if>
+      <if test="speciality != null" >
+        speciality,
+      </if>
+      <if test="userType != null" >
+        user_type,
+      </if>
+      <if test="socialInsuranceId != null" >
+        social_insurance_id,
+      </if>
+      <if test="workRemark != null" >
+        work_remark,
+      </if>
+      <if test="workYears != null" >
+        work_years,
+      </if>
+      <if test="position != null" >
+        position,
+      </if>
+      <if test="department != null" >
+        department,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="uid != null" >
+        #{uid,jdbcType=BIGINT},
+      </if>
+      <if test="realname != null" >
+        #{realname,jdbcType=VARCHAR},
+      </if>
+      <if test="school != null" >
+        #{school,jdbcType=VARCHAR},
+      </if>
+      <if test="contact != null" >
+        #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="grade != null" >
+        #{grade,jdbcType=INTEGER},
+      </if>
+      <if test="classes != null" >
+        #{classes,jdbcType=VARCHAR},
+      </if>
+      <if test="startschoolAt != null" >
+        #{startschoolAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gender != null" >
+        #{gender,jdbcType=TINYINT},
+      </if>
+      <if test="idCard != null" >
+        #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="idcardFront != null" >
+        #{idcardFront,jdbcType=VARCHAR},
+      </if>
+      <if test="idcardReverse != null" >
+        #{idcardReverse,jdbcType=VARCHAR},
+      </if>
+      <if test="balance != null" >
+        #{balance,jdbcType=DECIMAL},
+      </if>
+      <if test="quotaAll != null" >
+        #{quotaAll,jdbcType=DECIMAL},
+      </if>
+      <if test="quotaLeft != null" >
+        #{quotaLeft,jdbcType=DECIMAL},
+      </if>
+      <if test="schoolLocationId != null" >
+        #{schoolLocationId,jdbcType=INTEGER},
+      </if>
+      <if test="schoolLocation != null" >
+        #{schoolLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="origin != null" >
+        #{origin,jdbcType=VARCHAR},
+      </if>
+      <if test="location != null" >
+        #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="homesite != null" >
+        #{homesite,jdbcType=VARCHAR},
+      </if>
+      <if test="authStatus != null" >
+        #{authStatus,jdbcType=TINYINT},
+      </if>
+      <if test="present != null" >
+        #{present,jdbcType=DECIMAL},
+      </if>
+      <if test="wishPlastic != null" >
+        #{wishPlastic,jdbcType=TINYINT},
+      </if>
+      <if test="schoolRemark != null" >
+        #{schoolRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="createdAt != null" >
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null" >
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="studentId != null" >
+        #{studentId,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolLevel != null" >
+        #{schoolLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="scholasticYears != null" >
+        #{scholasticYears,jdbcType=INTEGER},
+      </if>
+      <if test="company != null" >
+        #{company,jdbcType=VARCHAR},
+      </if>
+      <if test="salary != null" >
+        #{salary,jdbcType=VARCHAR},
+      </if>
+      <if test="faculty != null" >
+        #{faculty,jdbcType=VARCHAR},
+      </if>
+      <if test="speciality != null" >
+        #{speciality,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null" >
+        #{userType,jdbcType=BIGINT},
+      </if>
+      <if test="socialInsuranceId != null" >
+        #{socialInsuranceId,jdbcType=VARCHAR},
+      </if>
+      <if test="workRemark != null" >
+        #{workRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="workYears != null" >
+        #{workYears,jdbcType=VARCHAR},
+      </if>
+      <if test="position != null" >
+        #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null" >
+        #{department,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.mfq.admin.web.bean.example.UsersQuotaExample" resultType="java.lang.Integer" >
+    select count(*) from users_quota
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update users_quota
+    <set >
+      <if test="record.uid != null" >
+        uid = #{record.uid,jdbcType=BIGINT},
+      </if>
+      <if test="record.realname != null" >
+        realname = #{record.realname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.school != null" >
+        school = #{record.school,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contact != null" >
+        contact = #{record.contact,jdbcType=VARCHAR},
+      </if>
+      <if test="record.grade != null" >
+        grade = #{record.grade,jdbcType=INTEGER},
+      </if>
+      <if test="record.classes != null" >
+        classes = #{record.classes,jdbcType=VARCHAR},
+      </if>
+      <if test="record.startschoolAt != null" >
+        startschool_at = #{record.startschoolAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gender != null" >
+        gender = #{record.gender,jdbcType=TINYINT},
+      </if>
+      <if test="record.idCard != null" >
+        id_card = #{record.idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idcardFront != null" >
+        idcard_front = #{record.idcardFront,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idcardReverse != null" >
+        idcard_reverse = #{record.idcardReverse,jdbcType=VARCHAR},
+      </if>
+      <if test="record.balance != null" >
+        balance = #{record.balance,jdbcType=DECIMAL},
+      </if>
+      <if test="record.quotaAll != null" >
+        quota_all = #{record.quotaAll,jdbcType=DECIMAL},
+      </if>
+      <if test="record.quotaLeft != null" >
+        quota_left = #{record.quotaLeft,jdbcType=DECIMAL},
+      </if>
+      <if test="record.schoolLocationId != null" >
+        school_location_id = #{record.schoolLocationId,jdbcType=INTEGER},
+      </if>
+      <if test="record.schoolLocation != null" >
+        school_location = #{record.schoolLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.origin != null" >
+        origin = #{record.origin,jdbcType=VARCHAR},
+      </if>
+      <if test="record.location != null" >
+        location = #{record.location,jdbcType=VARCHAR},
+      </if>
+      <if test="record.homesite != null" >
+        homesite = #{record.homesite,jdbcType=VARCHAR},
+      </if>
+      <if test="record.authStatus != null" >
+        auth_status = #{record.authStatus,jdbcType=TINYINT},
+      </if>
+      <if test="record.present != null" >
+        present = #{record.present,jdbcType=DECIMAL},
+      </if>
+      <if test="record.wishPlastic != null" >
+        wish_plastic = #{record.wishPlastic,jdbcType=TINYINT},
+      </if>
+      <if test="record.schoolRemark != null" >
+        school_remark = #{record.schoolRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdAt != null" >
+        created_at = #{record.createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedAt != null" >
+        updated_at = #{record.updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.studentId != null" >
+        student_id = #{record.studentId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.schoolLevel != null" >
+        school_level = #{record.schoolLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.scholasticYears != null" >
+        scholastic_years = #{record.scholasticYears,jdbcType=INTEGER},
+      </if>
+      <if test="record.company != null" >
+        company = #{record.company,jdbcType=VARCHAR},
+      </if>
+      <if test="record.salary != null" >
+        salary = #{record.salary,jdbcType=VARCHAR},
+      </if>
+      <if test="record.faculty != null" >
+        faculty = #{record.faculty,jdbcType=VARCHAR},
+      </if>
+      <if test="record.speciality != null" >
+        speciality = #{record.speciality,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userType != null" >
+        user_type = #{record.userType,jdbcType=BIGINT},
+      </if>
+      <if test="record.socialInsuranceId != null" >
+        social_insurance_id = #{record.socialInsuranceId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.workRemark != null" >
+        work_remark = #{record.workRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.workYears != null" >
+        work_years = #{record.workYears,jdbcType=VARCHAR},
+      </if>
+      <if test="record.position != null" >
+        position = #{record.position,jdbcType=VARCHAR},
+      </if>
+      <if test="record.department != null" >
+        department = #{record.department,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update users_quota
+    set uid = #{record.uid,jdbcType=BIGINT},
+      realname = #{record.realname,jdbcType=VARCHAR},
+      school = #{record.school,jdbcType=VARCHAR},
+      contact = #{record.contact,jdbcType=VARCHAR},
+      grade = #{record.grade,jdbcType=INTEGER},
+      classes = #{record.classes,jdbcType=VARCHAR},
+      startschool_at = #{record.startschoolAt,jdbcType=TIMESTAMP},
+      gender = #{record.gender,jdbcType=TINYINT},
+      id_card = #{record.idCard,jdbcType=VARCHAR},
+      idcard_front = #{record.idcardFront,jdbcType=VARCHAR},
+      idcard_reverse = #{record.idcardReverse,jdbcType=VARCHAR},
+      balance = #{record.balance,jdbcType=DECIMAL},
+      quota_all = #{record.quotaAll,jdbcType=DECIMAL},
+      quota_left = #{record.quotaLeft,jdbcType=DECIMAL},
+      school_location_id = #{record.schoolLocationId,jdbcType=INTEGER},
+      school_location = #{record.schoolLocation,jdbcType=VARCHAR},
+      origin = #{record.origin,jdbcType=VARCHAR},
+      location = #{record.location,jdbcType=VARCHAR},
+      homesite = #{record.homesite,jdbcType=VARCHAR},
+      auth_status = #{record.authStatus,jdbcType=TINYINT},
+      present = #{record.present,jdbcType=DECIMAL},
+      wish_plastic = #{record.wishPlastic,jdbcType=TINYINT},
+      school_remark = #{record.schoolRemark,jdbcType=VARCHAR},
+      created_at = #{record.createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{record.updatedAt,jdbcType=TIMESTAMP},
+      student_id = #{record.studentId,jdbcType=VARCHAR},
+      school_level = #{record.schoolLevel,jdbcType=VARCHAR},
+      scholastic_years = #{record.scholasticYears,jdbcType=INTEGER},
+      company = #{record.company,jdbcType=VARCHAR},
+      salary = #{record.salary,jdbcType=VARCHAR},
+      faculty = #{record.faculty,jdbcType=VARCHAR},
+      speciality = #{record.speciality,jdbcType=VARCHAR},
+      user_type = #{record.userType,jdbcType=BIGINT},
+      social_insurance_id = #{record.socialInsuranceId,jdbcType=VARCHAR},
+      work_remark = #{record.workRemark,jdbcType=VARCHAR},
+      work_years = #{record.workYears,jdbcType=VARCHAR},
+      position = #{record.position,jdbcType=VARCHAR},
+      department = #{record.department,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+
+
+  <select id="queryCertifyQuota" resultType = "map">
+    select
+
+    quota.uid , u.nick , quota.realname , u.mobile , quota.contact , u.origin,
+    quota.id_card , u.origin ,quota.school_location as location , quota.idcard_reverse , quota.idcard_front
+
+    from users_quota quota, users u
+
+    where u.uid = quota.uid
+
+    and quota.uid = #{uid}
+  </select>
+</mapper>

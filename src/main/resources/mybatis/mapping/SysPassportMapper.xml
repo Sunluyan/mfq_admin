@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mfq.admin.web.dao.SysPassportMapper" >
+  <resultMap id="BaseResultMap" type="com.mfq.admin.web.bean.SysPassport" >
+    <id column="uid" property="uid" jdbcType="BIGINT" />
+    <result column="ticket" property="ticket" jdbcType="VARCHAR" />
+    <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    <result column="expired_at" property="expiredAt" jdbcType="TIMESTAMP" />
+    <result column="actived_at" property="activedAt" jdbcType="TIMESTAMP" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    uid, ticket, created_at, expired_at, actived_at, password
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.mfq.admin.web.bean.example.SysPassportExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_passport
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_passport
+    where uid = #{uid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from sys_passport
+    where uid = #{uid,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.mfq.admin.web.bean.example.SysPassportExample" >
+    delete from sys_passport
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.mfq.admin.web.bean.SysPassport" >
+    insert into sys_passport (uid, ticket, created_at, 
+      expired_at, actived_at, password
+      )
+    values (#{uid,jdbcType=BIGINT}, #{ticket,jdbcType=VARCHAR}, #{createdAt,jdbcType=TIMESTAMP}, 
+      #{expiredAt,jdbcType=TIMESTAMP}, #{activedAt,jdbcType=TIMESTAMP}, #{password,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.mfq.admin.web.bean.SysPassport" >
+    insert into sys_passport
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="ticket != null" >
+        ticket,
+      </if>
+      <if test="createdAt != null" >
+        created_at,
+      </if>
+      <if test="expiredAt != null" >
+        expired_at,
+      </if>
+      <if test="activedAt != null" >
+        actived_at,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="uid != null" >
+        #{uid,jdbcType=BIGINT},
+      </if>
+      <if test="ticket != null" >
+        #{ticket,jdbcType=VARCHAR},
+      </if>
+      <if test="createdAt != null" >
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="expiredAt != null" >
+        #{expiredAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activedAt != null" >
+        #{activedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.mfq.admin.web.bean.example.SysPassportExample" resultType="java.lang.Integer" >
+    select count(*) from sys_passport
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update sys_passport
+    <set >
+      <if test="record.uid != null" >
+        uid = #{record.uid,jdbcType=BIGINT},
+      </if>
+      <if test="record.ticket != null" >
+        ticket = #{record.ticket,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdAt != null" >
+        created_at = #{record.createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.expiredAt != null" >
+        expired_at = #{record.expiredAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.activedAt != null" >
+        actived_at = #{record.activedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.password != null" >
+        password = #{record.password,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update sys_passport
+    set uid = #{record.uid,jdbcType=BIGINT},
+      ticket = #{record.ticket,jdbcType=VARCHAR},
+      created_at = #{record.createdAt,jdbcType=TIMESTAMP},
+      expired_at = #{record.expiredAt,jdbcType=TIMESTAMP},
+      actived_at = #{record.activedAt,jdbcType=TIMESTAMP},
+      password = #{record.password,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mfq.admin.web.bean.SysPassport" >
+    update sys_passport
+    <set >
+      <if test="ticket != null" >
+        ticket = #{ticket,jdbcType=VARCHAR},
+      </if>
+      <if test="createdAt != null" >
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="expiredAt != null" >
+        expired_at = #{expiredAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activedAt != null" >
+        actived_at = #{activedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where uid = #{uid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mfq.admin.web.bean.SysPassport" >
+    update sys_passport
+    set ticket = #{ticket,jdbcType=VARCHAR},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      expired_at = #{expiredAt,jdbcType=TIMESTAMP},
+      actived_at = #{activedAt,jdbcType=TIMESTAMP},
+      password = #{password,jdbcType=VARCHAR}
+    where uid = #{uid,jdbcType=BIGINT}
+  </update>
+
+<!--
+    <id column="uid" property="uid" jdbcType="BIGINT" />
+    <result column="ticket" property="ticket" jdbcType="VARCHAR" />
+    <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    <result column="expired_at" property="expiredAt" jdbcType="TIMESTAMP" />
+    <result column="actived_at" property="activedAt" jdbcType="TIMESTAMP" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+-->
+
+  <!--<select id="queryValidPassportByTicket" resultMap="BaseResultMap" parameterType="map">-->
+    <!--select-->
+      <!--p.uid as uid , p.ticket as ticket  , p.created_at as created_at,-->
+    <!--p.expired_at as expired_at , p.password as password-->
+
+    <!--from sys_passport p,sys_user u-->
+    <!--where p.uid=#{uid} and-->
+    <!--p.ticket=#{ticket} and p.expired_at &gt; now() and p.uid=u.id and-->
+    <!--u.status &lt;&gt; #{status}-->
+  <!--</select>-->
+
+  <select id="queryValidPassportByTicket" resultMap="BaseResultMap" parameterType="map">
+    select
+      p.uid as uid , p.ticket as ticket  , p.created_at as created_at,
+      p.expired_at as expired_at , p.password as password
+    from sys_passport p,sys_user u
+    where p.uid=#{uid} and
+    p.ticket=#{ticket} and p.expired_at &gt; now() and p.uid=u.id and
+    u.status &lt;&gt; #{status}
+  </select>
+
+
+
+  <update id="updateDefaultTicket">
+    update sys_passport set
+    ticket=#{ticket},created_at=#{createdAt},expired_at=#{expiredAt} where
+    uid=#{uid}
+  </update>
+
+</mapper>

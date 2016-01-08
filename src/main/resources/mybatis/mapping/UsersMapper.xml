@@ -1,0 +1,630 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mfq.admin.web.dao.UsersMapper" >
+  <resultMap id="BaseResultMap" type="com.mfq.admin.web.bean.User" >
+    <id column="uid" property="uid" jdbcType="BIGINT" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="nick" property="nick" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="gender" property="gender" jdbcType="TINYINT" />
+    <result column="icon" property="icon" jdbcType="VARCHAR" />
+    <result column="img" property="img" jdbcType="VARCHAR" />
+    <result column="pic" property="pic" jdbcType="VARCHAR" />
+    <result column="location_id" property="locationId" jdbcType="INTEGER" />
+    <result column="location" property="location" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="INTEGER" />
+    <result column="intro" property="intro" jdbcType="VARCHAR" />
+    <result column="interest" property="interest" jdbcType="VARCHAR" />
+    <result column="origin" property="origin" jdbcType="VARCHAR" />
+    <result column="homesite" property="homesite" jdbcType="VARCHAR" />
+    <result column="career" property="career" jdbcType="VARCHAR" />
+    <result column="realname" property="realname" jdbcType="VARCHAR" />
+    <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+    <result column="sign" property="sign" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    uid, status, nick, email, mobile, gender, icon, img, pic, location_id, location, 
+    birthday, intro, interest, origin, homesite, career, realname, created_at, updated_at, 
+    sign
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.mfq.admin.web.bean.example.UsersExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from users
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from users
+    where uid = #{uid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from users
+    where uid = #{uid,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.mfq.admin.web.bean.example.UsersExample" >
+    delete from users
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.mfq.admin.web.bean.User" >
+    insert into users (uid, status, nick, 
+      email, mobile, gender, 
+      icon, img, pic, location_id, 
+      location, birthday, intro, 
+      interest, origin, homesite, 
+      career, realname, created_at, 
+      updated_at, sign)
+    values (#{uid,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}, #{nick,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{gender,jdbcType=TINYINT}, 
+      #{icon,jdbcType=VARCHAR}, #{img,jdbcType=VARCHAR}, #{pic,jdbcType=VARCHAR}, #{locationId,jdbcType=INTEGER}, 
+      #{location,jdbcType=VARCHAR}, #{birthday,jdbcType=INTEGER}, #{intro,jdbcType=VARCHAR}, 
+      #{interest,jdbcType=VARCHAR}, #{origin,jdbcType=VARCHAR}, #{homesite,jdbcType=VARCHAR}, 
+      #{career,jdbcType=VARCHAR}, #{realname,jdbcType=VARCHAR}, #{createdAt,jdbcType=TIMESTAMP}, 
+      #{updatedAt,jdbcType=TIMESTAMP}, #{sign,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mfq.admin.web.bean.User" >
+    insert into users
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="nick != null" >
+        nick,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="gender != null" >
+        gender,
+      </if>
+      <if test="icon != null" >
+        icon,
+      </if>
+      <if test="img != null" >
+        img,
+      </if>
+      <if test="pic != null" >
+        pic,
+      </if>
+      <if test="locationId != null" >
+        location_id,
+      </if>
+      <if test="location != null" >
+        location,
+      </if>
+      <if test="birthday != null" >
+        birthday,
+      </if>
+      <if test="intro != null" >
+        intro,
+      </if>
+      <if test="interest != null" >
+        interest,
+      </if>
+      <if test="origin != null" >
+        origin,
+      </if>
+      <if test="homesite != null" >
+        homesite,
+      </if>
+      <if test="career != null" >
+        career,
+      </if>
+      <if test="realname != null" >
+        realname,
+      </if>
+      <if test="createdAt != null" >
+        created_at,
+      </if>
+      <if test="updatedAt != null" >
+        updated_at,
+      </if>
+      <if test="sign != null" >
+        sign,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="uid != null" >
+        #{uid,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="nick != null" >
+        #{nick,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        #{gender,jdbcType=TINYINT},
+      </if>
+      <if test="icon != null" >
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="img != null" >
+        #{img,jdbcType=VARCHAR},
+      </if>
+      <if test="pic != null" >
+        #{pic,jdbcType=VARCHAR},
+      </if>
+      <if test="locationId != null" >
+        #{locationId,jdbcType=INTEGER},
+      </if>
+      <if test="location != null" >
+        #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        #{birthday,jdbcType=INTEGER},
+      </if>
+      <if test="intro != null" >
+        #{intro,jdbcType=VARCHAR},
+      </if>
+      <if test="interest != null" >
+        #{interest,jdbcType=VARCHAR},
+      </if>
+      <if test="origin != null" >
+        #{origin,jdbcType=VARCHAR},
+      </if>
+      <if test="homesite != null" >
+        #{homesite,jdbcType=VARCHAR},
+      </if>
+      <if test="career != null" >
+        #{career,jdbcType=VARCHAR},
+      </if>
+      <if test="realname != null" >
+        #{realname,jdbcType=VARCHAR},
+      </if>
+      <if test="createdAt != null" >
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null" >
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sign != null" >
+        #{sign,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.mfq.admin.web.bean.example.UsersExample" resultType="java.lang.Integer" >
+    select count(*) from users
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update users
+    <set >
+      <if test="record.uid != null" >
+        uid = #{record.uid,jdbcType=BIGINT},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=TINYINT},
+      </if>
+      <if test="record.nick != null" >
+        nick = #{record.nick,jdbcType=VARCHAR},
+      </if>
+      <if test="record.email != null" >
+        email = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mobile != null" >
+        mobile = #{record.mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gender != null" >
+        gender = #{record.gender,jdbcType=TINYINT},
+      </if>
+      <if test="record.icon != null" >
+        icon = #{record.icon,jdbcType=VARCHAR},
+      </if>
+      <if test="record.img != null" >
+        img = #{record.img,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pic != null" >
+        pic = #{record.pic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.locationId != null" >
+        location_id = #{record.locationId,jdbcType=INTEGER},
+      </if>
+      <if test="record.location != null" >
+        location = #{record.location,jdbcType=VARCHAR},
+      </if>
+      <if test="record.birthday != null" >
+        birthday = #{record.birthday,jdbcType=INTEGER},
+      </if>
+      <if test="record.intro != null" >
+        intro = #{record.intro,jdbcType=VARCHAR},
+      </if>
+      <if test="record.interest != null" >
+        interest = #{record.interest,jdbcType=VARCHAR},
+      </if>
+      <if test="record.origin != null" >
+        origin = #{record.origin,jdbcType=VARCHAR},
+      </if>
+      <if test="record.homesite != null" >
+        homesite = #{record.homesite,jdbcType=VARCHAR},
+      </if>
+      <if test="record.career != null" >
+        career = #{record.career,jdbcType=VARCHAR},
+      </if>
+      <if test="record.realname != null" >
+        realname = #{record.realname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdAt != null" >
+        created_at = #{record.createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedAt != null" >
+        updated_at = #{record.updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.sign != null" >
+        sign = #{record.sign,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update users
+    set uid = #{record.uid,jdbcType=BIGINT},
+      status = #{record.status,jdbcType=TINYINT},
+      nick = #{record.nick,jdbcType=VARCHAR},
+      email = #{record.email,jdbcType=VARCHAR},
+      mobile = #{record.mobile,jdbcType=VARCHAR},
+      gender = #{record.gender,jdbcType=TINYINT},
+      icon = #{record.icon,jdbcType=VARCHAR},
+      img = #{record.img,jdbcType=VARCHAR},
+      pic = #{record.pic,jdbcType=VARCHAR},
+      location_id = #{record.locationId,jdbcType=INTEGER},
+      location = #{record.location,jdbcType=VARCHAR},
+      birthday = #{record.birthday,jdbcType=INTEGER},
+      intro = #{record.intro,jdbcType=VARCHAR},
+      interest = #{record.interest,jdbcType=VARCHAR},
+      origin = #{record.origin,jdbcType=VARCHAR},
+      homesite = #{record.homesite,jdbcType=VARCHAR},
+      career = #{record.career,jdbcType=VARCHAR},
+      realname = #{record.realname,jdbcType=VARCHAR},
+      created_at = #{record.createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{record.updatedAt,jdbcType=TIMESTAMP},
+      sign = #{record.sign,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mfq.admin.web.bean.User" >
+    update users
+    <set >
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="nick != null" >
+        nick = #{nick,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        gender = #{gender,jdbcType=TINYINT},
+      </if>
+      <if test="icon != null" >
+        icon = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="img != null" >
+        img = #{img,jdbcType=VARCHAR},
+      </if>
+      <if test="pic != null" >
+        pic = #{pic,jdbcType=VARCHAR},
+      </if>
+      <if test="locationId != null" >
+        location_id = #{locationId,jdbcType=INTEGER},
+      </if>
+      <if test="location != null" >
+        location = #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        birthday = #{birthday,jdbcType=INTEGER},
+      </if>
+      <if test="intro != null" >
+        intro = #{intro,jdbcType=VARCHAR},
+      </if>
+      <if test="interest != null" >
+        interest = #{interest,jdbcType=VARCHAR},
+      </if>
+      <if test="origin != null" >
+        origin = #{origin,jdbcType=VARCHAR},
+      </if>
+      <if test="homesite != null" >
+        homesite = #{homesite,jdbcType=VARCHAR},
+      </if>
+      <if test="career != null" >
+        career = #{career,jdbcType=VARCHAR},
+      </if>
+      <if test="realname != null" >
+        realname = #{realname,jdbcType=VARCHAR},
+      </if>
+      <if test="createdAt != null" >
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null" >
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sign != null" >
+        sign = #{sign,jdbcType=INTEGER},
+      </if>
+    </set>
+    where uid = #{uid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mfq.admin.web.bean.User" >
+    update users
+    set status = #{status,jdbcType=TINYINT},
+      nick = #{nick,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=TINYINT},
+      icon = #{icon,jdbcType=VARCHAR},
+      img = #{img,jdbcType=VARCHAR},
+      pic = #{pic,jdbcType=VARCHAR},
+      location_id = #{locationId,jdbcType=INTEGER},
+      location = #{location,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=INTEGER},
+      intro = #{intro,jdbcType=VARCHAR},
+      interest = #{interest,jdbcType=VARCHAR},
+      origin = #{origin,jdbcType=VARCHAR},
+      homesite = #{homesite,jdbcType=VARCHAR},
+      career = #{career,jdbcType=VARCHAR},
+      realname = #{realname,jdbcType=VARCHAR},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      sign = #{sign,jdbcType=INTEGER}
+    where uid = #{uid,jdbcType=BIGINT}
+  </update>
+
+  <select id="queryUserByPage" resultType="com.mfq.admin.web.bean.User">
+    select
+    <include refid="Base_Column_List" />
+    from users
+    where 1=1
+    LIMIT #{start},#{size}
+  </select>
+
+
+  <!--
+		Integer start
+	  	Integer pagesize
+    	String type = request.getParameter("type");
+    	String uid = request.getParameter("uid");
+    	String phone = request.getParameter("phone");
+    	String cardid = request.getParameter("cardid");
+    	String applytimefrom = request.getParameter("applytimefrom");
+    	String applytimeto = request.getParameter("applytimeto");
+    	String checktimefrom = request.getParameter("checktimefrom");
+    	String checktimeto = request.getParameter("checktimeto")
+	 -->
+  <select id="queryCertify" resultType="map">
+    select
+    <if test = "count != null and count != ''">
+      count(quota.uid) as count
+    </if>
+
+    <if test = "count == null or count == ''">
+      quota.uid  ,  quota.created_at as createtime  ,  quota.updated_at as updatetime  ,
+      u.mobile  ,  quota.realname  ,  quota.id_card as cardid , quota.auth_status  ,quota.school_remark
+    </if>
+
+
+    from users_quota quota,users u
+
+    where quota.uid = u.uid
+
+
+    <if test = 'type != null and type == "unsee" '>
+      and quota.auth_status = 1
+    </if>
+
+    <if test = 'type != null and type == "pass" '>
+      and quota.auth_status = 2
+    </if>
+
+    <if test = 'type != null and type == "out" '>
+      and quota.auth_status = -2
+    </if>
+
+    <if test = "uid != null and uid != '' ">
+      and quota.uid like CONCAT('%',#{uid},'%')
+    </if>
+
+    <if test = "phone != null and phone != '' ">
+      and u.mobile like CONCAT('%',#{phone},'%')
+    </if>
+
+    <if test = "cardid != null and cardid != '' ">
+      and quota.id_card like CONCAT('%',#{cardid},'%')
+    </if>
+
+    <if test = "cardid != null and cardid != '' ">
+      and quota.id_card like CONCAT('%',#{cardid},'%')
+    </if>
+
+    <if test = "applytimefrom != null and applytimefrom != '' and applytimeto != null and applytimeto != ''">
+      <![CDATA[
+				and quota.created_at > #{applytimefrom} and quota.created_at < #{applytimeto}
+			]]>
+    </if>
+
+    <if test = "checktimefrom != null and checktimefrom != '' and checktimeto != null and checktimeto != ''">
+      <![CDATA[
+				and quota.updated_at > #{checktimefrom} and quota.updated_at < #{checktimeto}
+			]]>
+    </if>
+
+    <if test = "count == null or count == ''">
+      limit #{start},#{pagesize}
+    </if>
+
+  </select>
+
+
+  <select id="queryMobilesByPage" resultType="map" parameterType="map">
+
+    select
+    <if test = "count!=null and count != ''">
+      count(*) as total
+    </if>
+
+    <if test = "count==null or count == ''">
+      u.uid,u.mobile,u.nick,quota.realname,u.gender,quota.auth_status,extend.invite_code,u.created_at as createdAt
+    </if>
+
+
+    from
+    users u
+    left join users_quota quota on quota.uid = u.uid
+    left join users_extend extend on extend.uid = quota.uid
+
+    where 1=1
+    <if test="phone != null and phone.length() > 1">
+      and mobile like CONCAT('%',#{phone},'%')
+    </if>
+
+    <if test="username != null and username != ''">
+      and u.nick like CONCAT('%',#{username},'%')
+    </if>
+
+    <if test="realname != null and realname != ''">
+      and quota.realname like CONCAT('%',#{realname},'%')
+    </if>
+
+    <if test="status != null and status != '' ">
+      and quota.auth_status = #{status}
+    </if>
+
+    <if test="inviteid != null and inviteid != ''">
+      and extend.invite_code = #{inviteid}
+    </if>
+
+    <!-- alipay TODO -->
+
+    <if test="fromtime != null and fromtime != '' and totime != null and totime != ''">
+      <![CDATA[
+			and u.created_at > #{fromtime} and u.created_at < #{totime}
+			]]>
+    </if>
+
+
+    <if test = "count==null or count == ''">
+      LIMIT #{start},#{size}
+    </if>
+
+  </select>
+
+
+  <select id="queryUserDetail" resultType="map">
+    select
+    quota.uid , u.nick , u.mobile , quota.auth_status , quota.realname , u.gender,
+    quota.contact , quota.id_card , quota.origin , quota.school_location , quota.idcard_reverse , quota.idcard_front
+
+    from users u ,users_quota quota
+
+    where quota.uid = u.uid
+    and quota.uid = #{uid}
+
+  </select>
+
+
+  <select id="queryInteviewUserDetail" resultType="map">
+    select
+
+    quota.uid , quota.realname , u.gender , u.birthday , quota.contact , u.mobile ,  quota.id_card , quota.origin , u.location , quota.user_type ,
+
+    quota.school , quota.school_location , quota.faculty , quota.speciality, quota.student_id , quota.school_level , quota.school_location_id, quota.startschool_at
+
+    from users u,users_quota quota
+
+    where quota.uid = u.uid
+
+    and quota.uid = #{uid}
+
+  </select>
+</mapper>

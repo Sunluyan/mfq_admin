@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mfq.admin.web.dao.ProductDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.mfq.admin.web.bean.ProductDetail" >
+    <result column="pid" property="pid" jdbcType="BIGINT" />
+    <result column="consume_step" property="consumeStep" jdbcType="VARCHAR" />
+    <result column="reserve" property="reserve" jdbcType="VARCHAR" />
+    <result column="special_note" property="specialNote" jdbcType="VARCHAR" />
+    <result column="cure_means" property="cureMeans" jdbcType="VARCHAR" />
+    <result column="cure_dur" property="cureDur" jdbcType="VARCHAR" />
+    <result column="cure_hospital" property="cureHospital" jdbcType="VARCHAR" />
+    <result column="recover_dur" property="recoverDur" jdbcType="VARCHAR" />
+    <result column="cure_num" property="cureNum" jdbcType="VARCHAR" />
+    <result column="anes_method" property="anesMethod" jdbcType="VARCHAR" />
+    <result column="doctor_level" property="doctorLevel" jdbcType="VARCHAR" />
+    <result column="cure_cycle" property="cureCycle" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.mfq.admin.web.bean.ProductDetail" extends="BaseResultMap" >
+    <result column="body" property="body" jdbcType="LONGVARCHAR" />
+    <result column="merit" property="merit" jdbcType="LONGVARCHAR" />
+    <result column="cure_method" property="cureMethod" jdbcType="LONGVARCHAR" />
+    <result column="taboo_crowd" property="tabooCrowd" jdbcType="LONGVARCHAR" />
+    <result column="warning" property="warning" jdbcType="LONGVARCHAR" />
+    <result column="crowd" property="crowd" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    pid, consume_step, reserve, special_note, cure_means, cure_dur, cure_hospital, recover_dur, 
+    cure_num, anes_method, doctor_level, cure_cycle
+  </sql>
+  <sql id="Blob_Column_List" >
+    body, merit, cure_method, taboo_crowd, warning, crowd
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.mfq.admin.web.bean.example.ProductDetailExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from product_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.mfq.admin.web.bean.example.ProductDetailExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from product_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.mfq.admin.web.bean.example.ProductDetailExample" >
+    delete from product_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.mfq.admin.web.bean.ProductDetail" >
+    insert into product_detail (pid, consume_step, reserve, 
+      special_note, cure_means, cure_dur, 
+      cure_hospital, recover_dur, cure_num, 
+      anes_method, doctor_level, cure_cycle, 
+      body, merit, cure_method, 
+      taboo_crowd, warning, crowd
+      )
+    values (#{pid,jdbcType=BIGINT}, #{consumeStep,jdbcType=VARCHAR}, #{reserve,jdbcType=VARCHAR}, 
+      #{specialNote,jdbcType=VARCHAR}, #{cureMeans,jdbcType=VARCHAR}, #{cureDur,jdbcType=VARCHAR}, 
+      #{cureHospital,jdbcType=VARCHAR}, #{recoverDur,jdbcType=VARCHAR}, #{cureNum,jdbcType=VARCHAR}, 
+      #{anesMethod,jdbcType=VARCHAR}, #{doctorLevel,jdbcType=VARCHAR}, #{cureCycle,jdbcType=VARCHAR}, 
+      #{body,jdbcType=LONGVARCHAR}, #{merit,jdbcType=LONGVARCHAR}, #{cureMethod,jdbcType=LONGVARCHAR}, 
+      #{tabooCrowd,jdbcType=LONGVARCHAR}, #{warning,jdbcType=LONGVARCHAR}, #{crowd,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.mfq.admin.web.bean.ProductDetail" >
+    insert into product_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="consumeStep != null" >
+        consume_step,
+      </if>
+      <if test="reserve != null" >
+        reserve,
+      </if>
+      <if test="specialNote != null" >
+        special_note,
+      </if>
+      <if test="cureMeans != null" >
+        cure_means,
+      </if>
+      <if test="cureDur != null" >
+        cure_dur,
+      </if>
+      <if test="cureHospital != null" >
+        cure_hospital,
+      </if>
+      <if test="recoverDur != null" >
+        recover_dur,
+      </if>
+      <if test="cureNum != null" >
+        cure_num,
+      </if>
+      <if test="anesMethod != null" >
+        anes_method,
+      </if>
+      <if test="doctorLevel != null" >
+        doctor_level,
+      </if>
+      <if test="cureCycle != null" >
+        cure_cycle,
+      </if>
+      <if test="body != null" >
+        body,
+      </if>
+      <if test="merit != null" >
+        merit,
+      </if>
+      <if test="cureMethod != null" >
+        cure_method,
+      </if>
+      <if test="tabooCrowd != null" >
+        taboo_crowd,
+      </if>
+      <if test="warning != null" >
+        warning,
+      </if>
+      <if test="crowd != null" >
+        crowd,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid,jdbcType=BIGINT},
+      </if>
+      <if test="consumeStep != null" >
+        #{consumeStep,jdbcType=VARCHAR},
+      </if>
+      <if test="reserve != null" >
+        #{reserve,jdbcType=VARCHAR},
+      </if>
+      <if test="specialNote != null" >
+        #{specialNote,jdbcType=VARCHAR},
+      </if>
+      <if test="cureMeans != null" >
+        #{cureMeans,jdbcType=VARCHAR},
+      </if>
+      <if test="cureDur != null" >
+        #{cureDur,jdbcType=VARCHAR},
+      </if>
+      <if test="cureHospital != null" >
+        #{cureHospital,jdbcType=VARCHAR},
+      </if>
+      <if test="recoverDur != null" >
+        #{recoverDur,jdbcType=VARCHAR},
+      </if>
+      <if test="cureNum != null" >
+        #{cureNum,jdbcType=VARCHAR},
+      </if>
+      <if test="anesMethod != null" >
+        #{anesMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorLevel != null" >
+        #{doctorLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="cureCycle != null" >
+        #{cureCycle,jdbcType=VARCHAR},
+      </if>
+      <if test="body != null" >
+        #{body,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="merit != null" >
+        #{merit,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="cureMethod != null" >
+        #{cureMethod,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="tabooCrowd != null" >
+        #{tabooCrowd,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="warning != null" >
+        #{warning,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="crowd != null" >
+        #{crowd,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.mfq.admin.web.bean.example.ProductDetailExample" resultType="java.lang.Integer" >
+    select count(*) from product_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update product_detail
+    <set >
+      <if test="record.pid != null" >
+        pid = #{record.pid,jdbcType=BIGINT},
+      </if>
+      <if test="record.consumeStep != null" >
+        consume_step = #{record.consumeStep,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reserve != null" >
+        reserve = #{record.reserve,jdbcType=VARCHAR},
+      </if>
+      <if test="record.specialNote != null" >
+        special_note = #{record.specialNote,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cureMeans != null" >
+        cure_means = #{record.cureMeans,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cureDur != null" >
+        cure_dur = #{record.cureDur,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cureHospital != null" >
+        cure_hospital = #{record.cureHospital,jdbcType=VARCHAR},
+      </if>
+      <if test="record.recoverDur != null" >
+        recover_dur = #{record.recoverDur,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cureNum != null" >
+        cure_num = #{record.cureNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.anesMethod != null" >
+        anes_method = #{record.anesMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="record.doctorLevel != null" >
+        doctor_level = #{record.doctorLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cureCycle != null" >
+        cure_cycle = #{record.cureCycle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.body != null" >
+        body = #{record.body,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.merit != null" >
+        merit = #{record.merit,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.cureMethod != null" >
+        cure_method = #{record.cureMethod,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.tabooCrowd != null" >
+        taboo_crowd = #{record.tabooCrowd,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.warning != null" >
+        warning = #{record.warning,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.crowd != null" >
+        crowd = #{record.crowd,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update product_detail
+    set pid = #{record.pid,jdbcType=BIGINT},
+      consume_step = #{record.consumeStep,jdbcType=VARCHAR},
+      reserve = #{record.reserve,jdbcType=VARCHAR},
+      special_note = #{record.specialNote,jdbcType=VARCHAR},
+      cure_means = #{record.cureMeans,jdbcType=VARCHAR},
+      cure_dur = #{record.cureDur,jdbcType=VARCHAR},
+      cure_hospital = #{record.cureHospital,jdbcType=VARCHAR},
+      recover_dur = #{record.recoverDur,jdbcType=VARCHAR},
+      cure_num = #{record.cureNum,jdbcType=VARCHAR},
+      anes_method = #{record.anesMethod,jdbcType=VARCHAR},
+      doctor_level = #{record.doctorLevel,jdbcType=VARCHAR},
+      cure_cycle = #{record.cureCycle,jdbcType=VARCHAR},
+      body = #{record.body,jdbcType=LONGVARCHAR},
+      merit = #{record.merit,jdbcType=LONGVARCHAR},
+      cure_method = #{record.cureMethod,jdbcType=LONGVARCHAR},
+      taboo_crowd = #{record.tabooCrowd,jdbcType=LONGVARCHAR},
+      warning = #{record.warning,jdbcType=LONGVARCHAR},
+      crowd = #{record.crowd,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update product_detail
+    set pid = #{record.pid,jdbcType=BIGINT},
+      consume_step = #{record.consumeStep,jdbcType=VARCHAR},
+      reserve = #{record.reserve,jdbcType=VARCHAR},
+      special_note = #{record.specialNote,jdbcType=VARCHAR},
+      cure_means = #{record.cureMeans,jdbcType=VARCHAR},
+      cure_dur = #{record.cureDur,jdbcType=VARCHAR},
+      cure_hospital = #{record.cureHospital,jdbcType=VARCHAR},
+      recover_dur = #{record.recoverDur,jdbcType=VARCHAR},
+      cure_num = #{record.cureNum,jdbcType=VARCHAR},
+      anes_method = #{record.anesMethod,jdbcType=VARCHAR},
+      doctor_level = #{record.doctorLevel,jdbcType=VARCHAR},
+      cure_cycle = #{record.cureCycle,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

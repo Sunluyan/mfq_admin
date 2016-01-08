@@ -1,0 +1,549 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mfq.admin.web.dao.ProductMapper" >
+  <resultMap id="BaseResultMap" type="com.mfq.admin.web.bean.Product" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="tid" property="tid" jdbcType="INTEGER" />
+    <result column="hospital_id" property="hospitalId" jdbcType="BIGINT" />
+    <result column="city_id" property="cityId" jdbcType="INTEGER" />
+    <result column="flag" property="flag" jdbcType="INTEGER" />
+    <result column="img" property="img" jdbcType="VARCHAR" />
+    <result column="order_no" property="orderNo" jdbcType="INTEGER" />
+    <result column="hospital_pay" property="hospitalPay" jdbcType="DECIMAL" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="type2" property="type2" jdbcType="VARCHAR" />
+    <result column="is_fq" property="isFq" jdbcType="TINYINT" />
+    <result column="online_pay" property="onlinePay" jdbcType="DECIMAL" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="market_price" property="marketPrice" jdbcType="DECIMAL" />
+    <result column="p_price" property="pPrice" jdbcType="DECIMAL" />
+    <result column="p_num" property="pNum" jdbcType="INTEGER" />
+    <result column="date_start" property="dateStart" jdbcType="TIMESTAMP" />
+    <result column="date_end" property="dateEnd" jdbcType="TIMESTAMP" />
+    <result column="remain_num" property="remainNum" jdbcType="BIGINT" />
+    <result column="total_num" property="totalNum" jdbcType="BIGINT" />
+    <result column="view_num" property="viewNum" jdbcType="BIGINT" />
+    <result column="sale_num" property="saleNum" jdbcType="BIGINT" />
+    <result column="online" property="online" jdbcType="TINYINT" />
+    <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, name, tid, hospital_id, city_id, flag, img, order_no, hospital_pay, type, type2, 
+    is_fq, online_pay, price, market_price, p_price, p_num, date_start, date_end, remain_num, 
+    total_num, view_num, sale_num, online, created_at, updated_at
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.mfq.admin.web.bean.example.ProductExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from product
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from product
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from product
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.mfq.admin.web.bean.example.ProductExample" >
+    delete from product
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.mfq.admin.web.bean.Product" >
+    insert into product (id, name, tid, 
+      hospital_id, city_id, flag, 
+      img, order_no, hospital_pay, 
+      type, type2, is_fq, 
+      online_pay, price, market_price, 
+      p_price, p_num, date_start, 
+      date_end, remain_num, total_num, 
+      view_num, sale_num, online, 
+      created_at, updated_at)
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{tid,jdbcType=INTEGER}, 
+      #{hospitalId,jdbcType=BIGINT}, #{cityId,jdbcType=INTEGER}, #{flag,jdbcType=INTEGER}, 
+      #{img,jdbcType=VARCHAR}, #{orderNo,jdbcType=INTEGER}, #{hospitalPay,jdbcType=DECIMAL}, 
+      #{type,jdbcType=INTEGER}, #{type2,jdbcType=VARCHAR}, #{isFq,jdbcType=TINYINT}, 
+      #{onlinePay,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL}, #{marketPrice,jdbcType=DECIMAL}, 
+      #{pPrice,jdbcType=DECIMAL}, #{pNum,jdbcType=INTEGER}, #{dateStart,jdbcType=TIMESTAMP}, 
+      #{dateEnd,jdbcType=TIMESTAMP}, #{remainNum,jdbcType=BIGINT}, #{totalNum,jdbcType=BIGINT}, 
+      #{viewNum,jdbcType=BIGINT}, #{saleNum,jdbcType=BIGINT}, #{online,jdbcType=TINYINT}, 
+      #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mfq.admin.web.bean.Product" >
+    insert into product
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="tid != null" >
+        tid,
+      </if>
+      <if test="hospitalId != null" >
+        hospital_id,
+      </if>
+      <if test="cityId != null" >
+        city_id,
+      </if>
+      <if test="flag != null" >
+        flag,
+      </if>
+      <if test="img != null" >
+        img,
+      </if>
+      <if test="orderNo != null" >
+        order_no,
+      </if>
+      <if test="hospitalPay != null" >
+        hospital_pay,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="type2 != null" >
+        type2,
+      </if>
+      <if test="isFq != null" >
+        is_fq,
+      </if>
+      <if test="onlinePay != null" >
+        online_pay,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="marketPrice != null" >
+        market_price,
+      </if>
+      <if test="pPrice != null" >
+        p_price,
+      </if>
+      <if test="pNum != null" >
+        p_num,
+      </if>
+      <if test="dateStart != null" >
+        date_start,
+      </if>
+      <if test="dateEnd != null" >
+        date_end,
+      </if>
+      <if test="remainNum != null" >
+        remain_num,
+      </if>
+      <if test="totalNum != null" >
+        total_num,
+      </if>
+      <if test="viewNum != null" >
+        view_num,
+      </if>
+      <if test="saleNum != null" >
+        sale_num,
+      </if>
+      <if test="online != null" >
+        online,
+      </if>
+      <if test="createdAt != null" >
+        created_at,
+      </if>
+      <if test="updatedAt != null" >
+        updated_at,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="tid != null" >
+        #{tid,jdbcType=INTEGER},
+      </if>
+      <if test="hospitalId != null" >
+        #{hospitalId,jdbcType=BIGINT},
+      </if>
+      <if test="cityId != null" >
+        #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="flag != null" >
+        #{flag,jdbcType=INTEGER},
+      </if>
+      <if test="img != null" >
+        #{img,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null" >
+        #{orderNo,jdbcType=INTEGER},
+      </if>
+      <if test="hospitalPay != null" >
+        #{hospitalPay,jdbcType=DECIMAL},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="type2 != null" >
+        #{type2,jdbcType=VARCHAR},
+      </if>
+      <if test="isFq != null" >
+        #{isFq,jdbcType=TINYINT},
+      </if>
+      <if test="onlinePay != null" >
+        #{onlinePay,jdbcType=DECIMAL},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="marketPrice != null" >
+        #{marketPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="pPrice != null" >
+        #{pPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="pNum != null" >
+        #{pNum,jdbcType=INTEGER},
+      </if>
+      <if test="dateStart != null" >
+        #{dateStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dateEnd != null" >
+        #{dateEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remainNum != null" >
+        #{remainNum,jdbcType=BIGINT},
+      </if>
+      <if test="totalNum != null" >
+        #{totalNum,jdbcType=BIGINT},
+      </if>
+      <if test="viewNum != null" >
+        #{viewNum,jdbcType=BIGINT},
+      </if>
+      <if test="saleNum != null" >
+        #{saleNum,jdbcType=BIGINT},
+      </if>
+      <if test="online != null" >
+        #{online,jdbcType=TINYINT},
+      </if>
+      <if test="createdAt != null" >
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null" >
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.mfq.admin.web.bean.example.ProductExample" resultType="java.lang.Integer" >
+    select count(*) from product
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update product
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tid != null" >
+        tid = #{record.tid,jdbcType=INTEGER},
+      </if>
+      <if test="record.hospitalId != null" >
+        hospital_id = #{record.hospitalId,jdbcType=BIGINT},
+      </if>
+      <if test="record.cityId != null" >
+        city_id = #{record.cityId,jdbcType=INTEGER},
+      </if>
+      <if test="record.flag != null" >
+        flag = #{record.flag,jdbcType=INTEGER},
+      </if>
+      <if test="record.img != null" >
+        img = #{record.img,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderNo != null" >
+        order_no = #{record.orderNo,jdbcType=INTEGER},
+      </if>
+      <if test="record.hospitalPay != null" >
+        hospital_pay = #{record.hospitalPay,jdbcType=DECIMAL},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
+      <if test="record.type2 != null" >
+        type2 = #{record.type2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isFq != null" >
+        is_fq = #{record.isFq,jdbcType=TINYINT},
+      </if>
+      <if test="record.onlinePay != null" >
+        online_pay = #{record.onlinePay,jdbcType=DECIMAL},
+      </if>
+      <if test="record.price != null" >
+        price = #{record.price,jdbcType=DECIMAL},
+      </if>
+      <if test="record.marketPrice != null" >
+        market_price = #{record.marketPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.pPrice != null" >
+        p_price = #{record.pPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.pNum != null" >
+        p_num = #{record.pNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.dateStart != null" >
+        date_start = #{record.dateStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.dateEnd != null" >
+        date_end = #{record.dateEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remainNum != null" >
+        remain_num = #{record.remainNum,jdbcType=BIGINT},
+      </if>
+      <if test="record.totalNum != null" >
+        total_num = #{record.totalNum,jdbcType=BIGINT},
+      </if>
+      <if test="record.viewNum != null" >
+        view_num = #{record.viewNum,jdbcType=BIGINT},
+      </if>
+      <if test="record.saleNum != null" >
+        sale_num = #{record.saleNum,jdbcType=BIGINT},
+      </if>
+      <if test="record.online != null" >
+        online = #{record.online,jdbcType=TINYINT},
+      </if>
+      <if test="record.createdAt != null" >
+        created_at = #{record.createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedAt != null" >
+        updated_at = #{record.updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update product
+    set id = #{record.id,jdbcType=BIGINT},
+      name = #{record.name,jdbcType=VARCHAR},
+      tid = #{record.tid,jdbcType=INTEGER},
+      hospital_id = #{record.hospitalId,jdbcType=BIGINT},
+      city_id = #{record.cityId,jdbcType=INTEGER},
+      flag = #{record.flag,jdbcType=INTEGER},
+      img = #{record.img,jdbcType=VARCHAR},
+      order_no = #{record.orderNo,jdbcType=INTEGER},
+      hospital_pay = #{record.hospitalPay,jdbcType=DECIMAL},
+      type = #{record.type,jdbcType=INTEGER},
+      type2 = #{record.type2,jdbcType=VARCHAR},
+      is_fq = #{record.isFq,jdbcType=TINYINT},
+      online_pay = #{record.onlinePay,jdbcType=DECIMAL},
+      price = #{record.price,jdbcType=DECIMAL},
+      market_price = #{record.marketPrice,jdbcType=DECIMAL},
+      p_price = #{record.pPrice,jdbcType=DECIMAL},
+      p_num = #{record.pNum,jdbcType=INTEGER},
+      date_start = #{record.dateStart,jdbcType=TIMESTAMP},
+      date_end = #{record.dateEnd,jdbcType=TIMESTAMP},
+      remain_num = #{record.remainNum,jdbcType=BIGINT},
+      total_num = #{record.totalNum,jdbcType=BIGINT},
+      view_num = #{record.viewNum,jdbcType=BIGINT},
+      sale_num = #{record.saleNum,jdbcType=BIGINT},
+      online = #{record.online,jdbcType=TINYINT},
+      created_at = #{record.createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{record.updatedAt,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mfq.admin.web.bean.Product" >
+    update product
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="tid != null" >
+        tid = #{tid,jdbcType=INTEGER},
+      </if>
+      <if test="hospitalId != null" >
+        hospital_id = #{hospitalId,jdbcType=BIGINT},
+      </if>
+      <if test="cityId != null" >
+        city_id = #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="flag != null" >
+        flag = #{flag,jdbcType=INTEGER},
+      </if>
+      <if test="img != null" >
+        img = #{img,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null" >
+        order_no = #{orderNo,jdbcType=INTEGER},
+      </if>
+      <if test="hospitalPay != null" >
+        hospital_pay = #{hospitalPay,jdbcType=DECIMAL},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="type2 != null" >
+        type2 = #{type2,jdbcType=VARCHAR},
+      </if>
+      <if test="isFq != null" >
+        is_fq = #{isFq,jdbcType=TINYINT},
+      </if>
+      <if test="onlinePay != null" >
+        online_pay = #{onlinePay,jdbcType=DECIMAL},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="marketPrice != null" >
+        market_price = #{marketPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="pPrice != null" >
+        p_price = #{pPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="pNum != null" >
+        p_num = #{pNum,jdbcType=INTEGER},
+      </if>
+      <if test="dateStart != null" >
+        date_start = #{dateStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dateEnd != null" >
+        date_end = #{dateEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remainNum != null" >
+        remain_num = #{remainNum,jdbcType=BIGINT},
+      </if>
+      <if test="totalNum != null" >
+        total_num = #{totalNum,jdbcType=BIGINT},
+      </if>
+      <if test="viewNum != null" >
+        view_num = #{viewNum,jdbcType=BIGINT},
+      </if>
+      <if test="saleNum != null" >
+        sale_num = #{saleNum,jdbcType=BIGINT},
+      </if>
+      <if test="online != null" >
+        online = #{online,jdbcType=TINYINT},
+      </if>
+      <if test="createdAt != null" >
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null" >
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mfq.admin.web.bean.Product" >
+    update product
+    set name = #{name,jdbcType=VARCHAR},
+      tid = #{tid,jdbcType=INTEGER},
+      hospital_id = #{hospitalId,jdbcType=BIGINT},
+      city_id = #{cityId,jdbcType=INTEGER},
+      flag = #{flag,jdbcType=INTEGER},
+      img = #{img,jdbcType=VARCHAR},
+      order_no = #{orderNo,jdbcType=INTEGER},
+      hospital_pay = #{hospitalPay,jdbcType=DECIMAL},
+      type = #{type,jdbcType=INTEGER},
+      type2 = #{type2,jdbcType=VARCHAR},
+      is_fq = #{isFq,jdbcType=TINYINT},
+      online_pay = #{onlinePay,jdbcType=DECIMAL},
+      price = #{price,jdbcType=DECIMAL},
+      market_price = #{marketPrice,jdbcType=DECIMAL},
+      p_price = #{pPrice,jdbcType=DECIMAL},
+      p_num = #{pNum,jdbcType=INTEGER},
+      date_start = #{dateStart,jdbcType=TIMESTAMP},
+      date_end = #{dateEnd,jdbcType=TIMESTAMP},
+      remain_num = #{remainNum,jdbcType=BIGINT},
+      total_num = #{totalNum,jdbcType=BIGINT},
+      view_num = #{viewNum,jdbcType=BIGINT},
+      sale_num = #{saleNum,jdbcType=BIGINT},
+      online = #{online,jdbcType=TINYINT},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+
+  <select id="findByPage" resultType="com.mfq.admin.web.bean.Product">
+    select
+    <include refid="Base_Column_List" />
+    from product order by id desc limit #{start}, #{pagesize}
+  </select>
+</mapper>
