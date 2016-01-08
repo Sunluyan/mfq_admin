@@ -17,7 +17,7 @@
         <typeAlias alias="ProductClassify" type="com.mfq.admin.web.bean.ProductClassify"/>
         <typeAlias alias="SysPassport" type="com.mfq.admin.web.bean.SysPassport"/>
         <typeAlias alias="OpLog" type="com.mfq.admin.web.bean.OpLogs"/>
-        <!--<typeAlias alias="Hospital" type="com.mfq.admin.web.models.Hospital"/>-->
+        <typeAlias alias="Hospital" type="com.mfq.admin.web.bean.Hospital"/>
         <typeAlias alias="OrderInfo" type="com.mfq.admin.web.bean.OrderInfo"/>
         <typeAlias alias="WeChatMsg" type="com.mfq.admin.web.bean.WechatMsg"/>
         <typeAlias alias="UserExtend" type="com.mfq.admin.web.bean.UserExtend"/>
