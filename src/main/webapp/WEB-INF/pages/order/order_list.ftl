@@ -54,6 +54,7 @@
                         <td>订单ID</td>
                         <td>订单号</td>
                         <td>产品名称</td>
+						<td>医院名称</td>
                         <td>订单总额</td>
                         <td>订单状态</td>
                         <td>在线支付</td>
@@ -67,10 +68,25 @@
                         <td>${order.orderNo}</td>
                         <td>
                         	<#list pmap?keys as key>
-                        		<#if key == order.pid>
-                        		${pmap.get(key)!}
+                        		<#if (pmap.get(key).id) == (order.pid)>
+                        		${pmap.get(key).name}
                         		</#if>
 	                        </#list>
+                        </td>
+                        <td>
+
+							<#list pmap?keys as key>
+								<#if (pmap.get(key).id) == (order.pid)>
+
+									<#list hospitals as h>
+
+									<#if (pmap.get(key).hospitalId)== (h.id)>
+									    ${h.name}
+									</#if>
+									</#list>
+								</#if>
+							</#list>
+
                         </td>
                         <td>${order.price}</td>
                         <td>

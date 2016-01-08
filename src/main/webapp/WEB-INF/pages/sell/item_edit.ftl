@@ -59,6 +59,12 @@
                         <option value="${cs.id}" <#if ((cs.id))== ((classId))>selected</#if> >${cs.name}</option>
                     </#list>
                     </select>
+
+                    <select id='classify' name="classify">
+                    <#list classify as cs>
+                        <option value="${cs.id}" <#if ((cs.id))== ((classId))>selected</#if> >${cs.name}</option>
+                    </#list>
+                    </select>
                     
                     <select name="type2">
                         <option value="激光" >激光</option>

@@ -173,13 +173,60 @@ public class OrderController extends BaseController {
 		model.addAttribute("statusname",
 		        OrderStatus.fromValue(order.getStatus()).getName());
 	}
-    		
+
+
+	@RequestMapping(value = {"/order/finance","/order/finance/"} , method = RequestMethod.GET)
+	public String orderL(
+			@RequestParam(defaultValue = "1", required = false) Long page,
+			@RequestParam(value = "orderNo", defaultValue = "") String orderNo,
+			@RequestParam(value = "mobile", defaultValue = "") String mobile,
+			@RequestParam(value = "status", defaultValue = "100") int status,
+			@RequestParam(value = "hospitalName", defaultValue = "") String hospitalName,
+			@RequestParam(value = "payType", defaultValue="-1") int payType,
+			@RequestParam(value = "payApi", defaultValue = "") String payApi,
+			@RequestParam(value = "ob", required = false) String ob,
+			@RequestParam(value = "oe", required = false) String oe,
+			Model model) {
+		try{
+			//中文编码
+    		hospitalName=new String(hospitalName.getBytes("ISO-8859-1"),"UTF-8");
+
+			if (StringUtils.isBlank(ob)) {
+				String date = DateUtil.formatShort(DateUtil.addDay(new Date(), -7));
+				Date d = DateUtil.convertShort(date);
+				ob = DateUtil.formatLong(d);
+			}
+
+			if (StringUtils.isBlank(oe)) {
+				oe = DateUtil.formatLong(new Date());
+			}
+			orderService.bindFinanceMode(model, page, orderNo, mobile, hospitalName, payType, payApi, status, ob, oe);
+		}catch(Exception e){
+
+		}
+		return "order/order_finance";
+	}
+
+	@RequestMapping(value = "/order/budget/", method = RequestMethod.GET)
+	public String budget(Model model,
+						 @RequestParam(value = "ob", defaultValue = "") String ob,
+						 @RequestParam(value = "oe", defaultValue = "") String oe,
+						 @RequestParam(value = "page", defaultValue = "1")int page){
+		try {
+			orderService.getFinanceUserByTime(model, ob, oe, page);
+			return "order/order_budget";
+		}catch (Exception e){
+			logger.error("order budget is error {}",e);
+		}
+		return "order/order_budget";
+	}
+
     @RequestMapping(value = "/order/edit/", method = RequestMethod.GET)
     public String orderEdit(
             @RequestParam(defaultValue = "0", required = false) Long id,
             Model model) {
 
-        // orderService.buildEditModel(id, model);
+//         orderService.buildEditModel(id, model);
 
         return "order/order_edit";
     }

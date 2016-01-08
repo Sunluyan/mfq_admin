@@ -1,9 +1,11 @@
 package com.mfq.admin.web.services;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +33,8 @@ public class ProductClassifyService {
     public List<ProductClassify> findByLevel(int rootId){
     	return mapper.findByLevel(rootId);
     }
+
+
 
 	public long delClassify(int id) {
 		
@@ -89,5 +93,24 @@ public class ProductClassifyService {
 	}
 
 
+	public Map<String,Object> findClassifyLevelById(int id) {
+		Map<String,Object> data = Maps.newHashMap();
 
+		ProductClassify classify = mapper.findById(id);
+		if(classify.getRootId()==0){
+			data.put("root",classify.getId());
+			List<ProductClassify> lclassifys=mapper.findByRootId(id);
+			data.put("level",lclassifys);
+			data.put("L",0);
+		}else {
+			ProductClassify classifyRoot = mapper.findById(classify.getRootId());
+			List<ProductClassify> lclassifys=mapper.findByRootId(classify.getRootId());
+			data.put("root",classifyRoot.getId());
+			data.put("level", lclassifys);
+			data.put("L",1);
+		}
+		data.put("roots",mapper.findByRootId(0));
+
+		return data;
+	}
 }

@@ -20,6 +20,7 @@
     <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
     <result column="pay_period" property="payPeriod" jdbcType="TINYINT" />
   </resultMap>
+
   <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >
@@ -397,4 +398,21 @@
       pay_period = #{payPeriod,jdbcType=TINYINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+
+  <select id="queryByUpDateAndGroupByUid" resultType="long">
+    SELECT uid FROM pay_record  where status = #{status}
+    <if test="ob!=null and oe != null">
+    and updated_at BETWEEN #{ob,jdbcType=TIMESTAMP} AND  #{oe,jdbcType=TIMESTAMP}
+    </if>
+    GROUP BY uid
+    <if test="start != null and size!=null">
+      limit #{start}, #{size};
+    </if>
+
+  </select>
+
+  <select id="queryPayRecordsByUid" resultMap="BaseResultMap">
+    SELECT  * FROM  pay_record WHERE uid = #{uid} and status=#{status}
+  </select>
 </mapper>

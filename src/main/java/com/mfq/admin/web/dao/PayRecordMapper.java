@@ -1,5 +1,7 @@
 package com.mfq.admin.web.dao;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -32,4 +34,8 @@ public interface PayRecordMapper {
     int updateByPrimaryKeySelective(PayRecord record);
 
     int updateByPrimaryKey(PayRecord record);
+
+    List<Long> queryByUpDateAndGroupByUid(@Param("ob")Date ob, @Param("oe")Date oe, @Param("status")int status, @Param("start")Integer start, @Param("size")Integer size);
+
+    List<PayRecord> queryPayRecordsByUid(@Param("uid") long uid, @Param("status")int status);
 }

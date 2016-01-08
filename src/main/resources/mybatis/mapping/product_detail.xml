@@ -19,13 +19,12 @@
 		from product_detail where pid=#{pid}
 	</select>
 
-
 	<insert id="insertDetail" parameterType="ProductDetail">
 		insert into product_detail(
 		<include refid="insertsql" />
 		)values (
 		#{pid}, #{consumeStep}, #{reserve}, #{specialNote}, #{body}, #{cureMeans}, #{cureDur}, #{cureHospital}, #{recoverDur}, #{merit}, #{cureMethod},
-		#{tabooCrowd}, #{crowd}, #{warning}, #{cureNum}, #{anesMethod}, #{doctorLevel}, #{cureCycle}
+		#{crowd}, #{tabooCrowd}, #{warning}, #{cureNum}, #{anesMethod}, #{doctorLevel}, #{cureCycle}
 		)
 	</insert>
 

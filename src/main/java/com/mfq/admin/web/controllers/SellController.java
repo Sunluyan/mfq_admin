@@ -3,12 +3,14 @@ package com.mfq.admin.web.controllers;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.mfq.admin.web.services.ProductClassifyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -36,6 +38,8 @@ public class SellController extends BaseController {
 
     @Resource
     SellService sellService;
+    @Resource
+    ProductClassifyService classifyService;
 
     /**
      * 商品管理
@@ -89,6 +93,12 @@ public class SellController extends BaseController {
     		e.printStackTrace();
     	}
     	return "/sell/item_edit";
+    }
+
+    @RequestMapping(value ="/sell/classify/", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
+    public @ResponseBody  String DataForClassify(@RequestParam(value = "rid", defaultValue = "1")int rid){
+        Map<String,Object> data=  classifyService.findClassifyLevelById(rid);
+        return JSONUtil.successResultJson(data);
     }
     
     @RequestMapping(value = "/sell/upload/img/", method = { RequestMethod.POST })

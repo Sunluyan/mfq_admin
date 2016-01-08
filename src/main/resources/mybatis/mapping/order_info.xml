@@ -111,7 +111,7 @@
 		product as p on o.pid=p.id LEFT JOIN users u on u.uid=o.uid LEFT JOIN hospital h on p.hospital_id=h.id where pay.status = 2
 		
 		<if test="orderNo != null and orderNo != ''">
-			and o.order_no like '%${orderNo}%'
+			and (o.order_no like '%${orderNo}%' OR pay.order_no LIKE '%${orderNo}%')
 		</if>
 		<if test="mobile !=null and mobile != ''">
 			and u.mobile like '%${mobile}%'
@@ -146,7 +146,7 @@
 		product as p on o.pid=p.id LEFT JOIN users u on u.uid=o.uid LEFT JOIN hospital h on p.hospital_id=h.id where pay.status = 2 
 		
 		<if test="orderNo != null and orderNo != ''">
-			and o.order_no like '%${orderNo}%'
+			and (o.order_no like '%${orderNo}%' OR pay.order_no LIKE '%${orderNo}%')
 		</if>
 		<if test="mobile !=null and mobile != ''">
 			and u.mobile like '%${mobile}%'

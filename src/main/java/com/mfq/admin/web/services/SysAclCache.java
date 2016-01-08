@@ -215,6 +215,7 @@ public class SysAclCache {
         if (CollectionUtils.isEmpty(acls)) {
             return false;
         }
+        logger.info("权限s URL = {}，此URL = {}", acls, aclId);
         for (Long acl : acls) {
             if (acl == aclId) {
                 return true;
