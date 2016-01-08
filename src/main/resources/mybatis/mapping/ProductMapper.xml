@@ -56,6 +56,8 @@
           </trim>
         </if>
       </foreach>
+      <!-- flag =-1 is delete status -->
+      and `flag`!=-1
     </where>
   </sql>
   <sql id="Update_By_Example_Where_Clause" >
@@ -110,12 +112,15 @@
     select 
     <include refid="Base_Column_List" />
     from product
-    where id = #{id,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT} AND `flag` != -1
+    <!-- flag =-1 is delete status -->
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    delete from product
+
+  <update id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    UPDATE set `flag` =-1 from product
     where id = #{id,jdbcType=BIGINT}
-  </delete>
+  </update>
+
   <delete id="deleteByExample" parameterType="com.mfq.admin.web.bean.example.ProductExample" >
     delete from product
     <if test="_parameter != null" >
@@ -544,6 +549,6 @@
   <select id="findByPage" resultType="com.mfq.admin.web.bean.Product">
     select
     <include refid="Base_Column_List" />
-    from product order by id desc limit #{start}, #{pagesize}
+    from product where `flag` != -1 order by id desc limit #{start}, #{pagesize}
   </select>
 </mapper>

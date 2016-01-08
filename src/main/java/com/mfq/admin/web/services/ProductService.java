@@ -49,13 +49,9 @@ public class ProductService {
     }
     
     public long deleteProduct(long id){
-        return mapper.deleteByPrimaryKey(id);
-    }
-    
-    public long deleteProducts(List<Long> list){
-        ProductExample example = new ProductExample();
-        example.or().andIdIn(list);
-        return mapper.deleteByExample(example);
+        Product p = mapper.selectByPrimaryKey(id);
+        p.setFlag(-1);  // flag -1 表示该产品已删除
+        return mapper.updateByPrimaryKey(p);
     }
     
 
