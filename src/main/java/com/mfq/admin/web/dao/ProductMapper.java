@@ -30,4 +30,13 @@ public interface ProductMapper {
     int updateByPrimaryKey(Product record);
 
     public List<Product> findByPage(@Param("start") long start, @Param("pagesize") long pagesize);
+
+    List<Product> findByPageAndExample(@Param("start") long start,
+                                               @Param("pagesize") long pagesize,
+                                               @Param("example")ProductExample example,
+                                       @Param("orderby")String orderby);
+
+    long findByPageAndExampleCount(@Param("example")ProductExample example);
+
+
 }

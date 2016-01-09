@@ -112,15 +112,12 @@
     select 
     <include refid="Base_Column_List" />
     from product
-    where id = #{id,jdbcType=BIGINT} AND `flag` != -1
-    <!-- flag =-1 is delete status -->
-  </select>
-
-  <update id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    UPDATE set `flag` =-1 from product
     where id = #{id,jdbcType=BIGINT}
-  </update>
-
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from product
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
   <delete id="deleteByExample" parameterType="com.mfq.admin.web.bean.example.ProductExample" >
     delete from product
     <if test="_parameter != null" >
@@ -548,7 +545,32 @@
 
   <select id="findByPage" resultType="com.mfq.admin.web.bean.Product">
     select
+        id, name, tid, hospital_id as hospitalId, city_id as
+		cityId, type2, price, market_price as marketPrice, p_price as pPrice, type, online_pay as onlinePay,
+		hospital_pay as hospitalPay, p_num as pNum, date_start as dateStart, is_fq as isFq, flag,
+		date_end as dateEnd, total_num as totalNum, remain_num as remainNum, view_num as viewNum, sale_num as saleNum,
+		online, img, created_at as createdAt, updated_at as updatedAt
+    from product order by id desc limit #{start}, #{pagesize}
+  </select>
+
+  <select id="findByPageAndExample" resultMap="BaseResultMap">
+    select
     <include refid="Base_Column_List" />
-    from product where `flag` != -1 order by id desc limit #{start}, #{pagesize}
+    from product
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+    order by ${orderby}
+    limit #{start},#{pagesize}
+
+  </select>
+
+  <select id="findByPageAndExampleCount" resultType="long">
+    select
+    count(*)
+    from product
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
   </select>
 </mapper>

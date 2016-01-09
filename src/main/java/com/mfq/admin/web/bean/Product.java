@@ -265,4 +265,36 @@ public class Product {
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", tid=" + tid +
+                ", hospitalId=" + hospitalId +
+                ", cityId=" + cityId +
+                ", flag=" + flag +
+                ", img='" + img + '\'' +
+                ", orderNo=" + orderNo +
+                ", hospitalPay=" + hospitalPay +
+                ", type=" + type +
+                ", type2='" + type2 + '\'' +
+                ", isFq=" + isFq +
+                ", onlinePay=" + onlinePay +
+                ", price=" + price +
+                ", marketPrice=" + marketPrice +
+                ", pPrice=" + pPrice +
+                ", pNum=" + pNum +
+                ", dateStart=" + dateStart +
+                ", dateEnd=" + dateEnd +
+                ", remainNum=" + remainNum +
+                ", totalNum=" + totalNum +
+                ", viewNum=" + viewNum +
+                ", saleNum=" + saleNum +
+                ", online=" + online +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
+    }
 }

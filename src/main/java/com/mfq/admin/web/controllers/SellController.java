@@ -39,16 +39,21 @@ public class SellController extends BaseController {
 
     /**
      * 商品管理
-     * 
+     * orderno , proname , hosname , page , orderby(time , price , type)
      * @param model
      * @return
      */
-    @RequestMapping(value = "/sell/items/", method = RequestMethod.GET)
+    @RequestMapping(value = "/sell/items/", method = {RequestMethod.GET,RequestMethod.POST})
     public String index(
             @RequestParam(defaultValue = "1", required = false) long page,
+            @RequestParam(defaultValue = "" , required = false) String orderno,
+            @RequestParam(defaultValue = "" , required = false) String proname,
+            @RequestParam(defaultValue = "" , required = false) String hosname,
+            @RequestParam(defaultValue = "id desc" , required = false) String orderby,
+
             Model model) {
     	try{
-    		sellService.findByPage(page, model);
+    		sellService.findByPage(page,orderno,proname,hosname,orderby,model);
     	}catch(Exception e){
     		logger.info("sell items error {}",e);
     	}

@@ -1,17 +1,24 @@
 package com.mfq.admin.web.services;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
 
 import com.mfq.admin.web.bean.*;
+import com.mfq.admin.web.bean.example.HospitalExample;
 import com.mfq.admin.web.bean.example.ProductClassifyExample;
+import com.mfq.admin.web.bean.example.ProductExample;
 import com.mfq.admin.web.bean.example.ProductImgExample;
+import com.mfq.admin.web.dao.HospitalMapper;
 import com.mfq.admin.web.dao.ProductClassifyMapper;
 import com.mfq.admin.web.dao.ProductImgMapper;
+import com.mfq.admin.web.dao.ProductMapper;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -26,7 +33,11 @@ public class SellService {
     @Resource
     ProductService productService;
     @Resource
+    ProductMapper productMapper;
+    @Resource
     HospitalService hospitalService;
+    @Resource
+    HospitalMapper hospitalMapper;
     @Resource
     ProductClassifyMapper classifyMapper;
     @Resource
@@ -92,11 +103,45 @@ public class SellService {
         model.addAttribute("homeclass", hclasses);
     }
 
-    public void findByPage(long page, Model model) {
+    /**
+     * 查找产品
+     * @param page
+     * @param orderno
+     * @param proname
+     * @param hosname
+     * @param orderby   例如: "id desc" , "price desc"
+     * @param model
+     */
+    public void findByPage(long page,String orderno,String proname,String hosname, String orderby, Model model) {
         long start = (page - 1) * PageSize;
         // 商品列表
-        List<Product> items = productService.findByPage(start, PageSize);
+
+        //List<Product> items = productService.findByPage(start, PageSize);
+        ProductExample productExample = new ProductExample();
+        if(StringUtils.isNotBlank(proname)){
+            productExample.or().andNameLike("%"+proname+"%");
+        }
+        if(StringUtils.isNotBlank(hosname)){
+            //如果医院不是null的话,通过医院名称把医院id查出来,然后当做条件查询产品
+            HospitalExample hospitalExample = new HospitalExample();
+            hospitalExample.or().andNameLike("%"+hosname+"%");
+            List<Hospital> hospitalsByName = hospitalMapper.selectByExample(hospitalExample);
+            if(hospitalsByName == null || hospitalsByName.size() == 0){
+                return ;
+            }
+            List<Long> hosIds  = new ArrayList<>();
+            for (Hospital hospital : hospitalsByName) {
+                hosIds.add(hospital.getId());
+            }
+            productExample.or().andHospitalIdIn(hosIds);
+        }
+        List<Product> items = productMapper.findByPageAndExample(start,PageSize,productExample,orderby);
+
         model.addAttribute("items", items);
+        model.addAttribute("hosname", hosname);
+        model.addAttribute("proname", proname);
+        model.addAttribute("orderby", orderby);
+
         ProductClassifyExample productClassifyExample = new ProductClassifyExample();
         List<ProductClassify> classify = classifyMapper.selectByExample(productClassifyExample);
         model.addAttribute("classify", classify);
@@ -104,10 +149,24 @@ public class SellService {
         List<Hospital> hospitals = hospitalService.findAll(); // 医院
         model.addAttribute("hospitals", hospitals);
 
-        long count = productService.findCount();
+        long count = productMapper.findByPageAndExampleCount(productExample);
         model.addAttribute("itemcount", count);
 
         model.addAttribute("page", page);
+    }
+
+    public static void main(String[] args) {
+        ApplicationContext ac = new ClassPathXmlApplicationContext("spring/spring.xml");
+        ProductMapper productMapper = ac.getBean(ProductMapper.class);
+        long start = 0;
+        long PageSize = 50;
+        ProductExample productExample = new ProductExample();
+        productExample.or().andNameLike("%"+"针"+"%");
+        String orderby = "id desc";
+        List<Product> items = productMapper.findByPageAndExample(start,PageSize,productExample,orderby);
+        for (Product item : items) {
+            System.out.println(item);
+        }
     }
 
     @Transactional
