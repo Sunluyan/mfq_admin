@@ -8,6 +8,8 @@ import com.mfq.admin.web.bean.ProductClassify;
 import com.mfq.admin.web.bean.example.ProductClassifyExample;
 import com.mfq.admin.web.dao.ProductClassifyMapper;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
 
 
@@ -42,9 +44,18 @@ public class ProductClassifyService {
 		}else{
 			example.or().andRootIdNotEqualTo(rootId);
 		}
-
+		example.setOrderByClause("root_id desc");
 		return mapper.selectByExample(example);
     }
+
+	public static void main(String[] args) {
+		ApplicationContext ac = new ClassPathXmlApplicationContext("spring/spring.xml");
+		ProductClassifyService service = ac.getBean(ProductClassifyService.class);
+		List<ProductClassify> list = service.findByLevel(1);
+		for (ProductClassify productClassify : list) {
+			System.out.println(productClassify);
+		}
+	}
 
 	public long delClassify(int id) {
 		

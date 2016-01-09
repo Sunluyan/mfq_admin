@@ -70,4 +70,17 @@ public class ProductClassify {
     public void setHgImage(String hgImage) {
         this.hgImage = hgImage == null ? null : hgImage.trim();
     }
+
+    @Override
+    public String toString() {
+        return "ProductClassify{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", flag='" + flag + '\'' +
+                ", desp='" + desp + '\'' +
+                ", rootId=" + rootId +
+                ", icon='" + icon + '\'' +
+                ", hgImage='" + hgImage + '\'' +
+                '}';
+    }
 }
