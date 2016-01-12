@@ -539,6 +539,8 @@
 			]]>
     </if>
 
+    order by updated_at desc
+
     <if test = "count == null or count == ''">
       limit #{start},#{pagesize}
     </if>
@@ -591,7 +593,6 @@
 			and u.created_at > #{fromtime} and u.created_at < #{totime}
 			]]>
     </if>
-
 
     <if test = "count==null or count == ''">
       LIMIT #{start},#{size}
