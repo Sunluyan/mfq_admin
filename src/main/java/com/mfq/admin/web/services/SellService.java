@@ -39,7 +39,7 @@ public class SellService {
     @Resource
     HospitalMapper hospitalMapper;
     @Resource
-    ProductClassifyMapper classifyMapper;
+    ProductClassifyMapper productClassifyMapper;
     @Resource
     HomeClassifyService homeClassifyService; 
     @Resource
@@ -71,7 +71,7 @@ public class SellService {
         model.addAttribute("types", ProductType.values());
 
         ProductClassifyExample productClassifyExample = new ProductClassifyExample();
-        List<ProductClassify> classify = classifyMapper.selectByExample(productClassifyExample);
+        List<ProductClassify> classify = productClassifyMapper.selectByExample(productClassifyExample);
         model.addAttribute("classify", classify); // 分类
 
         List<Hospital> hospitals = hospitalService.findAll(); // 医院
@@ -143,7 +143,7 @@ public class SellService {
         model.addAttribute("orderby", orderby);
 
         ProductClassifyExample productClassifyExample = new ProductClassifyExample();
-        List<ProductClassify> classify = classifyMapper.selectByExample(productClassifyExample);
+        List<ProductClassify> classify = productClassifyMapper.selectByExample(productClassifyExample);
         model.addAttribute("classify", classify);
 
         List<Hospital> hospitals = hospitalService.findAll(); // 医院
