@@ -1,17 +1,18 @@
 package com.mfq.admin.web.services;
 
-import com.mfq.admin.web.bean.Presental;
-import com.mfq.admin.web.bean.example.PresentalExample;
-import com.mfq.admin.web.bean.example.ProductExample;
-import com.mfq.admin.web.dao.PresentalMapper;
+import java.util.List;
+
+import javax.annotation.Resource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
-import java.util.List;
+import com.mfq.admin.web.bean.Presental;
+import com.mfq.admin.web.bean.example.PresentalExample;
+import com.mfq.admin.web.dao.PresentalMapper;
 
 /**
  * Created by liuzhiguo1 on 16/1/6.

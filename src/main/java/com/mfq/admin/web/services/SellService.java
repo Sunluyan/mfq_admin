@@ -294,6 +294,9 @@ public class SellService {
 			ProductImg pimg=new ProductImg();
 			pimg.setPid(id);
 			pimg.setImg(img);
+            pimg.setDesc("");
+            pimg.setIndex(0);
+            pimg.setFlag(0);
 			if("".equals(img))
 				continue;			
 			long i = productImgMapper.insert(pimg);

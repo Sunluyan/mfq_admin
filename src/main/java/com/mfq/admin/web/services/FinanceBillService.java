@@ -15,8 +15,7 @@ import org.springframework.stereotype.Service;
 public class FinanceBillService {
 	@Resource
 	FinanceBillMapper mapper ;
-	@Resource
-	FinanceBillExample example ;
+	
 
 	
 	public FinanceBill selectByPrimaryKey(long id){
@@ -24,11 +23,13 @@ public class FinanceBillService {
 	}
 	
 	public List<FinanceBill> selectByIdLessThree(){
+		FinanceBillExample example = new FinanceBillExample();
 		example.or().andIdLessThan(10l);
 		return mapper.selectByExample(example);
 	}
 	
 	public List<FinanceBill> selectByStatusLessThree(){
+		FinanceBillExample example = new FinanceBillExample();
 		example.or().andStatusLessThan(1);
 		return mapper.selectByExample(example);
 	}

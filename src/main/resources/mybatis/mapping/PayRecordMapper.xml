@@ -382,4 +382,24 @@
       updated_at = #{updatedAt,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+  
+  
+  <select id="selectByExamplePage" resultMap="BaseResultMap" parameterType="com.mfq.admin.web.bean.example.PayRecordExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from pay_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="size != null and size != ''">
+      limit #{start}, #{size}
+    </if>
+  </select>
+  
 </mapper>

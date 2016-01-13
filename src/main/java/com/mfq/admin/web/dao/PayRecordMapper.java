@@ -24,6 +24,8 @@ public interface PayRecordMapper {
     int insertSelective(PayRecord record);
 
     List<PayRecord> selectByExample(PayRecordExample example);
+    
+    List<PayRecord> selectByExamplePage(PayRecordExample example);
 
     PayRecord selectByPrimaryKey(Long id);
 
