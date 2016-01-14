@@ -330,6 +330,10 @@ public class UserController {
 		return "fuck";
 	}
 
+	public String dd(){
+		return "dd";
+	}
+
 
 
 }
