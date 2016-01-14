@@ -319,7 +319,10 @@ public class UserController {
     	model.addAttribute("nurse",nurse);
     	return "/user/nurse_edit";
     }
-    
+
+	public String fuck(){
+		return "fuck";
+	}
     
     
 
