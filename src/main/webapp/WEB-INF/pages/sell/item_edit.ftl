@@ -460,6 +460,8 @@
         $(".img-link").popover({
             html:true
         })
+
+        $(".img-link").popover("show")
     },function(){
         $(".img-link").popover("hide")
     })
