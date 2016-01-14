@@ -6,7 +6,7 @@ import com.mfq.admin.web.bean.example.WechatMsgExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 @MQMDao
-public interface WechatMsgMapper {
+public interface WeChatMsgMapper {
     int countByExample(WechatMsgExample example);
 
     int deleteByExample(WechatMsgExample example);
