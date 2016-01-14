@@ -319,8 +319,11 @@ public class UserController {
     	model.addAttribute("nurse",nurse);
     	return "/user/nurse_edit";
     }
-    
-    
+
+	public static void main(String[] args) {
+		System.out.println("yyyyy");
+	}
+
     
 
 }

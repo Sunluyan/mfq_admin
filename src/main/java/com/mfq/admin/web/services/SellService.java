@@ -236,7 +236,7 @@ public class SellService {
         if (StringUtils.isNotBlank(img)) {
             p.setImg(img);
         }else{
-            p.setImg("");
+            p.setImg(null);
         }
         p.setOnline(isOnline);
         p.setSaleNum(saleNum);
