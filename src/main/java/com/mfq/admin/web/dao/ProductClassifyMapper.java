@@ -5,7 +5,10 @@ import com.mfq.admin.web.bean.ProductClassify;
 import com.mfq.admin.web.bean.example.ProductClassifyExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Component;
+
 @MQMDao
+@Component
 public interface ProductClassifyMapper {
     int countByExample(ProductClassifyExample example);
 

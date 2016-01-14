@@ -41,10 +41,21 @@
 			<div class="control-group">
 				<label class="control-label" for="cname">图片上传</label>
 				<div class="controls">
-					 <input type="file" id="file1" name="files" value="${item_img[0].img!}"><span class="help-inline"><strong class="text-error">${item_img[0].img!}</strong></span></br>
-                     <input type="file" name="files" value="${item_img[1].img!}"><span class="help-inline"><strong class="text-error">${item_img[1].img!}</strong></span></br>
-                     <input type="file" name="files" value="${item_img[2].img!}"><span class="help-inline"><strong class="text-error">${item_img[2].img!}</strong></span></br>
-                     <input type="file" name="files" value="${item_img[3].img!}"><span class="help-inline"><strong class="text-error">${item_img[3].img!}</strong></span></br>
+					 <input type="file" id="file1" name="files" value="${item_img[0].img!}"><span class="help-inline">
+
+                    <a rel="popover" data-content="<img src='${item_img[0].img!}'/>" href="${item_img[0].img!}" target="_blank" class="text-error img-link">${item_img[0].img!}</a></span></br>
+
+                     <input type="file" name="files" value="${item_img[1].img!}"><span class="help-inline">
+
+                    <a href="${item_img[1].img!}" class="text-error img-link">${item_img[1].img!}</a></span></br>
+
+                     <input type="file" name="files" value="${item_img[2].img!}"><span class="help-inline">
+
+                    <a href="${item_img[2].img!} class="text-error img-link">${item_img[2].img!}</a></span></br>
+
+                     <input type="file" name="files" value="${item_img[3].img!}"><span class="help-inline">
+
+                    <a href="${item_img[3].img!} class="text-error img-link">${item_img[3].img!}</a></span></br>
 
 				</button>
 				
@@ -444,6 +455,14 @@
         minView: 2,
         forceParse: 0
     });
+
+    $(".img-link").hover(function(){
+        $(".img-link").popover({
+            html:true
+        })
+    },function(){
+        $(".img-link").popover("hide")
+    })
 </script>
 
 <#include "commons/footer.ftl" />
