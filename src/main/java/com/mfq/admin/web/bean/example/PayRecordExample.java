@@ -9,6 +9,10 @@ public class PayRecordExample {
     protected String orderByClause;
 
     protected boolean distinct;
+    
+    protected Integer start;
+    
+    protected Integer size;
 
     protected List<Criteria> oredCriteria;
 
@@ -23,8 +27,24 @@ public class PayRecordExample {
     public String getOrderByClause() {
         return orderByClause;
     }
+    
+    public Integer getStart() {
+		return start;
+	}
 
-    public void setDistinct(boolean distinct) {
+	public void setStart(Integer start) {
+		this.start = start;
+	}
+
+	public Integer getSize() {
+		return size;
+	}
+
+	public void setSize(Integer size) {
+		this.size = size;
+	}
+
+	public void setDistinct(boolean distinct) {
         this.distinct = distinct;
     }
 

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.google.common.collect.Lists;
 import com.mfq.admin.web.bean.Product;
 import com.mfq.admin.web.bean.ProductDetail;
 import com.mfq.admin.web.bean.example.ProductDetailExample;
@@ -58,7 +59,17 @@ public class ProductService {
     public ProductDetail findDetailByPid(long pid){
         ProductDetailExample example = new ProductDetailExample();
         example.or().andPidEqualTo(pid);
-        return productDetailMapper.selectByExample(example).get(0);
+        ProductDetail pDetail = productDetailMapper.selectByExample(example).get(0);
+
+        ProductDetail detail = productDetailMapper.selectByExampleWithBLOBs(example).get(0);
+
+        pDetail.setBody(detail.getBody());
+        pDetail.setCureMethod(detail.getCureMethod());
+        pDetail.setTabooCrowd(detail.getTabooCrowd());
+        pDetail.setWarning(detail.getWarning());
+        pDetail.setCrowd(detail.getCrowd());
+        pDetail.setMerit(detail.getMerit());
+        return pDetail;
     }
     
     public long insertDetail(ProductDetail model){
@@ -80,4 +91,24 @@ public class ProductService {
     	}
     }
 
+    public List<Product> findByHidAndName(Long hid, String pname) {
+
+        List<Product> data = Lists.newArrayList();
+        
+        String name = "%"+pname+"%";
+        
+        ProductExample example = new ProductExample();
+        
+        ProductExample.Criteria criteria = example.createCriteria();
+        criteria.andNameLike(name);
+        
+        if(hid != null && hid!=0){
+        
+        	criteria.andHospitalIdEqualTo(hid);
+        	
+        }
+        
+        data = mapper.selectByExample(example);
+        return data;
+    }
 }

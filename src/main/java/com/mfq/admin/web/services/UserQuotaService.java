@@ -1,6 +1,7 @@
 package com.mfq.admin.web.services;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -120,7 +121,11 @@ public class UserQuotaService {
     public UserQuota queryUserQuota(long userId) {
         UsersQuotaExample example = new UsersQuotaExample();
         example.or().andUidEqualTo(userId);
-        return mapper.selectByExample(example).get(0);
+        List<UserQuota> list = mapper.selectByExample(example);
+        if(list!=null&&list.size()>0){
+        	return list.get(0);
+        }
+        return null;
     }
     
     /**

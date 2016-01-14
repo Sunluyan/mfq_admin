@@ -203,13 +203,16 @@ public class OrderController extends BaseController {
 		return "order/order_finance";
 	}
 
-	@RequestMapping(value = "/order/budget/", method = RequestMethod.GET)
+	@RequestMapping(value = "/order/budget/", method = {RequestMethod.GET, RequestMethod.POST})
 	public String budget(Model model,
 						 @RequestParam(value = "ob", defaultValue = "") String ob,
 						 @RequestParam(value = "oe", defaultValue = "") String oe,
-						 @RequestParam(value = "page", defaultValue = "1")int page){
+						 @RequestParam(value = "page", defaultValue = "1")int page,
+						 @RequestParam(value = "hid", defaultValue="0")int hid,
+						 @RequestParam(value = "pname", defaultValue="")String pname,
+						 @RequestParam(value = "type", defaultValue="0")int type){
 		try {
-			orderService.getFinanceUserByTime(model, ob, oe, page);
+			orderService.queryFinance(model, ob, oe, page, hid, pname, type);
 			return "order/order_budget";
 		}catch (Exception e){
 			logger.error("order budget is error {}",e);
@@ -226,8 +229,6 @@ public class OrderController extends BaseController {
 
         return "order/order_edit";
     }
-    
-    
     
     /**
      * 前往保单管理

@@ -28,6 +28,8 @@
         <typeAlias alias="AreaCity" type="com.mfq.admin.web.bean.AreaCity"/>
         <typeAlias alias="Nurse" type="com.mfq.admin.web.bean.Nurse"/>
         <typeAlias alias="PayRecord" type="com.mfq.admin.web.bean.PayRecord"/>
+        <typeAlias alias="Coupon" type="com.mfq.admin.web.bean.coupon.Coupon"/>
+        <typeAlias alias="CouponBatchInfo" type="com.mfq.admin.web.bean.coupon.CouponBatchInfo"/>
     </typeAliases>
 
 	<typeHandlers>
@@ -71,6 +73,8 @@
 		<mapper resource="mybatis/mapping/UsersMapper.xml"/>
 		<mapper resource="mybatis/mapping/UsersQuotaMapper.xml"/>
 		<mapper resource="mybatis/mapping/WechatMsgMapper.xml"/>
+		<mapper resource="mybatis/mapping/coupon_batch_info.xml"/>
+		<mapper resource="mybatis/mapping/coupon.xml"/>
 	</mappers>
 
 

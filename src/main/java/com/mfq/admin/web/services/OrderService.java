@@ -1,5 +1,7 @@
 package com.mfq.admin.web.services;
 
+import java.math.BigDecimal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,7 +12,9 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import com.mfq.admin.web.bean.*;
+import com.mfq.admin.web.bean.coupon.Coupon;
 import com.mfq.admin.web.constants.OrderType;
+import com.mfq.admin.web.models.view.FinanceOrder;
 import com.mfq.admin.web.models.view.FinanceUser;
 import com.mfq.admin.web.utils.DateUtil;
 import org.apache.commons.lang.StringUtils;
@@ -21,12 +25,14 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mfq.admin.web.constants.OrderStatus;
 import com.mfq.admin.web.constants.PayAPIType;
 import com.mfq.admin.web.constants.PayType;
+import com.mfq.admin.web.dao.CouponMapper;
 import com.mfq.admin.web.dao.FinanceBillMapper;
 import com.mfq.admin.web.dao.OrderInfoMapper;
 import com.mfq.admin.web.security.UserHolder;
@@ -53,6 +59,8 @@ public class OrderService {
     PayRecordService payRecordService;
     @Resource
     HospitalService hospitalService;
+    @Resource
+    CouponMapper couponMapper;
 
     Integer PageSize = 30;
 
@@ -259,57 +267,265 @@ public class OrderService {
         return result;
     }
 
-    public void getFinanceUserByTime(Model model, String ob, String oe, Integer page) throws Exception {
-
+    /**
+     * 财务订单(finance控制)
+     * @param model
+     * @param ob
+     * @param oe
+     * @param page
+     * @param hid
+     * @param pname
+     * @param type
+     * @throws Exception
+     */
+    public void queryFinance(Model model, String ob, String oe, Integer page, long hid, String pname, int type) throws Exception{
         Integer start = ((page - 1) * PageSize);
 
         Date b =null, e = null;
+
+        SimpleDateFormat fmt =  new SimpleDateFormat("yyyy-MM-dd HH:mm");
         if(StringUtils.isNotBlank(ob)&&StringUtils.isNotBlank(oe)) {
-            b = DateUtil.convertLong(ob);
-            e = DateUtil.convertLong(oe);
+            b = fmt.parse(ob);
+            e = fmt.parse(oe);
         }
 
-        long size = payRecordService.queryByGroupByUid(b,e, null, null).size();
-        List<Long> uids = payRecordService.queryByGroupByUid(b, e, start, PageSize);
-        List<FinanceUser> users = Lists.newArrayList();
-        for (Long uid : uids) {
-            List<PayRecord> userPayRecords = payRecordService.queryPayRecordsByUser(uid);
-            User user = userService.queryUser(uid);
-            UserQuota uq = userQuotaService.queryUserQuota(uid);
-            Map<String, Integer> counts = countOfPayRecords(userPayRecords, b, e);
 
-            if(uq==null)uq=new UserQuota();
 
-            //组织用户实体
-            FinanceUser financeUser = new FinanceUser();
-            financeUser.setUid(uid);
-            financeUser.setName(uq.getRealname());
-            financeUser.setMobile(user.getMobile());
-            financeUser.setCz_count(counts.get("czCount"));
-            financeUser.setMn_count(counts.get("mnCount"));
-            financeUser.setFl_count(counts.get("flCount"));
-            financeUser.setCz_count_at(counts.get("czCountAt"));
-            financeUser.setMn_count_at(counts.get("mnCountAt"));
-            financeUser.setFl_count_at(counts.get("flCountAt"));
+        List<Long> pids = Lists.newArrayList();
 
-            users.add(financeUser);
+        if(!(hid==0&&"".equals(pname))) {
+            List<Product> products = productService.findByHidAndName(hid, pname);
+            for (Product p : products) {
+                pids.add(p.getId());
+
+            }
         }
+
+        OrderType orderType = OrderType.fromId(type);
+        PayAPIType apiType= null;
+        long size = payRecordService.countFinanceByPrames(b, e, orderType, apiType, pids);
+        List<PayRecord> payRecords = payRecordService.queryFinanceByPrames(b, e, orderType, apiType, start, PageSize, pids);
+        
+        
+        List<FinanceUser> users = genFinanceUsersByPayRecords(payRecords);
+
+        //医院列表
+        List<Hospital> hospitals = hospitalService.findAll();
+
+        model.addAttribute("hospitals", hospitals);
         model.addAttribute("users",users);
+
         model.addAttribute("page", page);
+        model.addAttribute("size",size);
         model.addAttribute("total",size);
 
+        model.addAttribute("hid",hid);
+        model.addAttribute("ob", b);
+        model.addAttribute("oe", e);
+        model.addAttribute("hid", hid);
+        model.addAttribute("pname", pname);
+        model.addAttribute("type", type);
+        
+        
     }
+    
+    
+    /**
+     * 组织financeUser by payRecords
+     * @param payRecords
+     * @return
+     * @throws Exception
+     */
+    private List<FinanceUser> genFinanceUsersByPayRecords(List<PayRecord> payRecords) throws Exception{
+    	List<FinanceUser> users = Lists.newArrayList();
+    	
+    	Map<Long,List<PayRecord>> uMaps = PayRecordsGroupByUid(payRecords);
+    	
+    	for (Map.Entry<Long, List<PayRecord>> entry : uMaps.entrySet()) {  
+    		  
+    	    System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());  
+    	    
+    	    FinanceUser user = createFinanceUser(entry.getValue(), entry.getKey());
+    	    users.add(user);
+    	}
+    	
+    
+    	return users;
+    }
+    
+    /**
+     * 分组
+     * @param payRecords
+     * @return
+     */
+    private Map<Long,List<PayRecord>> PayRecordsGroupByUid(List<PayRecord> payRecords){
+    	Map<Long,List<PayRecord>> uMaps = Maps.newHashMap();
+    	
+    	for(PayRecord p:payRecords){
+    		List<PayRecord> ps = Lists.newArrayList();
+    		if(uMaps.containsKey(p.getUid())){
+    			ps = uMaps.get(p.getUid());
+    		}else{
+    			uMaps.put(p.getUid(), ps);
+    		}
+    		ps.add(p);
+    	}
+    	return uMaps;
+    }
+    
+    
+    private FinanceUser createFinanceUser(List<PayRecord> list, long uid) throws Exception{
+    	
+    	User user = userService.queryUser(uid);
+        UserQuota uq = userQuotaService.queryUserQuota(uid);
+        
+    	 Map<String, Object> counts = countOfPayRecords(list, null, null);
 
-    public Map<String, Integer> countOfPayRecords(List<PayRecord> list, Date ob, Date oe) throws Exception {
-        Map<String, Integer> data = Maps.newHashMap();
+         if(uq==null)uq=new UserQuota();
+
+         //组织用户实体
+         FinanceUser financeUser = new FinanceUser();
+         financeUser.setUid(uid);
+         financeUser.setName(uq.getRealname());
+         financeUser.setMobile(user.getMobile());
+         financeUser.setBlance(uq.getBalance());
+         financeUser.setQuotaAll(uq.getQuotaAll());
+         financeUser.setQuotaLeft(uq.getQuotaLeft());
+         
+         financeUser.setOrderMoney((BigDecimal)counts.get("orderMoney"));
+         financeUser.setRecharge((BigDecimal)counts.get("recharge"));
+         
+         financeUser.setCz_count((Integer)counts.get("czCount"));
+         financeUser.setMn_count((Integer)counts.get("mnCount"));
+         financeUser.setFl_count((Integer)counts.get("flCount"));
+         financeUser.setCz_count_at((Integer)counts.get("czCountAt"));
+         financeUser.setMn_count_at((Integer)counts.get("mnCountAt"));
+         financeUser.setFl_count_at((Integer)counts.get("flCountAt"));
+         
+         //
+         
+         
+         financeUser.setOrders(createFinanceByPayRecords(list));
+         
+         
+        return financeUser;
+    }
+    
+    private List<FinanceOrder> createFinanceByPayRecords(List<PayRecord> list){
+    	List<FinanceOrder> data = Lists.newArrayList();
+    	for(PayRecord p: list){
+    		OrderInfo info = mapper.findByOrderNo(p.getOrderNo());
+    		if(info==null){info=new OrderInfo();info.setId(0);}
+    		
+    		Product product = productService.findById(info.getId());
+    		if(product==null){product=new Product();product.setHospitalId(0l);}
+    		
+    		Hospital hospital= hospitalService.findById(product.getHospitalId());
+    		if(hospital==null)hospital=new Hospital();
+    		
+    		Coupon coupon = couponMapper.findByCouponNum(p.getCardNo());
+    		if(coupon==null)coupon=new Coupon();
+    		
+    		
+    		
+    		FinanceOrder order = new FinanceOrder();
+    		
+    		order.setId(p.getId());
+    		order.setOrderNo(p.getOrderNo());
+    		
+    	    
+    	    order.setOrderType(order.getOrderType());
+    	    order.setTradeNo(p.getTradeNo());
+    	    order.setUseAmount(p.getAmount());
+    	    order.setUseBalance(p.getBalance());
+    	    order.setUsePresent(p.getPresent());
+    	    order.setUseCard(coupon.getMoney());
+    	    order.setTpp(p.getTpp());
+    	    order.setPid(order.getPid());
+    	    order.setpName(product.getName());
+    	    order.setBankCode(p.getBankCode());
+    	    order.setCardType(p.getCardType());
+    	    order.setCardNo(p.getCardNo());
+    	    order.setPayStatus(p.getStatus());
+    	    order.setCallbackAt(p.getCallbackAt());
+    	    
+    	    data.add(order);
+    	}
+    	
+    	return data;
+    }
+    
+
+//    public void getFinanceUserByTime(Model model, String ob, String oe, Integer page) throws Exception {
+//
+//        Integer start = ((page - 1) * PageSize);
+//
+//        Date b =null, e = null;
+//        if(StringUtils.isNotBlank(ob)&&StringUtils.isNotBlank(oe)) {
+//            b = DateUtil.convertLong(ob);
+//            e = DateUtil.convertLong(oe);
+//        }
+//
+//        long size = payRecordService.queryByGroupByUid(b,e, null, null).size();
+//        List<Long> uids = payRecordService.queryByGroupByUid(b, e, start, PageSize);
+//        List<FinanceUser> users = Lists.newArrayList();
+//        for (Long uid : uids) {
+//            List<PayRecord> userPayRecords = payRecordService.queryPayRecordsByUser(uid);
+//            User user = userService.queryUser(uid);
+//            UserQuota uq = userQuotaService.queryUserQuota(uid);
+//            Map<String, Integer> counts = countOfPayRecords(userPayRecords, b, e);
+//
+//            if(uq==null)uq=new UserQuota();
+//
+//            //组织用户实体
+//            FinanceUser financeUser = new FinanceUser();
+//            financeUser.setUid(uid);
+//            financeUser.setName(uq.getRealname());
+//            financeUser.setMobile(user.getMobile());
+//            financeUser.setCz_count(counts.get("czCount"));
+//            financeUser.setMn_count(counts.get("mnCount"));
+//            financeUser.setFl_count(counts.get("flCount"));
+//            financeUser.setCz_count_at(counts.get("czCountAt"));
+//            financeUser.setMn_count_at(counts.get("mnCountAt"));
+//            financeUser.setFl_count_at(counts.get("flCountAt"));
+//
+//            users.add(financeUser);
+//        }
+//        model.addAttribute("users",users);
+//        model.addAttribute("page", page);
+//        model.addAttribute("total",size);
+//
+//    }
+
+    
+    /**
+     * 统计订单数
+     * @param list
+     * @param ob
+     * @param oe
+     * @return
+     * @throws Exception
+     */
+    public Map<String, Object> countOfPayRecords(List<PayRecord> list, Date ob, Date oe) throws Exception {
+        Map<String, Object> data = Maps.newHashMap();
         int czCount = 0, mnCount = 0, flCount = 0, czCountAt = 0, mnCountAt = 0, flCountAt = 0;
+        
+        BigDecimal useBalance, recharge, orderMoney, couponMoney;
+        useBalance = BigDecimal.valueOf(0);
+        recharge = BigDecimal.valueOf(0);
+        orderMoney = BigDecimal.valueOf(0);
+        couponMoney = BigDecimal.valueOf(0);
+        
         for (PayRecord p : list) {
             OrderType orderType = payRecordService.getOrderType(p.getOrderNo());
             Date upTime = p.getUpdatedAt();
             if (orderType == OrderType.RECHARGE) {    //充值
                 czCount += 1;
+                recharge.add(p.getAmount());
             } else if (orderType == OrderType.ONLINE) {   //订单
                 mnCount += 1;
+                orderMoney.add(p.getAmount());
+                useBalance.add(p.getBalance()).add(p.getPresent());
             } else if (orderType == OrderType.REFUND) {  //还款
                 flCount += 1;
             }
@@ -329,19 +545,33 @@ public class OrderService {
         data.put("mnCountAt", mnCountAt);
         data.put("czCountAt", czCountAt);
         data.put("flCountAt", flCountAt);
+        
+        data.put("useBalance", useBalance);
+        data.put("recharge", recharge);
+        data.put("orderMoney", orderMoney);
+        data.put("couponMoney", couponMoney);
+        
         return data;
 
     }
 
-    public static void main(String[] args) {
+    static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    public static void main(String[] args) throws Exception {
         ApplicationContext ac = new ClassPathXmlApplicationContext("spring/spring.xml");
         PayRecordService service =(PayRecordService) ac.getBean("payRecordService");
-        List<Long> list = service.queryByGroupByUid(null, null,40,30);
+        OrderService orderService =(OrderService) ac.getBean("orderService");
+        Date b = format.parse("2015-06-03");
+        Date e = new Date();
+//        List<PayRecord> list = service.queryFinanceByPrames(b, e, OrderType.RECHARGE, null,1,100,null);
         
-        System.out.println("size = "+list.size());
-        for (Long y:list){
-            System.out.println("uid = "+y);
-        }
+        orderService.queryFinance(null, "", "", 1, 2, "", 1);
+        
+//        for(PayRecord p:list){
+//        	System.out.println("id="+p.getId()+"||||"+p.getOrderNo());
+//        }
+//        System.out.println("size is "+ list.size());
+        
+        
 
     }
 
