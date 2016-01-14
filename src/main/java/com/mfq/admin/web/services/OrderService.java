@@ -16,7 +16,6 @@ import com.mfq.admin.web.bean.coupon.Coupon;
 import com.mfq.admin.web.constants.OrderType;
 import com.mfq.admin.web.models.view.FinanceOrder;
 import com.mfq.admin.web.models.view.FinanceUser;
-import com.mfq.admin.web.utils.DateUtil;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +24,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;

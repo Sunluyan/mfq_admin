@@ -78,6 +78,7 @@ public class SellService {
         model.addAttribute("hospitals", hospitals);
 
         ProductImgExample productImgExample = new ProductImgExample();
+        productImgExample.createCriteria().andPidEqualTo(id);
         List<ProductImg> imgs = productImgMapper.selectByExample(productImgExample);
         
         model.addAttribute("item_img", imgs);

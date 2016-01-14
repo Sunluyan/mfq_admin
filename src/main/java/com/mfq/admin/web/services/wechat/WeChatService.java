@@ -10,7 +10,7 @@ import com.mfq.admin.web.bean.User;
 import com.mfq.admin.web.bean.UserExtend;
 import com.mfq.admin.web.bean.WechatMsg;
 import com.mfq.admin.web.bean.example.WechatMsgExample;
-import com.mfq.admin.web.dao.WechatMsgMapper;
+import com.mfq.admin.web.dao.WeChatMsgMapper;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Maps;
@@ -27,7 +27,7 @@ import com.mfq.admin.web.utils.VerifyUtils;
 public class WeChatService {
 
     @Resource
-	WechatMsgMapper mapper;
+	WeChatMsgMapper mapper;
     @Resource
     UserExtendService userExtendService;
     @Resource
