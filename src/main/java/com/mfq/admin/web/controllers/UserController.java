@@ -320,11 +320,16 @@ public class UserController {
     	return "/user/nurse_edit";
     }
 
+	public static void main(String[] args) {
+		System.out.println("yyyyy");
+	}
+
+
 	public String fuck(){
 		return "fuck";
 	}
-    
-    
+
+
 
 }
 
