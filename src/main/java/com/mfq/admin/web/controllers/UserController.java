@@ -320,20 +320,6 @@ public class UserController {
     	return "/user/nurse_edit";
     }
 
-	public static void main(String[] args) {
-		System.out.println("yysssssyyooooy");
-	}
-
-
-
-	public String fuck(){
-		return "fuck";
-	}
-
-	public String dd(){
-		return "dd";
-	}
-
 
 
 }

@@ -17,6 +17,8 @@ import com.mfq.admin.web.dao.ProductClassifyMapper;
 import com.mfq.admin.web.dao.ProductImgMapper;
 import com.mfq.admin.web.dao.ProductMapper;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
@@ -44,6 +46,10 @@ public class SellService {
     HomeClassifyService homeClassifyService; 
     @Resource
     ProductImgMapper productImgMapper;
+
+
+    private static final Logger logger = LoggerFactory
+            .getLogger(SellService.class);
 
     long PageSize = 50;
 
@@ -83,7 +89,8 @@ public class SellService {
         
         model.addAttribute("item_img", imgs);
         
-        long classId = 0; 
+        long classId = 0;
+
         long hospitalId = 0; 
         if(classify.size() > 0){
         	classId = classify.get(0).getId();
@@ -91,7 +98,8 @@ public class SellService {
         if(hospitals.size() > 0){
         	hospitals.get(0).getId();
         }
-        if (item != null && item.getId() > 0) {
+        logger.info("item {}", item);
+        if (item != null &&item.getId()!=null&& item.getId() > 0) {
             classId = item.getTid();
             hospitalId = item.getHospitalId();
         }
