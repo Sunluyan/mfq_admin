@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.mfq.admin.web.bean.Product;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -176,7 +177,7 @@ public class SellController extends BaseController {
             BigDecimal hospitalPay = price.subtract(onlinePay);
             Product p = sellService.saveItem(fq, type2,id, name, classify, type, cityId,
                     hospitalId, price, marketPrice, onlinePay, hospitalPay, start, end, flag,
-                    imgs[0], isOnline, totalNum, totalNum, saleNum, viewNum, consumeStep, reserve,
+                    StringUtils.isNotBlank(imgs[0])?imgs[0]:null, isOnline, totalNum, totalNum, saleNum, viewNum, consumeStep, reserve,
                     specialNote, body, cureMeans, cureDur, cureHospital, recoverDur, merit, cureMethod, crowd, tabooCrowd, warning, cureNum, anesMethod, doctorLevel, cureCycle);
             
             if(!"".equals(imgs[0])){

@@ -242,8 +242,6 @@ public class SellService {
         p.setHospitalPay(hospitalPay);
         if (StringUtils.isNotBlank(img)) {
             p.setImg(img);
-        }else{
-            p.setImg(null);
         }
         p.setOnline(isOnline);
         p.setSaleNum(saleNum);

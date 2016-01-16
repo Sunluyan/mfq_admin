@@ -58,7 +58,7 @@
                     <a href="${item_img[3].img!} class="text-error img-link">${item_img[3].img!}</a></span></br>
 
 				</button>
-				
+
                 </div>
 		    </div>
 
@@ -76,7 +76,7 @@
                         <option value="${cs.id}" <#if ((cs.id))== ((classId))>selected</#if> >${cs.name}</option>
                     </#list>
                     </select>
-                    
+
                     <select name="type2">
                         <option value="激光" >激光</option>
                         <option value="针剂" >针剂</option>
@@ -91,11 +91,11 @@
                     <select id='type' name="type">
                     <#list types as type>
                         <option value="${type.id}" <#if ((type.id))== ((item.type.id))>selected</#if> >
-                        
+
                         <#if type=='NORMAL'>普通产品</#if>
                         <#if type=='SPECIAL'>特价产品</#if>
                         <#if type=='SECKILLING'>秒杀产品</#if>
-                        
+
                         </option>
                     </#list>
                     </select>
@@ -198,7 +198,7 @@
             <div class="control-group">
                 <label class="control-label" for="lname">住院治疗</label>
                 <div class="controls">
-                    
+
                 	<select name="cure_hospital">
                 		<option value="1" <#if '需要'== ((item.cure_hosptial))>selected</#if> >需要</option>
                 		<option value="0" <#if '不需要'== ((item.cure_hosptial))>selected</#if> >不需要</option>
@@ -232,11 +232,11 @@
 	                </select>
 	            </div>
 	        </div>
-	        
+
             <div class="control-group">
                 <label class="control-label" for="lname">优点</label>
                 <div class="controls">
-                   
+
                  <!-- 加载编辑器的容器 -->
 				  <script id="merit" name="merit" type="text/plain"></script>
 				  <!-- 实例化编辑器 -->
@@ -254,7 +254,7 @@
             <div class="control-group">
                 <label class="control-label" for="lname">治疗方法</label>
                 <div class="controls">
-                   
+
                   <!-- 加载编辑器的容器 -->
 				  <script id="cure_method" name="cure_method" type="text/plain"></script>
 				  <!-- 实例化编辑器 -->
@@ -265,14 +265,14 @@
 				  		initialFrameHeight:280 //初始化高度
 				  	});
 				  </script>
-				  
+
                 </div>
             </div>
 
             <div class="control-group">
                 <label class="control-label" for="lname">注意事项</label>
                 <div class="controls">
-                   
+
                   <!-- 加载编辑器的容器 -->
 				  <script id="warnings" name="warnings" type="text/plain"></script>
 				  <!-- 实例化编辑器 -->
@@ -283,14 +283,14 @@
 				  		initialFrameHeight:280 //初始化高度
 				  	});
 				  </script>
-				  
+
                 </div>
             </div>
-            
+
             <div class="control-group">
                 <label class="control-label" for="lname">禁忌人群</label>
                 <div class="controls">
-                   
+
                   <!-- 加载编辑器的容器 -->
 				  <script id="crowd" name="crowd" type="text/plain"></script>
 				  <!-- 实例化编辑器 -->
@@ -301,14 +301,14 @@
 				  		initialFrameHeight:280 //初始化高度
 				  	});
 				  </script>
-				  
+
                 </div>
             </div>
 
             <div class="control-group">
                 <label class="control-label" for="lname">适合人群</label>
                 <div class="controls">
-                   
+
                 	<!-- 加载编辑器的容器 -->
 					  <script id="taboo_crowd" name="taboo_crowd" type="text/plain"></script>
 					  <!-- 实例化编辑器 -->
@@ -340,13 +340,13 @@
             <div class="control-group">
                 <label class="control-label" for="lname">医师级别</label>
                 <div class="controls">
-              
+
                 	<select name="doctor_level" id = "doctor_level">
                 	    <option value="${detail.doctorLevel!}">${detail.doctorLevel!}</option>
                 		<option value="到院自选">到院自选</option>
                 		<option value="主治医师">主治医师</option>
                 		<option value="主治专家">主治专家</option>
-                		<option value="院长级别">院长级别</option>              		
+                		<option value="院长级别">院长级别</option>
                 	</select>
                 </div>
             </div>
@@ -414,7 +414,7 @@
         	alert("恢复时间不能为空");
         	return false;
         }
-        
+
         if($.trim($("#cure_num").val()).length < 1){
         	alert("治疗次数不能为空");
         	return false;
