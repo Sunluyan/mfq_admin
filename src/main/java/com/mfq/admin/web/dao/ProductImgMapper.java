@@ -5,7 +5,10 @@ import com.mfq.admin.web.bean.ProductImg;
 import com.mfq.admin.web.bean.example.ProductImgExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Component;
+
 @MQMDao
+@Component
 public interface ProductImgMapper {
     int countByExample(ProductImgExample example);
 

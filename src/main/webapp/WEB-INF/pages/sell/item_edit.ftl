@@ -288,7 +288,7 @@
             </div>
             
             <div class="control-group">
-                <label class="control-label" for="lname">适合人群</label>
+                <label class="control-label" for="lname">禁忌人群</label>
                 <div class="controls">
                    
                   <!-- 加载编辑器的容器 -->
@@ -306,7 +306,7 @@
             </div>
 
             <div class="control-group">
-                <label class="control-label" for="lname">禁忌人群</label>
+                <label class="control-label" for="lname">适合人群</label>
                 <div class="controls">
                    
                 	<!-- 加载编辑器的容器 -->

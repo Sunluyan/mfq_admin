@@ -89,8 +89,7 @@ public class SellService {
         
         model.addAttribute("item_img", imgs);
         
-        long classId = 0;
-
+        long classId = 0; 
         long hospitalId = 0; 
         if(classify.size() > 0){
         	classId = classify.get(0).getId();
