@@ -303,8 +303,108 @@ public class OrderService {
         PayAPIType apiType= null;
         long size = payRecordService.countFinanceByPrames(b, e, orderType, apiType, pids);
         List<PayRecord> payRecords = payRecordService.queryFinanceByPrames(b, e, orderType, apiType, start, PageSize, pids);
+
+        List<FinanceOrder> orders = createFinanceOrders(payRecords);
+        
+        //List<FinanceUser> users = genFinanceUsersByPayRecords(payRecords);
+
+        //医院列表
+        List<Hospital> hospitals = hospitalService.findAll();
+
+        model.addAttribute("hospitals", hospitals);
+        //model.addAttribute("users",users);
+        model.addAttribute("orders", orders);
+
+        model.addAttribute("page", page);
+        model.addAttribute("size",size);
+        model.addAttribute("total",size);
+
+        model.addAttribute("hid",hid);
+        model.addAttribute("ob", b);
+        model.addAttribute("oe", e);
+        model.addAttribute("hid", hid);
+        model.addAttribute("pname", pname);
+        model.addAttribute("type", type);
         
         
+    }
+
+
+
+    private List<FinanceOrder> createFinanceOrders(List<PayRecord> list){
+        List<FinanceOrder> data = Lists.newArrayList();
+        for(PayRecord payRecord:list){
+
+            UserQuota uq = userQuotaService.queryUserQuota(payRecord.getUid());
+            OrderInfo orderInfo = findByOrderNo(payRecord.getOrderNo());
+            User user = userService.queryUser(payRecord.getUid());
+
+            if(user == null){user= new User();user.setUid(0l);}
+
+            if(orderInfo == null){orderInfo = new OrderInfo(); orderInfo.setPid(0l);}
+            Product product= productService.findById(orderInfo.getPid());
+
+            if(product==null){product=new Product();product.setHospitalId(0l);}
+            Hospital hospital = hospitalService.findById(product.getHospitalId());
+
+            if(hospital == null){hospital = new Hospital();hospital.setId(0l);}
+            Coupon coupon = couponMapper.findByCouponNum(payRecord.getCardNo());
+
+
+
+            if(uq == null){uq= new UserQuota();}
+
+
+            if(coupon == null){coupon = new Coupon();}
+
+
+            FinanceOrder order = new FinanceOrder(user, uq, orderInfo, hospital, product, payRecord, coupon);
+            data.add(order);
+        }
+        return data;
+    }
+
+
+    /**
+     * 财务订单(finance控制) 之前
+     * @param model
+     * @param ob
+     * @param oe
+     * @param page
+     * @param hid
+     * @param pname
+     * @param type
+     * @throws Exception
+     */
+    public void queryFinance2(Model model, String ob, String oe, Integer page, long hid, String pname, int type) throws Exception{
+        Integer start = ((page - 1) * PageSize);
+
+        Date b =null, e = null;
+
+        SimpleDateFormat fmt =  new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        if(StringUtils.isNotBlank(ob)&&StringUtils.isNotBlank(oe)) {
+            b = fmt.parse(ob);
+            e = fmt.parse(oe);
+        }
+
+
+
+        List<Long> pids = Lists.newArrayList();
+
+        if(!(hid==0&&"".equals(pname))) {
+            List<Product> products = productService.findByHidAndName(hid, pname);
+            for (Product p : products) {
+                pids.add(p.getId());
+
+            }
+        }
+
+        OrderType orderType = OrderType.fromId(type);
+        PayAPIType apiType= null;
+        long size = payRecordService.countFinanceByPrames(b, e, orderType, apiType, pids);
+        List<PayRecord> payRecords = payRecordService.queryFinanceByPrames(b, e, orderType, apiType, start, PageSize, pids);
+
+
         List<FinanceUser> users = genFinanceUsersByPayRecords(payRecords);
 
         //医院列表
@@ -323,11 +423,11 @@ public class OrderService {
         model.addAttribute("hid", hid);
         model.addAttribute("pname", pname);
         model.addAttribute("type", type);
-        
-        
+
+
     }
-    
-    
+
+
     /**
      * 组织financeUser by payRecords
      * @param payRecords
@@ -415,7 +515,7 @@ public class OrderService {
     		OrderInfo info = mapper.findByOrderNo(p.getOrderNo());
     		if(info==null){info=new OrderInfo();info.setId(0);}
     		
-    		Product product = productService.findById(info.getId());
+    		Product product = productService.findById(info.getPid());
     		if(product==null){product=new Product();product.setHospitalId(0l);}
     		
     		Hospital hospital= hospitalService.findById(product.getHospitalId());
@@ -432,14 +532,14 @@ public class OrderService {
     		order.setOrderNo(p.getOrderNo());
     		
     	    
-    	    order.setOrderType(order.getOrderType());
+    	    order.setOrderType(0);
     	    order.setTradeNo(p.getTradeNo());
     	    order.setUseAmount(p.getAmount());
     	    order.setUseBalance(p.getBalance());
     	    order.setUsePresent(p.getPresent());
     	    order.setUseCard(coupon.getMoney());
     	    order.setTpp(p.getTpp());
-    	    order.setPid(order.getPid());
+    	    order.setPid(info.getPid());
     	    order.setpName(product.getName());
     	    order.setBankCode(p.getBankCode());
     	    order.setCardType(p.getCardType());

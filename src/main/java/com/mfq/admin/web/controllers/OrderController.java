@@ -220,6 +220,24 @@ public class OrderController extends BaseController {
 		return "order/order_budget";
 	}
 
+
+	@RequestMapping(value = "/order/budget2/", method = {RequestMethod.GET, RequestMethod.POST})
+	public String budget2(Model model,
+						 @RequestParam(value = "ob", defaultValue = "") String ob,
+						 @RequestParam(value = "oe", defaultValue = "") String oe,
+						 @RequestParam(value = "page", defaultValue = "1")int page,
+						 @RequestParam(value = "hid", defaultValue="0")int hid,
+						 @RequestParam(value = "pname", defaultValue="")String pname,
+						 @RequestParam(value = "type", defaultValue="0")int type){
+		try {
+			orderService.queryFinance(model, ob, oe, page, hid, pname, type);
+			return "order/order_budget";
+		}catch (Exception e){
+			logger.error("order budget is error {}",e);
+		}
+		return "order/order_budget";
+	}
+
     @RequestMapping(value = "/order/edit/", method = RequestMethod.GET)
     public String orderEdit(
             @RequestParam(defaultValue = "0", required = false) Long id,

@@ -60,6 +60,7 @@ public class UserService {
         User user = mapper.selectByPrimaryKey(id);
         if (user == null) {
             user = new User();
+            user.setUid(0l);
         }
         return user;
     }

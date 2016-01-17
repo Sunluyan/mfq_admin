@@ -58,6 +58,14 @@ public class Product {
 
     private Date updatedAt;
 
+    public Product(){
+        this.orderNo= 1;
+        this.saleNum = 0l;
+        this.viewNum = 0l;
+        this.createdAt = new Date();
+        this.updatedAt = new Date();
+    }
+
     public Long getId() {
         return id;
     }

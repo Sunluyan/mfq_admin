@@ -89,7 +89,7 @@ public class SellService {
         
         model.addAttribute("item_img", imgs);
         
-        long classId = 0; 
+        long classId = 0;
         long hospitalId = 0; 
         if(classify.size() > 0){
         	classId = classify.get(0).getId();
@@ -204,11 +204,14 @@ public class SellService {
             productService.updateOne(d);
         } else {
             p = new Product();
+            p.setOrderNo(1);
             d = new ProductDetail();
             p = setProductByParam(p, fq, type2, name, classify, productType, cityId, hospitalId, dateStart,
                     dateEnd, flag, img, isOnline, totalNum, remainNum, saleNum, viewNum, price, marketPrice,
                     onlinePay, hospitalPay);
-            productService.insertProduct(p);
+            long re = productService.insertProduct(p);
+
+
             d = setProductDetailByParam(d, p.getId(), consumeStep, reserve,
                     specialNote, body,cureMeans, cureDur, cureHospital, recoverDur, merit, cureMethod, crowd, tabooCrowd, warning, cureNum, anesMethod, doctorLevel, cureCycle);
             productService.insertDetail(d);
@@ -230,6 +233,7 @@ public class SellService {
         }else{
         	p.setIsFq(false);
         }
+
         p.setHospitalId((long)hospitalId);
         p.setPrice(price);
         p.setMarketPrice(marketPrice);
@@ -242,6 +246,8 @@ public class SellService {
         p.setHospitalPay(hospitalPay);
         if (StringUtils.isNotBlank(img)) {
             p.setImg(img);
+        }else {
+            p.setImg(null);
         }
         p.setOnline(isOnline);
         p.setSaleNum(saleNum);

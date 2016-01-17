@@ -1,5 +1,8 @@
 package com.mfq.admin.web.models.view;
 
+import com.mfq.admin.web.bean.*;
+import com.mfq.admin.web.bean.coupon.Coupon;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -11,6 +14,12 @@ public class FinanceOrder {
 	private long id;  //payrecord id
 	
 	private String orderNo; //订单号
+
+	private String mobile;  //用户手机号
+
+	private BigDecimal orderMoney;  //订单额度
+
+	private String realname;  //
 	
     private Integer orderType;  //订单类型
 
@@ -25,6 +34,8 @@ public class FinanceOrder {
     private BigDecimal useCard;  //优惠券抵用额度
 
     private String tpp; //支付api
+
+	private long uid;
     
     private Long pid;  //产品id
     
@@ -50,6 +61,45 @@ public class FinanceOrder {
     private long hid; //医院id
     
     private String hospitalName; //医院名称
+
+
+
+	public FinanceOrder(){
+
+	}
+
+	public FinanceOrder(User user, UserQuota quota, OrderInfo order, Hospital hospital, Product product,PayRecord payRecord, Coupon coupon){
+		this.id = payRecord.getId();
+		this.orderNo = payRecord.getOrderNo();
+		this.orderType = 0;   //// TODO: 16/1/16
+		this.tradeNo = payRecord.getTradeNo();
+		this.useAmount = payRecord.getAmount();
+		this.useBalance = payRecord.getBalance();
+		this.usePresent = payRecord.getPresent();
+		this.useCard = coupon.getMoney();
+		this.tpp = payRecord.getTpp();
+		this.pid = order.getPid();
+		this.pName = product.getName();
+		this.bankCode = payRecord.getBankCode();
+		this.cardType = 1;   //// TODO: 16/1/16
+		this.cardNo = coupon.getCouponNum();
+		this.payStatus = payRecord.getStatus();
+		this.callbackAt = payRecord.getCallbackAt();
+
+		this.orderMoney = order.getOnlinePay();
+
+
+		this.mobile = user.getMobile();
+		this.realname = quota.getRealname();
+		this.uid = user.getUid();
+
+		this.createdAt = order.getCreatedAt();
+		this.serviceStartTime = order.getServiceStartTime();
+		this.hid = hospital.getId();
+		this.hospitalName = hospital.getName();
+	
+
+	}
 
 	public long getId() {
 		return id;
@@ -171,9 +221,35 @@ public class FinanceOrder {
 		this.callbackAt = callbackAt;
 	}
 
+	public String getMobile() {
+		return mobile;
+	}
+
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
+
+	public String getRealname() {
+		return realname;
+	}
+
+	public void setRealname(String realname) {
+		this.realname = realname;
+	}
+
+	public long getUid() {
+		return uid;
+	}
+
+	public void setUid(long uid) {
+		this.uid = uid;
+	}
+
 	public String getpName() {
 		return pName;
 	}
+
+
 
 	public void setpName(String pName) {
 		this.pName = pName;
