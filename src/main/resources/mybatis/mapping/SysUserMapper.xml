@@ -104,6 +104,9 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.mfq.admin.web.bean.SysUser" >
+    <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+      SELECT LAST_INSERT_ID() AS ID
+    </selectKey>
     insert into sys_user (id, username, realname, 
       mobile, role_id, hospital_id, 
       status, created, updated
@@ -114,6 +117,9 @@
       )
   </insert>
   <insert id="insertSelective" parameterType="com.mfq.admin.web.bean.SysUser" >
+    <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+      SELECT LAST_INSERT_ID() AS ID
+    </selectKey>
     insert into sys_user
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >

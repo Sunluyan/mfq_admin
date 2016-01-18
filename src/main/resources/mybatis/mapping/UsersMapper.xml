@@ -539,7 +539,7 @@
 			]]>
     </if>
 
-    order by updated_at desc
+    order by quota.updated_at desc
 
     <if test = "count == null or count == ''">
       limit #{start},#{pagesize}

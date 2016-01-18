@@ -93,13 +93,14 @@ public class SysUserController {
         String msg = "";
         try{
             SysUser user = sysUserService.queryUserByName(username);
-            if(user.getId() > 0){
+            if(user != null ){
                 msg = "用户已存在！";
             }else{
                 Long roleId = Long.parseLong(role);
                 Long hospitalId = Long.parseLong(hospital);
                 user = new SysUser(username, realname, mobile, roleId);
                 user.setStatus(Status.fromValue(status));
+                user.setHospitalId(0l);
                 
                 //医院用户 roleid 为 6 7
                 if(roleId == 6 || roleId == 7){

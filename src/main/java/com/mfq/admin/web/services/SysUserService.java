@@ -67,11 +67,14 @@ public class SysUserService {
     public SysUser queryUserByName(String username) {
         SysUserExample example = new SysUserExample();
         example.or().andUsernameEqualTo(username);
-        SysUser user = mapper.selectByExample(example).get(0);
-        if(user == null){
-            user = new SysUser();
+
+        List<SysUser> users = mapper.selectByExample(example);
+        if(users.size()>0){
+            return  users.get(0);
         }
-        return user;
+
+        return null;
+
     }
 
     public boolean updateStatus(long uid, Status status) {

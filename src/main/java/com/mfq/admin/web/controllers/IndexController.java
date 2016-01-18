@@ -32,4 +32,16 @@ public class IndexController {
         }
         return "index";
     }
+
+    @RequestMapping(value = {"/index","/index/"})
+    public String homeIndex(Model model){
+
+        try {
+            
+
+        }catch (Exception e){
+            logger.error("首页index is error {}", e);
+        }
+        return "index/home_index";
+    }
 }

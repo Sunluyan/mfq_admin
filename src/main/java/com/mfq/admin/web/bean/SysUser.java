@@ -27,7 +27,12 @@ public class SysUser {
         this.username = username;
         this.realname = realname;
         this.mobile = mobile;
+        this.status = Status.NORMAL;
         this.roleId = roleId;
+        this.hospitalId = 0l;
+        this.created = new Date();
+        this.updated = new Date();
+
     }
 
     public SysUser() {
