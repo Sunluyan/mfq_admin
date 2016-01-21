@@ -2,6 +2,9 @@ package com.mfq.admin.web.services;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import javax.annotation.Resource;
 
@@ -14,7 +17,14 @@ import com.mfq.admin.web.bean.example.UsersQuotaExample;
 import com.mfq.admin.web.bean.model.OrderModel;
 import com.mfq.admin.web.bean.model.OrderPayModel;
 import com.mfq.admin.web.constants.*;
+import com.mfq.admin.web.bean.DeviceExample;
+import com.mfq.admin.web.bean.Nurse;
+import com.mfq.admin.web.bean.Product;
+import com.mfq.admin.web.bean.User;
+import com.mfq.admin.web.bean.example.*;
+import com.mfq.admin.web.constants.OrderStatus;
 import com.mfq.admin.web.dao.*;
+import com.mfq.admin.web.utils.DateUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -39,15 +49,20 @@ public class UserService {
     PayRecordService payRecordService;
 
     @Resource
+    DeviceMapper deviceMapper;
+    @Resource
     OrderInfoMapper orderInfoMapper;
     @Resource
     ProductService productService;
     @Resource
-    HospitalMapper hospitalMapper;
-    @Resource
     OrderService orderService;
     @Resource
     OrderFreedomService freedomService;
+
+    @Resource
+    HospitalMapper hospitalMapper;
+    @Resource
+    ProductMapper productMapper;
 
     public int PageSize = 50;
 
@@ -262,8 +277,57 @@ public class UserService {
         return count;
     }
 
+    public long getYesterdayNewUserCount() throws Exception {
+        UsersExample example = new UsersExample();
+        Date yesterday = DateUtil.getYesterday();
+        Date today = DateUtil.getToday();
+        example.or().andCreatedAtBetween(yesterday,today);
+        long count = (long)mapper.countByExample(example);
+        return count;
+    }
 
-    public static void main(String[] args) {
+    public long getYesterdayNewDevice() throws ParseException {
+        DeviceExample example = new DeviceExample();
+        Date yesterday = DateUtil.getYesterday();
+        Date today = DateUtil.getToday();
+        example.or().andFirstLoginTimeBetween(yesterday,today);
+
+        return (long)deviceMapper.countByExample(example);
+    }
+
+    public long getYesterdayNewOrder() throws ParseException {
+        Date yesterday = DateUtil.getYesterday();
+        Date today = DateUtil.getToday();
+        OrderInfoExample example = new OrderInfoExample();
+        example.or().andCreatedAtBetween(yesterday,today);
+
+        return (long)orderInfoMapper.countByExample(example);
+    }
+
+
+    public long getYesterdayNewOrderOfPay() throws ParseException{
+        Date yesterday = DateUtil.getYesterday();
+        Date today = DateUtil.getToday();
+        OrderInfoExample example = new OrderInfoExample();
+        example.or().andCreatedAtBetween(yesterday,today).andStatusEqualTo(OrderStatus.PAY_OK.getValue());
+        return (long)orderInfoMapper.countByExample(example);
+    }
+
+    public long getCountHospital(){
+        HospitalExample example = new HospitalExample();
+        long count = hospitalMapper.countByExample(example);
+        return count;
+    }
+
+    public long getCountProduct(){
+        ProductExample example = new ProductExample();
+        example.or().andFlagNotEqualTo(-1);
+        long count = productMapper.countByExample(example);
+        return count;
+    }
+
+
+    public static void main(String[] args) throws Exception {
         ApplicationContext ac = new ClassPathXmlApplicationContext("spring/spring.xml");
         UserService service = ac.getBean(UserService.class);
         List<Nurse> list = service.getAllNurse();

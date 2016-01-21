@@ -7,7 +7,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Component;
+
 @MQMDao
+@Component
 public interface UsersMapper {
     int countByExample(UsersExample example);
 

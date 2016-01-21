@@ -511,6 +511,18 @@
       and quota.auth_status = -2
     </if>
 
+    <if test = 'type != null and type == "unseeInterview" '>
+      and quota.auth_status = 3
+    </if>
+
+    <if test = 'type != null and type == "passInterview" '>
+      and quota.auth_status = 4
+    </if>
+
+    <if test = 'type != null and type == "outInterview" '>
+      and quota.auth_status = -3
+    </if>
+
     <if test = "uid != null and uid != '' ">
       and quota.uid like CONCAT('%',#{uid},'%')
     </if>

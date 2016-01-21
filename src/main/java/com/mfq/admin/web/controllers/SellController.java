@@ -38,8 +38,6 @@ public class SellController extends BaseController {
 
     @Resource
     SellService sellService;
-    @Resource
-    ProductClassifyService classifyService;
 
     /**
      * 商品管理
@@ -53,12 +51,12 @@ public class SellController extends BaseController {
             @RequestParam(defaultValue = "" , required = false) String orderno,
             @RequestParam(defaultValue = "" , required = false) String proname,
             @RequestParam(defaultValue = "" , required = false) String hosname,
-            @RequestParam( defaultValue = "0" , required = false) int isOnline,
             @RequestParam(defaultValue = "id desc" , required = false) String orderby,
-
+            @RequestParam(defaultValue = "motherfucker",required = false) String online,
             Model model) {
     	try{
-    		sellService.findByPage(page,orderno,proname,hosname,orderby,isOnline,model);
+
+            sellService.findByPage(page,orderno,proname,hosname,orderby,model,online);
     	}catch(Exception e){
     		logger.info("sell items error {}",e);
     	}

@@ -43,7 +43,7 @@ public class SellService {
     @Resource
     ProductClassifyMapper productClassifyMapper;
     @Resource
-    HomeClassifyService homeClassifyService; 
+    HomeClassifyService homeClassifyService;
     @Resource
     ProductImgMapper productImgMapper;
 
@@ -73,7 +73,7 @@ public class SellService {
         }
         model.addAttribute("item", item); // 产品
         model.addAttribute("detail", detail); // 产品详情
-        
+
         model.addAttribute("types", ProductType.values());
 
         ProductClassifyExample productClassifyExample = new ProductClassifyExample();
@@ -86,71 +86,79 @@ public class SellService {
         ProductImgExample productImgExample = new ProductImgExample();
         productImgExample.createCriteria().andPidEqualTo(id);
         List<ProductImg> imgs = productImgMapper.selectByExample(productImgExample);
-        
+
         model.addAttribute("item_img", imgs);
-        
+
         long classId = 0;
-        long hospitalId = 0; 
-        if(classify.size() > 0){
-        	classId = classify.get(0).getId();
+        long hospitalId = 0;
+        if (classify.size() > 0) {
+            classId = classify.get(0).getId();
         }
-        if(hospitals.size() > 0){
-        	hospitals.get(0).getId();
+        if (hospitals.size() > 0) {
+            hospitals.get(0).getId();
         }
         logger.info("item {}", item);
-        if (item != null &&item.getId()!=null&& item.getId() > 0) {
+        if (item != null && item.getId() != null && item.getId() > 0) {
             classId = item.getTid();
             hospitalId = item.getHospitalId();
         }
-        
+
         List<HomeClassify> hclasses = homeClassifyService.queryAll();
         model.addAttribute("classId", classId);
         model.addAttribute("hospitalId", hospitalId);
         model.addAttribute("cityId", item.getCityId());
-        model.addAttribute("type2" ,item.getType2());
+        model.addAttribute("type2", item.getType2());
         model.addAttribute("homeclass", hclasses);
     }
 
     /**
      * 查找产品
+     *
      * @param page
      * @param orderno
      * @param proname
      * @param hosname
-     * @param orderby   例如: "id desc" , "price desc"
+     * @param orderby 例如: "id desc" , "price desc"
      * @param model
      */
-    public void findByPage(long page,String orderno,String proname,String hosname, String orderby, int isOnline, Model model) {
+    public void findByPage(long page, String orderno, String proname, String hosname, String orderby, Model model, String online) {
         long start = (page - 1) * PageSize;
         // 商品列表
 
         //List<Product> items = productService.findByPage(start, PageSize);
         ProductExample productExample = new ProductExample();
-        if(StringUtils.isNotBlank(proname)){
-            productExample.or().andNameLike("%"+proname+"%");
+        ProductExample.Criteria or = productExample.or();
+        if (StringUtils.isNotBlank(proname)) {
+            or.andNameLike("%" + proname + "%");
         }
-        if(StringUtils.isNotBlank(hosname)){
+        if (StringUtils.isNotBlank(online)) {
+            if (online.equals("true")) {
+                or.andOnlineEqualTo(1);
+            }else if(online.equals("false")){
+                or.andOnlineEqualTo(0);
+            }
+        }
+        if (StringUtils.isNotBlank(hosname)) {
             //如果医院不是null的话,通过医院名称把医院id查出来,然后当做条件查询产品
             HospitalExample hospitalExample = new HospitalExample();
-            hospitalExample.or().andNameLike("%"+hosname+"%");
+            hospitalExample.or().andNameLike("%" + hosname + "%");
             List<Hospital> hospitalsByName = hospitalMapper.selectByExample(hospitalExample);
-            if(hospitalsByName == null || hospitalsByName.size() == 0){
-                return ;
+            if (hospitalsByName == null || hospitalsByName.size() == 0) {
+                return;
             }
-            List<Long> hosIds  = new ArrayList<>();
+            List<Long> hosIds = new ArrayList<>();
             for (Hospital hospital : hospitalsByName) {
                 hosIds.add(hospital.getId());
             }
             productExample.or().andHospitalIdIn(hosIds);
         }
-
-
-        List<Product> items = productMapper.findByPageAndExample(start,PageSize,productExample,orderby);
+        List<Product> items = productMapper.findByPageAndExample(start, PageSize, productExample, orderby);
 
         model.addAttribute("items", items);
         model.addAttribute("hosname", hosname);
         model.addAttribute("proname", proname);
         model.addAttribute("orderby", orderby);
+        model.addAttribute("online",online);
 
         ProductClassifyExample productClassifyExample = new ProductClassifyExample();
         List<ProductClassify> classify = productClassifyMapper.selectByExample(productClassifyExample);
@@ -171,9 +179,9 @@ public class SellService {
         long start = 0;
         long PageSize = 50;
         ProductExample productExample = new ProductExample();
-        productExample.or().andNameLike("%"+"针"+"%");
+        productExample.or().andNameLike("%" + "针" + "%");
         String orderby = "id desc";
-        List<Product> items = productMapper.findByPageAndExample(start,PageSize,productExample,orderby);
+        List<Product> items = productMapper.findByPageAndExample(start, PageSize, productExample, orderby);
         for (Product item : items) {
             System.out.println(item);
         }

@@ -1,5 +1,6 @@
 package com.mfq.admin.web.dao;
 
+import com.google.common.collect.Ordering;
 import com.mfq.admin.web.annotation.MQMDao;
 import com.mfq.admin.web.bean.OrderInfo;
 import com.mfq.admin.web.bean.example.OrderInfoExample;
@@ -7,7 +8,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Component;
+
 @MQMDao
+@Component
 public interface OrderInfoMapper {
     int countByExample(OrderInfoExample example);
 
@@ -46,6 +50,8 @@ public interface OrderInfoMapper {
                                       @Param("oe") String oe, @Param("start") long start,
                                       @Param("pagesize") long pagesize);
 
+
+
     public List<OrderInfo> findByPageByHospital(@Param("orderNo") String orderNo,
                                                 @Param("uid") long uid, @Param("securityCode") String securityCode,
                                                 @Param("status") int status, @Param("ob") String ob,
@@ -71,4 +77,7 @@ public interface OrderInfoMapper {
                                                       @Param("start") long start, @Param("pagesize") long pageSize);
 
     public List<Map<String,Object>> findStatusByUid(@Param("uids")List<String> uids);
+
+    public List<OrderInfo> findByPageOfLiu(@Param("example") OrderInfoExample example,@Param("start") long start ,
+                                           @Param("pagesize")long pagesize );
 }
