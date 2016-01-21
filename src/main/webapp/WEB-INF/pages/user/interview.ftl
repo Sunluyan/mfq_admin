@@ -246,7 +246,7 @@
       var applytimeto = $("#applytimeto").val()
       var checktimefrom = $("#checktimefrom").val()
       var checktimeto = $("#checktimeto").val()
-      var type = tables.tableindex==1?"unsee":tables.tableindex==2?"pass":"out"
+      var type = tables.tableindex==1?"unseeInterview":tables.tableindex==2?"passInterview":"outInterview"
 
       $.ajax({
         url:'/ajax',

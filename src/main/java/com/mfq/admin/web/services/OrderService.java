@@ -13,6 +13,7 @@ import javax.annotation.Resource;
 
 import com.mfq.admin.web.bean.*;
 import com.mfq.admin.web.bean.coupon.Coupon;
+import com.mfq.admin.web.bean.example.OrderInfoExample;
 import com.mfq.admin.web.constants.OrderType;
 import com.mfq.admin.web.models.view.FinanceOrder;
 import com.mfq.admin.web.models.view.FinanceUser;
@@ -92,8 +93,11 @@ public class OrderService {
             orders = mapper.findByPageByHospital(orderNo, uid,
                     securityCode, status, ob, oe, start, LoginUser.getHospitalId(), PageSize);
         } else {
+
+
             orders = mapper.findByPage(orderNo, 0,
                     securityCode, status, ob, oe, start, PageSize);
+
         }
 
 

@@ -43,7 +43,7 @@ public class SellService {
     @Resource
     ProductClassifyMapper productClassifyMapper;
     @Resource
-    HomeClassifyService homeClassifyService; 
+    HomeClassifyService homeClassifyService;
     @Resource
     ProductImgMapper productImgMapper;
 
@@ -73,7 +73,7 @@ public class SellService {
         }
         model.addAttribute("item", item); // 产品
         model.addAttribute("detail", detail); // 产品详情
-        
+
         model.addAttribute("types", ProductType.values());
 
         ProductClassifyExample productClassifyExample = new ProductClassifyExample();
@@ -86,69 +86,79 @@ public class SellService {
         ProductImgExample productImgExample = new ProductImgExample();
         productImgExample.createCriteria().andPidEqualTo(id);
         List<ProductImg> imgs = productImgMapper.selectByExample(productImgExample);
-        
+
         model.addAttribute("item_img", imgs);
-        
+
         long classId = 0;
-        long hospitalId = 0; 
-        if(classify.size() > 0){
-        	classId = classify.get(0).getId();
+        long hospitalId = 0;
+        if (classify.size() > 0) {
+            classId = classify.get(0).getId();
         }
-        if(hospitals.size() > 0){
-        	hospitals.get(0).getId();
+        if (hospitals.size() > 0) {
+            hospitals.get(0).getId();
         }
         logger.info("item {}", item);
-        if (item != null &&item.getId()!=null&& item.getId() > 0) {
+        if (item != null && item.getId() != null && item.getId() > 0) {
             classId = item.getTid();
             hospitalId = item.getHospitalId();
         }
-        
+
         List<HomeClassify> hclasses = homeClassifyService.queryAll();
         model.addAttribute("classId", classId);
         model.addAttribute("hospitalId", hospitalId);
         model.addAttribute("cityId", item.getCityId());
-        model.addAttribute("type2" ,item.getType2());
+        model.addAttribute("type2", item.getType2());
         model.addAttribute("homeclass", hclasses);
     }
 
     /**
      * 查找产品
+     *
      * @param page
      * @param orderno
      * @param proname
      * @param hosname
-     * @param orderby   例如: "id desc" , "price desc"
+     * @param orderby 例如: "id desc" , "price desc"
      * @param model
      */
-    public void findByPage(long page,String orderno,String proname,String hosname, String orderby, Model model) {
+    public void findByPage(long page, String orderno, String proname, String hosname, String orderby, Model model, String online) {
         long start = (page - 1) * PageSize;
         // 商品列表
 
         //List<Product> items = productService.findByPage(start, PageSize);
         ProductExample productExample = new ProductExample();
-        if(StringUtils.isNotBlank(proname)){
-            productExample.or().andNameLike("%"+proname+"%");
+        ProductExample.Criteria or = productExample.or();
+        if (StringUtils.isNotBlank(proname)) {
+            or.andNameLike("%" + proname + "%");
         }
-        if(StringUtils.isNotBlank(hosname)){
+        if (StringUtils.isNotBlank(online)) {
+            if (online.equals("true")) {
+                or.andOnlineEqualTo(1);
+            }else if(online.equals("false")){
+                or.andOnlineEqualTo(0);
+            }
+        }
+        if (StringUtils.isNotBlank(hosname)) {
             //如果医院不是null的话,通过医院名称把医院id查出来,然后当做条件查询产品
             HospitalExample hospitalExample = new HospitalExample();
-            hospitalExample.or().andNameLike("%"+hosname+"%");
+            hospitalExample.or().andNameLike("%" + hosname + "%");
             List<Hospital> hospitalsByName = hospitalMapper.selectByExample(hospitalExample);
-            if(hospitalsByName == null || hospitalsByName.size() == 0){
-                return ;
+            if (hospitalsByName == null || hospitalsByName.size() == 0) {
+                return;
             }
-            List<Long> hosIds  = new ArrayList<>();
+            List<Long> hosIds = new ArrayList<>();
             for (Hospital hospital : hospitalsByName) {
                 hosIds.add(hospital.getId());
             }
             productExample.or().andHospitalIdIn(hosIds);
         }
-        List<Product> items = productMapper.findByPageAndExample(start,PageSize,productExample,orderby);
+        List<Product> items = productMapper.findByPageAndExample(start, PageSize, productExample, orderby);
 
         model.addAttribute("items", items);
         model.addAttribute("hosname", hosname);
         model.addAttribute("proname", proname);
         model.addAttribute("orderby", orderby);
+        model.addAttribute("online",online);
 
         ProductClassifyExample productClassifyExample = new ProductClassifyExample();
         List<ProductClassify> classify = productClassifyMapper.selectByExample(productClassifyExample);
@@ -169,9 +179,9 @@ public class SellService {
         long start = 0;
         long PageSize = 50;
         ProductExample productExample = new ProductExample();
-        productExample.or().andNameLike("%"+"针"+"%");
+        productExample.or().andNameLike("%" + "针" + "%");
         String orderby = "id desc";
-        List<Product> items = productMapper.findByPageAndExample(start,PageSize,productExample,orderby);
+        List<Product> items = productMapper.findByPageAndExample(start, PageSize, productExample, orderby);
         for (Product item : items) {
             System.out.println(item);
         }
@@ -179,18 +189,18 @@ public class SellService {
 
     @Transactional
     public Product saveItem(int fq, String type2, Long id, String name, int classify, int type, int cityId,
-            int hospitalId, BigDecimal price, BigDecimal marketPrice, BigDecimal onlinePay,
-            BigDecimal hospitalPay, Date dateStart, Date dateEnd, int flag,
-            String img, boolean isOnline, long totalNum, long remainNum, long saleNum, long viewNum,
-            String consumeStep, String reserve, String specialNote,
-            String body, String cureMeans, String cureDur, int cureHospital, String recoverDur, String merit, String cureMethod, String crowd, String tabooCrowd, String warning,
+                            int hospitalId, BigDecimal price, BigDecimal marketPrice, BigDecimal onlinePay,
+                            BigDecimal hospitalPay, Date dateStart, Date dateEnd, int flag,
+                            String img, boolean isOnline, long totalNum, long remainNum, long saleNum, long viewNum,
+                            String consumeStep, String reserve, String specialNote,
+                            String body, String cureMeans, String cureDur, int cureHospital, String recoverDur, String merit, String cureMethod, String crowd, String tabooCrowd, String warning,
                             String cureNum, String anesMethod, String doctorLevel, String cureCycle) {
         // 维护商品
         Product p = null;
         ProductDetail d = null;
         ProductType productType = ProductType.fromId(type);
-        if(productType == null){
-        	productType = ProductType.NORMAL;
+        if (productType == null) {
+            productType = ProductType.NORMAL;
         }
         if (id != null && id > 0) {
             p = productService.findById(id);
@@ -213,28 +223,28 @@ public class SellService {
 
 
             d = setProductDetailByParam(d, p.getId(), consumeStep, reserve,
-                    specialNote, body,cureMeans, cureDur, cureHospital, recoverDur, merit, cureMethod, crowd, tabooCrowd, warning, cureNum, anesMethod, doctorLevel, cureCycle);
+                    specialNote, body, cureMeans, cureDur, cureHospital, recoverDur, merit, cureMethod, crowd, tabooCrowd, warning, cureNum, anesMethod, doctorLevel, cureCycle);
             productService.insertDetail(d);
         }
         return p;
     }
 
     private Product setProductByParam(Product p, int fq, String type2, String name, int classify, ProductType type,
-            int cityId, int hospitalId, Date dateStart, Date dateEnd, int flag,
-            String img, boolean isOnline, long totalNum, long remainNum, long saleNum, long viewNum,
-            BigDecimal price, BigDecimal marketPrice, BigDecimal onlinePay, BigDecimal hospitalPay) {
+                                      int cityId, int hospitalId, Date dateStart, Date dateEnd, int flag,
+                                      String img, boolean isOnline, long totalNum, long remainNum, long saleNum, long viewNum,
+                                      BigDecimal price, BigDecimal marketPrice, BigDecimal onlinePay, BigDecimal hospitalPay) {
         p.setName(name);
         p.setType2(type2);
         p.setTid(classify);
         p.setCityId(cityId);
         p.setType(type);
-        if(fq == 1){
-        	p.setIsFq(true);
-        }else{
-        	p.setIsFq(false);
+        if (fq == 1) {
+            p.setIsFq(true);
+        } else {
+            p.setIsFq(false);
         }
 
-        p.setHospitalId((long)hospitalId);
+        p.setHospitalId((long) hospitalId);
         p.setPrice(price);
         p.setMarketPrice(marketPrice);
         p.setDateStart(dateStart);
@@ -246,7 +256,7 @@ public class SellService {
         p.setHospitalPay(hospitalPay);
         if (StringUtils.isNotBlank(img)) {
             p.setImg(img);
-        }else {
+        } else {
             p.setImg(null);
         }
         p.setOnline(isOnline);
@@ -255,16 +265,16 @@ public class SellService {
         p.setpPrice(new BigDecimal(0));
         p.setpNum(0);
         p.setUpdatedAt(new Date());
-        
+
         return p;
     }
 
     private ProductDetail setProductDetailByParam(ProductDetail d, long pid,
-            String consumeStep, String reserve, String specialNote,
-            String body, String cureMeans, String cureDur, int cureHospital, String recoverDur, String merit, String cureMethod, String crowd, String tabooCrowd, String warning,
-                                         String cureNum, String anesMethod, String doctorLevel, String cureCycle) {
-    	if(d == null)
-    		d = new ProductDetail();
+                                                  String consumeStep, String reserve, String specialNote,
+                                                  String body, String cureMeans, String cureDur, int cureHospital, String recoverDur, String merit, String cureMethod, String crowd, String tabooCrowd, String warning,
+                                                  String cureNum, String anesMethod, String doctorLevel, String cureCycle) {
+        if (d == null)
+            d = new ProductDetail();
         d.setPid(pid);
         d.setConsumeStep(consumeStep);
         d.setReserve(reserve);
@@ -272,12 +282,12 @@ public class SellService {
         d.setBody(body);
         d.setCureMeans(cureMeans);
         d.setCureDur(cureDur);
-        if(cureHospital == 1){
-        	d.setCureHospital("需要");
-        }else{
-        	d.setCureHospital("不需要");
+        if (cureHospital == 1) {
+            d.setCureHospital("需要");
+        } else {
+            d.setCureHospital("不需要");
         }
-        
+
         d.setRecoverDur(recoverDur);
         d.setMerit(merit);
         d.setCureMethod(cureMethod);
@@ -288,43 +298,43 @@ public class SellService {
         d.setAnesMethod(anesMethod);
         d.setDoctorLevel(doctorLevel);
         d.setCureCycle(cureCycle);
-        
+
         return d;
     }
 
-	public long saveProductImg(long id, String[] imgs) {
-		if(id < 1){
-			return 0;
-		}
-		if(imgs.length > 0){
-			if(!"".equals(imgs[0])){
-				productImgMapper.deleteByPrimaryKey(id);
-			}
-		}
-		
-		for(String img: imgs){
-			ProductImg pimg=new ProductImg();
-			pimg.setPid(id);
-			pimg.setImg(img);
+    public long saveProductImg(long id, String[] imgs) {
+        if (id < 1) {
+            return 0;
+        }
+        if (imgs.length > 0) {
+            if (!"".equals(imgs[0])) {
+                productImgMapper.deleteByPrimaryKey(id);
+            }
+        }
+
+        for (String img : imgs) {
+            ProductImg pimg = new ProductImg();
+            pimg.setPid(id);
+            pimg.setImg(img);
             pimg.setDesc("");
             pimg.setIndex(0);
             pimg.setFlag(0);
-			if("".equals(img))
-				continue;			
-			long i = productImgMapper.insert(pimg);
-			if(i>0){
-				System.out.println("insert img "+i);
-			}
-		}
-		return 1;
-	}
+            if ("".equals(img))
+                continue;
+            long i = productImgMapper.insert(pimg);
+            if (i > 0) {
+                System.out.println("insert img " + i);
+            }
+        }
+        return 1;
+    }
 
-	public long del(Long id) {
-		if(id < 1){
-			return 0;
-		}
-		long result = productService.deleteProduct(id);
-		return result;
-		
-	}
+    public long del(Long id) {
+        if (id < 1) {
+            return 0;
+        }
+        long result = productService.deleteProduct(id);
+        return result;
+
+    }
 }

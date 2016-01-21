@@ -7,6 +7,7 @@
 .form-inline{
 	line-height:35px;
 }
+
 </style>
 
 <div class="container" id="enlarge-body">
@@ -58,6 +59,7 @@
                         <td>订单总额</td>
                         <td>订单状态</td>
                         <td>在线支付</td>
+						<td>生单时间</td>
                         <td>订单类型</td>
                         <td>用户</td>
                         <td>操作</td>
@@ -97,6 +99,9 @@
                         	</#list>
                         </td>
                         <td>${order.onlinePay}</td>
+						<td>
+						${order.createdAt?string("yyyy-MM-dd HH:mm:ss")}
+						</td>
                         <td>
                         	<#if order.payType == 1>
 								在线＋到院
@@ -108,6 +113,7 @@
 								全额付款
 							</#if>
                         </td>
+
                         <td>
                         	<a href="/user/list/detail/?uid=${order.uid}" target="_blank">
                         	<#list umap?keys as key>
@@ -146,7 +152,7 @@
 <script>
     function pageSubmit(pageNo){
     	document.getElementById("page").value=pageNo;
-		document.orderform.submit();
+		$(".well").submit();
     }
 </script>
 

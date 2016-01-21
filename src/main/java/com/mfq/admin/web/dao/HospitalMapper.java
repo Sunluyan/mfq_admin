@@ -5,7 +5,10 @@ import com.mfq.admin.web.bean.Hospital;
 import com.mfq.admin.web.bean.example.HospitalExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Component;
+
 @MQMDao
+@Component
 public interface HospitalMapper {
     int countByExample(HospitalExample example);
 

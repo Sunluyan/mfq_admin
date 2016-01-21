@@ -122,7 +122,7 @@
             <img src="/static/img/loading.gif" class="loading" width="20" height="20" style="margin-top: 6px;margin-left: 5px; display:none;">
           </ul>
             <div>
-                <legend>用户列表（共<span class="totalpage">1</span>页，当前第<span class="page">1</span>页，共<span class="total">0</span>条）
+                <legend>实名认证（共<span class="totalpage">1</span>页，当前第<span class="page">1</span>页，共<span class="total">0</span>条）
                 
                 <div class="next" onselectstart= "return false;">></div>
                 <div class="prev" onselectstart= "return false;"><</div>

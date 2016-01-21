@@ -1,6 +1,7 @@
 package com.mfq.admin.web.controllers;
 
 import java.io.File;
+import java.text.ParseException;
 import java.util.List;
 import java.util.UUID;
 
@@ -8,6 +9,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import com.mfq.admin.web.bean.HomeBanner;
+import com.mfq.admin.web.services.*;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.mfq.admin.web.constants.ImageType;
 import com.mfq.admin.web.constants.QiniuBucketEnum;
-import com.mfq.admin.web.services.HomeBannerService;
-import com.mfq.admin.web.services.QiniuManipulater;
 
 @Controller
 public class HomeBannerController {
@@ -31,6 +31,25 @@ public class HomeBannerController {
 
     @Resource
     HomeBannerService service;
+	@Resource
+	UserService userService;
+	@Resource
+	ProductService productService;
+	@Resource
+	HospitalService hospitalService;
+	@Resource
+	OrderService orderService;
+
+	@RequestMapping(value="/home/",method = RequestMethod.GET)
+	public String home(HttpServletRequest request,Model model) throws Exception {
+        model.addAttribute("a",userService.getYesterdayNewDevice());
+        model.addAttribute("b",userService.getYesterdayNewUserCount());
+        model.addAttribute("c",userService.getYesterdayNewOrder());
+        model.addAttribute("d",userService.getYesterdayNewOrderOfPay());
+        model.addAttribute("e",userService.getCountHospital());
+        model.addAttribute("f",userService.getCountProduct());
+        return "/app/home";
+	}
     
     @RequestMapping(value = "/home/banner/", method = {RequestMethod.GET })
     public String list(HttpServletRequest request,
@@ -46,6 +65,8 @@ public class HomeBannerController {
         }
         return "/app/home_banner";
     }
+
+
 
 
     @RequestMapping(value = "/home/banner/edit/", method = {RequestMethod.POST })
@@ -145,6 +166,8 @@ public class HomeBannerController {
         }
         return "/app/edit_banner";
     }
+
+
 
 
 

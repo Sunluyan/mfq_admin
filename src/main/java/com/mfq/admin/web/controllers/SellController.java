@@ -51,10 +51,11 @@ public class SellController extends BaseController {
             @RequestParam(defaultValue = "" , required = false) String proname,
             @RequestParam(defaultValue = "" , required = false) String hosname,
             @RequestParam(defaultValue = "id desc" , required = false) String orderby,
-
+            @RequestParam(defaultValue = "motherfucker",required = false) String online,
             Model model) {
     	try{
-    		sellService.findByPage(page,orderno,proname,hosname,orderby,model);
+
+            sellService.findByPage(page,orderno,proname,hosname,orderby,model,online);
     	}catch(Exception e){
     		logger.info("sell items error {}",e);
     	}

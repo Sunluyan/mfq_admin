@@ -161,7 +161,6 @@
 		<div class="child agree-1">
 			<button class="agree btn  btn-info">
 				同意批准
-
 			</button>
 			
 		</div>

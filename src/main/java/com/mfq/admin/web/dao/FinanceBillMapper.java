@@ -5,7 +5,10 @@ import com.mfq.admin.web.bean.FinanceBill;
 import com.mfq.admin.web.bean.example.FinanceBillExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Component;
+
 @MQMDao
+@Component
 public interface FinanceBillMapper {
     int countByExample(FinanceBillExample example);
 

@@ -348,4 +348,26 @@ public class DateUtil {
     public static Date getGoodSendDateTime() {
         return getGoodSendDateTime(new Date());
     }
+
+    /**
+     * 返回昨天的日期,格式为 yyMMdd
+     * @return
+     */
+    public static Date getYesterday() throws ParseException {
+        Date yesterday = new Date();
+        yesterday.setDate(yesterday.getDate()-1);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd");
+        yesterday = sdf.parse(sdf.format(yesterday));
+        return yesterday;
+    }
+    /**
+     * 返回今天的日期,格式为 yyMMdd
+     * @return
+     */
+    public static Date getToday() throws ParseException {
+        Date today = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd");
+        today = sdf.parse(sdf.format(today));
+        return today;
+    }
 }

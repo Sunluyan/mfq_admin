@@ -6,8 +6,10 @@ import java.util.List;
 
 import com.mfq.admin.web.bean.example.NurseExample;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Component;
 
 @MQMDao
+@Component
 public interface NurseMapper {
     int countByExample(NurseExample example);
 
