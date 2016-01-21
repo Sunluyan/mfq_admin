@@ -13,7 +13,10 @@ import javax.annotation.Resource;
 
 import com.mfq.admin.web.bean.*;
 import com.mfq.admin.web.bean.coupon.Coupon;
-import com.mfq.admin.web.constants.OrderType;
+import com.mfq.admin.web.bean.example.OrderInfoExample;
+import com.mfq.admin.web.bean.example.PayRecordExample;
+import com.mfq.admin.web.constants.*;
+import com.mfq.admin.web.dao.UsersMapper;
 import com.mfq.admin.web.models.view.FinanceOrder;
 import com.mfq.admin.web.models.view.FinanceUser;
 import org.apache.commons.lang.StringUtils;
@@ -27,9 +30,6 @@ import org.springframework.util.CollectionUtils;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.mfq.admin.web.constants.OrderStatus;
-import com.mfq.admin.web.constants.PayAPIType;
-import com.mfq.admin.web.constants.PayType;
 import com.mfq.admin.web.dao.CouponMapper;
 import com.mfq.admin.web.dao.FinanceBillMapper;
 import com.mfq.admin.web.dao.OrderInfoMapper;
@@ -59,6 +59,8 @@ public class OrderService {
     HospitalService hospitalService;
     @Resource
     CouponMapper couponMapper;
+    @Resource
+    OrderFreedomService freedomService;
 
     Integer PageSize = 30;
 
@@ -276,7 +278,7 @@ public class OrderService {
      * @param type
      * @throws Exception
      */
-    public void queryFinance(Model model, String ob, String oe, Integer page, long hid, String pname, int type) throws Exception{
+    public void queryFinance(Model model, String ob, String oe, Integer page, long hid, String pname, int type, String mobile, String uname, int status) throws Exception{
         Integer start = ((page - 1) * PageSize);
 
         Date b =null, e = null;
@@ -286,6 +288,8 @@ public class OrderService {
             b = fmt.parse(ob);
             e = fmt.parse(oe);
         }
+
+        List<Long> uids = Lists.newArrayList();
 
 
 
@@ -331,15 +335,19 @@ public class OrderService {
 
 
 
-    private List<FinanceOrder> createFinanceOrders(List<PayRecord> list){
+    private List<FinanceOrder> createFinanceOrders(List<PayRecord> list) throws Exception {
         List<FinanceOrder> data = Lists.newArrayList();
         for(PayRecord payRecord:list){
 
-            UserQuota uq = userQuotaService.queryUserQuota(payRecord.getUid());
-            OrderInfo orderInfo = findByOrderNo(payRecord.getOrderNo());
             User user = userService.queryUser(payRecord.getUid());
 
             if(user == null){user= new User();user.setUid(0l);}
+
+            UserQuota uq = userQuotaService.queryUserQuota(payRecord.getUid());
+
+
+            OrderInfo orderInfo = findByOrderNo(payRecord.getOrderNo());
+
 
             if(orderInfo == null){orderInfo = new OrderInfo(); orderInfo.setPid(0l);}
             Product product= productService.findById(orderInfo.getPid());
@@ -350,6 +358,21 @@ public class OrderService {
             if(hospital == null){hospital = new Hospital();hospital.setId(0l);}
             Coupon coupon = couponMapper.findByCouponNum(payRecord.getCardNo());
 
+            OrderType orderType = getOrderType(payRecord.getOrderNo());
+            OrderFreedom freedom = null;
+            if(orderType == OrderType.FREEDOM){
+                freedom = freedomService.selectByOrderNo(payRecord.getOrderNo());
+                if(freedom != null){
+                    product.setName(freedom.getProname());
+                    hospital = hospitalService.findById(freedom.getHospitalId());
+                    coupon = couponMapper.findByCouponNum(freedom.getCouponNum());
+
+                    orderInfo.setPrice(freedom.getPrice());
+                    orderInfo.setOnlinePay(freedom.getOnlinePay());
+                    orderInfo.setCreatedAt(freedom.getCreateTime());
+                    orderInfo.setServiceStartTime(freedom.getServiceTime());
+                }
+            }
 
 
             if(uq == null){uq= new UserQuota();}
@@ -653,6 +676,35 @@ public class OrderService {
 
     }
 
+
+    public OrderType getOrderType(String billNo) throws Exception {
+        if (StringUtils.startsWithIgnoreCase(billNo, Constants.RECHARGE_ORDER_PREFIX)) {
+            return OrderType.RECHARGE;
+        } else if (StringUtils.startsWithIgnoreCase(billNo, Constants.ONLINE_ORDER_PREFIX)) {
+            return OrderType.ONLINE;
+        } else if (StringUtils.startsWithIgnoreCase(billNo, Constants.REFUND_ORDER_PREFIX)) {
+            return OrderType.REFUND;
+        } else if (StringUtils.startsWithIgnoreCase(billNo, Constants.FREEDOM_ORDER_PREFIX)) {
+            return OrderType.FREEDOM;
+        } else {
+            throw new Exception("不支持的订单类型！billNo=" + billNo);
+        }
+    }
+
+    public String getOrderPrefixByOrderType(OrderType type) throws Exception {
+        if(type == OrderType.RECHARGE){
+            return Constants.RECHARGE_ORDER_PREFIX;
+        }else if(type == OrderType.ONLINE){
+            return Constants.ONLINE_ORDER_PREFIX;
+        }else if(type == OrderType.REFUND){
+            return Constants.REFUND_ORDER_PREFIX;
+        }else if(type == OrderType.FREEDOM){
+            return Constants.FREEDOM_ORDER_PREFIX;
+        }else {
+            throw new Exception("不支持的订单类型!");
+        }
+    }
+
     static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
     public static void main(String[] args) throws Exception {
         ApplicationContext ac = new ClassPathXmlApplicationContext("spring/spring.xml");
@@ -662,7 +714,7 @@ public class OrderService {
         Date e = new Date();
 //        List<PayRecord> list = service.queryFinanceByPrames(b, e, OrderType.RECHARGE, null,1,100,null);
         
-        orderService.queryFinance(null, "", "", 1, 2, "", 1);
+//        orderService.queryFinance(null, "", "", 1, 2, "", 1);
         
 //        for(PayRecord p:list){
 //        	System.out.println("id="+p.getId()+"||||"+p.getOrderNo());
@@ -672,6 +724,9 @@ public class OrderService {
         
 
     }
+
+
+
 
 
 }

@@ -86,15 +86,23 @@ public class FinanceOrder {
 		this.payStatus = payRecord.getStatus();
 		this.callbackAt = payRecord.getCallbackAt();
 
-		this.orderMoney = order.getOnlinePay();
+		this.orderMoney = payRecord.getAmount();
+		this.createdAt = payRecord.getUpdatedAt();
+		this.serviceStartTime = null;
+
+		if(payRecord.getOrderNo().startsWith("mn")){
+			this.createdAt = order.getCreatedAt();
+			this.serviceStartTime = order.getServiceStartTime();
+			this.orderMoney = order.getPrice();
+		}
+
 
 
 		this.mobile = user.getMobile();
 		this.realname = quota.getRealname();
 		this.uid = user.getUid();
 
-		this.createdAt = order.getCreatedAt();
-		this.serviceStartTime = order.getServiceStartTime();
+
 		this.hid = hospital.getId();
 		this.hospitalName = hospital.getName();
 	
@@ -286,7 +294,12 @@ public class FinanceOrder {
 	public void setHospitalName(String hospitalName) {
 		this.hospitalName = hospitalName;
 	}
-    
-    
 
+	public BigDecimal getOrderMoney() {
+		return orderMoney;
+	}
+
+	public void setOrderMoney(BigDecimal orderMoney) {
+		this.orderMoney = orderMoney;
+	}
 }

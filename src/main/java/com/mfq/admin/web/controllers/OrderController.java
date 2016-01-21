@@ -210,9 +210,12 @@ public class OrderController extends BaseController {
 						 @RequestParam(value = "page", defaultValue = "1")int page,
 						 @RequestParam(value = "hid", defaultValue="0")int hid,
 						 @RequestParam(value = "pname", defaultValue="")String pname,
-						 @RequestParam(value = "type", defaultValue="0")int type){
+						 @RequestParam(value = "type", defaultValue="0")int type,
+						 @RequestParam(value = "mobile", defaultValue = "")String mobile,
+						 @RequestParam(value = "status", defaultValue = "status")int status,
+						 @RequestParam(value = "uname", defaultValue = "")String uname){
 		try {
-			orderService.queryFinance(model, ob, oe, page, hid, pname, type);
+			orderService.queryFinance(model, ob, oe, page, hid, pname, type, mobile, uname, status);
 			return "order/order_budget";
 		}catch (Exception e){
 			logger.error("order budget is error {}",e);
@@ -230,7 +233,7 @@ public class OrderController extends BaseController {
 						 @RequestParam(value = "pname", defaultValue="")String pname,
 						 @RequestParam(value = "type", defaultValue="0")int type){
 		try {
-			orderService.queryFinance(model, ob, oe, page, hid, pname, type);
+			orderService.queryFinance(model, ob, oe, page, hid, pname, type, "", "", 0);
 			return "order/order_budget";
 		}catch (Exception e){
 			logger.error("order budget is error {}",e);

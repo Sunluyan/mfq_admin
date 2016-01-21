@@ -1,16 +1,23 @@
 package com.mfq.admin.web.services;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.mfq.admin.web.bean.Product;
 import com.mfq.admin.web.bean.ProductClassify;
 import com.mfq.admin.web.bean.example.ProductClassifyExample;
 import com.mfq.admin.web.dao.ProductClassifyMapper;
+import com.mfq.admin.web.utils.JSONUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 
 @Service
@@ -48,14 +55,7 @@ public class ProductClassifyService {
 		return mapper.selectByExample(example);
     }
 
-	public static void main(String[] args) {
-		ApplicationContext ac = new ClassPathXmlApplicationContext("spring/spring.xml");
-		ProductClassifyService service = ac.getBean(ProductClassifyService.class);
-		List<ProductClassify> list = service.findByLevel(1);
-		for (ProductClassify productClassify : list) {
-			System.out.println(productClassify);
-		}
-	}
+
 
 	public long delClassify(int id) {
 		
@@ -118,5 +118,44 @@ public class ProductClassifyService {
 	}
 
 
+	public String findClassify() {
+		String ret ;
 
+		List<ProductClassify> list = findByLevel(0);
+
+		Map<String,Object> map = Maps.newHashMap();
+
+		for(ProductClassify classify:list){
+
+			List<ProductClassify> ls = findByRootId(classify.getId());
+			map.put("id",classify.getId());
+			map.put("classify", classify);
+			map.put("items", ls);
+		}
+		ret = JSONUtil.successResultJson(map);
+
+		return ret;
+	}
+
+
+	public static void main(String[] args) {
+		ApplicationContext ac = new ClassPathXmlApplicationContext("spring/spring.xml");
+		ProductClassifyService service = ac.getBean(ProductClassifyService.class);
+		String ret = service.findClassify();
+		System.out.println(ret);
+	}
+}
+
+
+class comparator1 implements Comparator
+{
+	public int compare(Object o1,Object o2)
+	{
+		ProductClassify classify1 = (ProductClassify)o1;
+		ProductClassify classify2 = (ProductClassify)o2;
+		if(classify1.getId() == classify2.getId()){
+			return 0;
+		}
+		return -1;
+	}
 }

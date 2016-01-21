@@ -39,5 +39,4 @@ public interface PayRecordMapper {
 
     List<Long> queryByUpDateAndGroupByUid(@Param("ob")Date ob, @Param("oe")Date oe, @Param("status")int status, @Param("start")Integer start, @Param("size")Integer size);
 
-    List<PayRecord> queryPayRecordsByUid(@Param("uid") long uid, @Param("status")int status);
 }

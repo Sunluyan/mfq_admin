@@ -12,7 +12,7 @@
 <div class="container" id="enlarge-body">
     <div class="container">
 
-	<form class="form-inline well" action="/order/list/" method="GET">
+	<form id="orderfrom" class="form-inline well" action="/order/list/" method="GET">
 		<div class="input-group">
 			<div class="input-group-addon">订&nbsp;&nbsp;单&nbsp;&nbsp;号：<input type="text" class="form-control" name="orderNo" value="${orderNo}" size="20"></div>
 	    </div>
@@ -24,7 +24,7 @@
 	    </div>
 	    <div class="input-group">    
 			<div class="input-group-addon">订单状态：
-				<select class="form-control" name="at">
+				<select class="form-control" name="status">
                 	<#list statusmap.keySet() as key>
 						<option value="${key}" ${(status=key)?string('selected="selected"', '')}>${(statusmap.get(key)?length>0)?string(statusmap.get(key), '请选择')}</option>
             	    </#list>
@@ -146,7 +146,7 @@
 <script>
     function pageSubmit(pageNo){
     	document.getElementById("page").value=pageNo;
-		document.orderform.submit();
+		document.getElementById("orderfrom").submit();
     }
 </script>
 

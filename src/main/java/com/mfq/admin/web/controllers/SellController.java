@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.mfq.admin.web.bean.Product;
+import com.mfq.admin.web.services.ProductClassifyService;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +38,8 @@ public class SellController extends BaseController {
 
     @Resource
     SellService sellService;
+    @Resource
+    ProductClassifyService classifyService;
 
     /**
      * 商品管理
@@ -50,11 +53,12 @@ public class SellController extends BaseController {
             @RequestParam(defaultValue = "" , required = false) String orderno,
             @RequestParam(defaultValue = "" , required = false) String proname,
             @RequestParam(defaultValue = "" , required = false) String hosname,
+            @RequestParam( defaultValue = "0" , required = false) int isOnline,
             @RequestParam(defaultValue = "id desc" , required = false) String orderby,
 
             Model model) {
     	try{
-    		sellService.findByPage(page,orderno,proname,hosname,orderby,model);
+    		sellService.findByPage(page,orderno,proname,hosname,orderby,isOnline,model);
     	}catch(Exception e){
     		logger.info("sell items error {}",e);
     	}
@@ -116,6 +120,25 @@ public class SellController extends BaseController {
     		e.printStackTrace();
     	}
     	return ret;
+    }
+
+    /**
+     * 获取分类   ajax
+     * @param model
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = {"/sell/classify/","/sell/classify/"})
+    public @ResponseBody String getClassify(Model model,HttpServletRequest request){
+        String ret = "";
+        try {
+            ret = classifyService.findClassify();
+
+        }catch (Exception e){
+            logger.error("classify data is error {}", e);
+        }
+        logger.info("sell classify ret is {}", ret);
+        return ret;
     }
 
     @RequestMapping(value = "/sell/item/", method = RequestMethod.POST)

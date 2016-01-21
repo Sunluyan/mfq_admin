@@ -44,7 +44,7 @@ public class BaseController {
     protected FreeMarkerConfig freeMarkerConfigurer;
     
     private static final AtomicBoolean init = new AtomicBoolean(false);
-
+ 
     Logger logger = LoggerFactory.getLogger(getClass());
 
     public String currentUser() {

@@ -85,6 +85,26 @@
                 </div>
             </div>
 
+            <script>
+                $(document).ready(function(){
+                    $("#b01").click(function(){
+                        htmlobj=$.ajax({url:"/jquery/test1.txt",async:false});
+                        $("#myDiv").html(htmlobj.responseText);
+                    });
+                });
+
+                $.get("/hospital/list/data").done(function(json){
+                    if(json.get('code')!= 0){
+                        alert("请求出错!!!"+json.toString())
+                    }
+                    var data = json.data;
+                    for () {
+
+
+                    }
+
+                });
+            </script>
             <div class="control-group">
                 <label class="control-label" for="cname">产品类型</label>
                 <div class="controls">

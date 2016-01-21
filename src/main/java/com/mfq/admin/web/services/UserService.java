@@ -1,19 +1,20 @@
 package com.mfq.admin.web.services;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import javax.annotation.Resource;
 
-import com.mfq.admin.web.bean.Nurse;
-import com.mfq.admin.web.bean.User;
+import com.mfq.admin.web.bean.*;
+import com.mfq.admin.web.bean.coupon.Coupon;
 import com.mfq.admin.web.bean.example.NurseExample;
+import com.mfq.admin.web.bean.example.OrderInfoExample;
 import com.mfq.admin.web.bean.example.UsersExample;
-import com.mfq.admin.web.dao.NurseMapper;
-import com.mfq.admin.web.dao.OrderInfoMapper;
-import com.mfq.admin.web.dao.UsersMapper;
+import com.mfq.admin.web.bean.example.UsersQuotaExample;
+import com.mfq.admin.web.bean.model.OrderModel;
+import com.mfq.admin.web.bean.model.OrderPayModel;
+import com.mfq.admin.web.constants.*;
+import com.mfq.admin.web.dao.*;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -22,7 +23,6 @@ import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
 
 import com.google.common.collect.Lists;
-import com.mfq.admin.web.constants.AuthStatus;
 
 @Service
 public class UserService {
@@ -31,11 +31,27 @@ public class UserService {
     UsersMapper mapper;
     @Resource
     NurseMapper nurseMapper;
+    @Resource
+    UsersQuotaMapper quotaMapper;
+    @Resource
+    CouponMapper couponMapper;
+    @Resource
+    PayRecordService payRecordService;
 
     @Resource
     OrderInfoMapper orderInfoMapper;
+    @Resource
+    ProductService productService;
+    @Resource
+    HospitalMapper hospitalMapper;
+    @Resource
+    OrderService orderService;
+    @Resource
+    OrderFreedomService freedomService;
+
     public int PageSize = 50;
 
+    final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     public User queryUserByMobile(String mobile) {
         UsersExample example = new UsersExample();
         example.or().andMobileEqualTo(mobile);
@@ -253,6 +269,178 @@ public class UserService {
         List<Nurse> list = service.getAllNurse();
 
     }
-}
 
+    public long deleteUser(Long uid) {
+        mapper.deleteByPrimaryKey(uid);
+        UsersQuotaExample example = new UsersQuotaExample();
+        example.createCriteria().andUidEqualTo(uid);
+        quotaMapper.deleteByExample(example);
+        return 0;
+    }
+
+    public void userDetailForBudget(long uid, Model model) throws Exception {
+        List<PayRecord> czPays = payRecordService.queryPayRecordsByUser(uid, OrderType.RECHARGE,null);
+        List<PayRecord> flPays = payRecordService.queryPayRecordsByUser(uid, OrderType.REFUND, null);
+
+        czPays.addAll(flPays);
+
+        List<PayRecord> mnPays = payRecordService.queryPayRecordsByUser(uid, OrderType.ONLINE, null);
+        List<PayRecord> fkPays = payRecordService.queryPayRecordsByUser(uid, OrderType.FREEDOM, null);
+
+        mnPays.addAll(fkPays);
+
+
+        OrderInfoExample example = new OrderInfoExample();
+        example.createCriteria().andUidEqualTo(uid);
+        List<OrderInfo> orderInfos = orderInfoMapper.selectByExample(example);
+
+
+//        OrderFreedomExample freedomExample = new OrderFreedomExample();
+//        freedomExample.createCriteria().andUidEqualTo(uid);
+        List<OrderFreedom> freedoms = freedomService.selectByUid(uid);
+
+
+        List<OrderModel> orderModels = toOrderModels(orderInfos,freedoms);
+
+        List<OrderPayModel> models = toOrderPayModels(mnPays);
+        model.addAttribute("pays", czPays);
+        model.addAttribute("mnPays", models);
+        model.addAttribute("orders", orderModels);
+    }
+
+
+
+    private List<OrderModel> toOrderModels(List<OrderInfo> infos, List<OrderFreedom> freedoms){
+        List<OrderModel> models = Lists.newArrayList();
+
+        for(OrderInfo info:infos){
+            OrderModel model = new OrderModel();
+
+            model.setOrderNo(info.getOrderNo());
+            model.setPrice(String.valueOf(info.getPrice()));
+            model.setCoupon(info.getCouponNum());
+            model.setUid(info.getUid());
+            model.setCreateTime(format.format(info.getCreatedAt()));
+            model.setHospital("");
+
+            OrderStatus orderStatus = OrderStatus.fromValue(info.getStatus());
+            model.setOrderStatus(orderStatus.getName());
+
+            model.setStatus(orderStatus.getValue());
+            models.add(model);
+        }
+
+        for(OrderFreedom info:freedoms){
+            OrderModel model = new OrderModel();
+            model.setOrderNo(info.getOrderNo());
+            model.setPrice(String.valueOf(info.getPrice()));
+            model.setCoupon(info.getCouponNum());
+            model.setUid(info.getUid());
+            model.setCreateTime(format.format(info.getCreateTime()));
+            model.setHospital("");
+
+            OrderStatus orderStatus = OrderStatus.fromValue(info.getStatus());
+            model.setOrderStatus(orderStatus.getName());
+            model.setStatus(orderStatus.getValue());
+            models.add(model);
+        }
+
+        return models;
+
+    }
+
+    private List<OrderPayModel> toOrderPayModels(List<PayRecord> pays) throws Exception {
+        List<OrderPayModel> models = Lists.newArrayList();
+        for(PayRecord pay: pays){
+            OrderPayModel model = new OrderPayModel();
+
+            OrderType orderType = orderService.getOrderType(pay.getOrderNo());
+
+            Coupon coupon = couponMapper.findByCouponNum(pay.getCardNo());
+            OrderInfo info = orderInfoMapper.findByOrderNo(pay.getOrderNo());
+
+
+            Product product = null;
+
+            if(info!=null){
+                product = productService.findById(info.getPid());
+            }
+
+            Hospital hospital = null;
+            if(product !=null) {
+                hospital = hospitalMapper.selectByPrimaryKey(product.getHospitalId());
+            }
+
+            OrderFreedom freedomInfo = null;
+            if(orderType == OrderType.FREEDOM){
+                freedomInfo = freedomService.selectByOrderNo(pay.getOrderNo());
+                if(freedomInfo != null) {
+                    model.setProductName("随意单-" + freedomInfo.getProname());
+
+                    long hid = Long.valueOf(freedomInfo.getHospitalId());
+                    hospital = hospitalMapper.selectByPrimaryKey(hid);
+                    coupon = couponMapper.findByCouponNum(freedomInfo.getCouponNum());
+
+
+                    model.setProductMoney(String.valueOf(freedomInfo.getPrice()));
+                    OrderStatus orderStatus = OrderStatus.fromValue(freedomInfo.getStatus());
+                    model.setOrderStatus(orderStatus.getName());
+                    model.setStatus(orderStatus.getValue());
+                    model.setProductMoney(String.valueOf(freedomInfo.getPrice()));
+                }
+            }
+
+
+
+            model.setOrderNo(pay.getOrderNo());
+            model.setTradeNo(pay.getTradeNo());
+            model.setPayAmount(String.valueOf(pay.getAmount()));
+            model.setPayBalance(String.valueOf(pay.getBalance()));
+
+            if(coupon!=null&&coupon.getMoney()!=null){
+                model.setPayCoupon(String.valueOf(coupon.getMoney()));
+            }
+
+            if(pay.getCallbackAt()!=null) {
+                model.setPayDate(format.format(pay.getCallbackAt()));
+            }
+            PayAPIType apiType = PayAPIType.fromCode(pay.getTpp());
+            if(apiType != null) {
+                model.setPayType(apiType.getCode());
+            }
+
+            model.setPayBlank(pay.getBankCode());
+
+            PayStatus payStatus = PayStatus.fromValue(pay.getStatus());
+            model.setPayStatus(payStatus.getDesc());
+
+            if(product!=null){
+                model.setProductName(product.getName());
+
+                model.setProductType(product.getType().getName());
+            }
+
+            if(info != null){
+                model.setProductMoney(String.valueOf(info.getOnlinePay()));
+                OrderStatus orderStatus = OrderStatus.fromValue(info.getStatus());
+                if(orderStatus!=null) {
+                    model.setOrderStatus(orderStatus.getName());
+                    model.setStatus(orderStatus.getValue());
+                }
+            }
+
+            if(hospital != null){
+                model.setHospital(hospital.getName());
+            }
+
+
+        models.add(model);
+
+
+
+        }
+
+        return models;
+    }
+}
 

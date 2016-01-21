@@ -28,6 +28,8 @@ public class PayRecordService {
 	PayRecordMapper mapper;
 	@Resource
 	OrderInfoMapper orderInfoMapper;
+	@Resource
+	OrderService orderService;
 
 	PayRecordExample example = new PayRecordExample();
 	public List<PayRecord> selectByOrderNo(String orderNo){
@@ -48,8 +50,20 @@ public class PayRecordService {
 		return mapper.queryByUpDateAndGroupByUid(ob, oe, 2, start, size);    //支付完成
 	}
 
-	public List<PayRecord> queryPayRecordsByUser(long uid){
-		return mapper.queryPayRecordsByUid(uid, 2);   //支付完成
+	public List<PayRecord> queryPayRecordsByUser(long uid,OrderType type, Integer status) throws Exception {
+		PayRecordExample example = new PayRecordExample();
+		PayRecordExample.Criteria criteria = example.createCriteria();
+		if(status == null){
+			criteria.andUidEqualTo(uid);
+		}else {
+			criteria.andUidEqualTo(uid).andStatusEqualTo(status);
+		}
+		if(type != null){
+			String prefix = orderService.getOrderPrefixByOrderType(type);
+			criteria.andOrderNoLike(prefix+"%");
+		}
+
+		return mapper.selectByExample(example);  //支付完成
 	}
 
 	public OrderType getOrderType(String billNo) throws Exception {
@@ -153,7 +167,11 @@ public class PayRecordService {
 		
 		return data;
 	}
-	
+
+	public long deleteById(Long id) {
+		return mapper.deleteByPrimaryKey(id);
+	}
+
 //	
 //	final String CACHE_LIST = "chche_payrecords";
 //	

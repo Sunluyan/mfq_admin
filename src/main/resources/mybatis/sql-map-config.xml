@@ -30,6 +30,8 @@
         <typeAlias alias="PayRecord" type="com.mfq.admin.web.bean.PayRecord"/>
         <typeAlias alias="Coupon" type="com.mfq.admin.web.bean.coupon.Coupon"/>
         <typeAlias alias="CouponBatchInfo" type="com.mfq.admin.web.bean.coupon.CouponBatchInfo"/>
+		<typeAlias alias="OrderFreedom" type="com.mfq.admin.web.bean.OrderFreedom"/>
+		<typeAlias alias="OrderFreedomExample" type="com.mfq.admin.web.bean.OrderFreedomExample"/>
     </typeAliases>
 
 	<typeHandlers>
@@ -75,6 +77,7 @@
 		<mapper resource="mybatis/mapping/WechatMsgMapper.xml"/>
 		<mapper resource="mybatis/mapping/coupon_batch_info.xml"/>
 		<mapper resource="mybatis/mapping/coupon.xml"/>
+		<mapper resource="mybatis/mapping/OrderFreedomMapper.xml"/>
 	</mappers>
 
 

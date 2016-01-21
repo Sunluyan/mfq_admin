@@ -483,7 +483,7 @@
       and security_code =# {securityCode}
     </if>
     <if test="status != null and status != 100">
-      and status =# {status}
+      and status =#{status}
     </if>
     <if test="ob != null and ob != ''">
       and created_at &gt;= #{ob}

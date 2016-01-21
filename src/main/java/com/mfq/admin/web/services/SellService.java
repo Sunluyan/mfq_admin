@@ -120,7 +120,7 @@ public class SellService {
      * @param orderby   例如: "id desc" , "price desc"
      * @param model
      */
-    public void findByPage(long page,String orderno,String proname,String hosname, String orderby, Model model) {
+    public void findByPage(long page,String orderno,String proname,String hosname, String orderby, int isOnline, Model model) {
         long start = (page - 1) * PageSize;
         // 商品列表
 
@@ -143,6 +143,8 @@ public class SellService {
             }
             productExample.or().andHospitalIdIn(hosIds);
         }
+
+
         List<Product> items = productMapper.findByPageAndExample(start,PageSize,productExample,orderby);
 
         model.addAttribute("items", items);

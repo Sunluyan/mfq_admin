@@ -22,6 +22,13 @@
               <option value="created_at desc"  <#if orderby == "created_at desc">selected = selected</#if>  >时间</option>
               <option value="tid desc"  <#if orderby == "tid desc">selected = selected</#if>   >分类</option>
           </select>
+
+          <label for="hosName">是否上线</label>
+          <select id="isOnline" name="isOnline">
+              <option value="0">全部</option>
+              <option value="1">是</option>
+              <option value="2">否</option>
+          </select>
       </div>
       
       <div class="input-group">

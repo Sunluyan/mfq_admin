@@ -15,10 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mfq.admin.web.services.UserQuotaService;
@@ -274,6 +271,27 @@ public class UserController {
     	model.addAttribute("user",data);
     	return "/user/users_detail";
     }
+
+
+	@RequestMapping("/user/budget/")
+	public String BudgetDetail(Model model, @RequestParam(value = "uid", defaultValue = "0") long uid){
+		try {
+
+			if(uid == 0){
+				return "order/users_budge";
+			}
+			Map<String,Object> data = service.queryUserDetail(uid);
+			model.addAttribute("user", data);
+
+			service.userDetailForBudget(uid, model);
+
+		}catch (Exception e){
+			logger.error("user budget is error {}",e);
+		}
+
+
+		return "order/users_budget";
+	}
     
     /**
      * 面签管理页面
