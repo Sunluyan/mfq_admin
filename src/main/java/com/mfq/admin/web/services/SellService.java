@@ -76,9 +76,7 @@ public class SellService {
 
         model.addAttribute("types", ProductType.values());
 
-        ProductClassifyExample productClassifyExample = new ProductClassifyExample();
-        List<ProductClassify> classify = productClassifyMapper.selectByExample(productClassifyExample);
-        model.addAttribute("classify", classify); // 分类
+
 
         List<Hospital> hospitals = hospitalService.findAll(); // 医院
         model.addAttribute("hospitals", hospitals);
@@ -89,7 +87,11 @@ public class SellService {
 
         model.addAttribute("item_img", imgs);
 
-        long classId = 0;
+        ProductClassifyExample productClassifyExample = new ProductClassifyExample();
+        List<ProductClassify> classify = productClassifyMapper.selectByExample(productClassifyExample);
+        model.addAttribute("classify", classify); // 分类
+
+        long classId = 0, rootId = 0;
         long hospitalId = 0;
         if (classify.size() > 0) {
             classId = classify.get(0).getId();
@@ -103,7 +105,20 @@ public class SellService {
             hospitalId = item.getHospitalId();
         }
 
+        for(ProductClassify c:classify){
+            if(c.getId() == classId){
+                if(c.getRootId() == 0){
+                    rootId = c.getId();
+
+                }else {
+                    rootId = c.getRootId();
+                }
+
+            }
+        }
+
         List<HomeClassify> hclasses = homeClassifyService.queryAll();
+        model.addAttribute("rootId",rootId);
         model.addAttribute("classId", classId);
         model.addAttribute("hospitalId", hospitalId);
         model.addAttribute("cityId", item.getCityId());
@@ -188,13 +203,15 @@ public class SellService {
     }
 
     @Transactional
-    public Product saveItem(int fq, String type2, Long id, String name, int classify, int type, int cityId,
+    public Product saveItem(int fq, String type2, Long id, String name,int rootId, int classify, int type, int cityId,
             int hospitalId, BigDecimal price, BigDecimal marketPrice, BigDecimal onlinePay,
             BigDecimal hospitalPay, Date dateStart, Date dateEnd, int flag,
             String img, boolean isOnline, long totalNum, long remainNum, long saleNum, long viewNum,
             String consumeStep, String reserve, String specialNote,
             String body, String cureMeans, String cureDur, int cureHospital, String recoverDur, String merit, String cureMethod, String crowd, String tabooCrowd, String warning,
                             String cureNum, String anesMethod, String doctorLevel, String cureCycle) {
+
+
         // 维护商品
         Product p = null;
         ProductDetail d = null;
@@ -204,6 +221,10 @@ public class SellService {
         }
         if (id != null && id > 0) {
             p = productService.findById(id);
+            if(classify == 0){
+                classify = rootId;
+            }
+
             d = productService.findDetailByPid(id);
             p = setProductByParam(p, fq, type2, name, classify, productType, cityId, hospitalId, dateStart,
                     dateEnd, flag, img, isOnline, totalNum, remainNum, saleNum, viewNum, price, marketPrice,

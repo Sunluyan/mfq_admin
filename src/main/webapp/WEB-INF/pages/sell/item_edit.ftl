@@ -65,16 +65,19 @@
             <div class="control-group">
                 <label class="control-label" for="alias">产品分类</label>
                 <div class="controls">
+                    <input type="hidden" value="${rootId}" name="rootId" id="rid"/>
+                    <input type="hidden" value="${classId}" name="classifyId" id="cid"/>
                     <select id='classify' name="classify">
-                    <#list classify as cs>
+                    <#--<#list classify as cs>
                         <option value="${cs.id}" <#if ((cs.id))== ((classId))>selected</#if> >${cs.name}</option>
-                    </#list>
+                    </#list> -->
                     </select>
 
-                    <select id='classify' name="classify">
-                    <#list classify as cs>
+                    <select id='classify2' name="classify2">
+                        <option value="0"  >全部</option>
+                    <#--<#list classify as cs>
                         <option value="${cs.id}" <#if ((cs.id))== ((classId))>selected</#if> >${cs.name}</option>
-                    </#list>
+                    </#list>  -->
                     </select>
 
                     <select name="type2">
@@ -85,26 +88,7 @@
                 </div>
             </div>
 
-            <script>
-                $(document).ready(function(){
-                    $("#b01").click(function(){
-                        htmlobj=$.ajax({url:"/jquery/test1.txt",async:false});
-                        $("#myDiv").html(htmlobj.responseText);
-                    });
-                });
 
-                $.get("/hospital/list/data").done(function(json){
-                    if(json.get('code')!= 0){
-                        alert("请求出错!!!"+json.toString())
-                    }
-                    var data = json.data;
-                    for () {
-
-
-                    }
-
-                });
-            </script>
             <div class="control-group">
                 <label class="control-label" for="cname">产品类型</label>
                 <div class="controls">
@@ -389,6 +373,85 @@
 </div>
 </form>
 
+
+<script>
+
+    var roots = $("#classify");
+    var le = $("#classify2");
+    var cid = $("#cid").val();
+    var rid = $("#rid").val();
+
+    var data;
+
+    $(document).ready(function(){
+
+        $.get("/sell/classify/").done(function(json){
+            if(json.code!= 0){
+                alert("请求出错!!!"+json.toString())
+            }
+            data = json.data;
+
+
+            //roots.html('');
+            for (var i = 0; i < data.length; i++) {
+                root = data[i].classify;
+                hml=createOption(root.id,root.name)
+
+                if(data[i].id == rid){
+                    createOptions(data[i].items, le)
+
+                }else if(cid == '' && i == 0){
+
+                    createOptions(data[i].items, le)
+                }
+
+                hml.appendTo(roots);
+
+            }
+
+
+            //设置默认选中
+
+
+        });
+
+        roots.change(function(){
+            var rid = roots.val();
+
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].id == rid) {
+                    //le.html('')
+                    createOptions(data[i].items, le)
+
+                }
+            }
+
+        });
+
+
+        function createOptions(data, elen){
+            elen.html('');
+            createOption(0,'全部').appendTo(elen);
+            for (var i = 0; i<data.length; i++){
+                html=createOption(data[i].id, data[i].name)
+                html.appendTo(elen)
+            }
+        }
+
+        function createOption(key,value){
+            var html = $("<option value='"+key+"'>"+value+"</option>");
+            if(rid == key || cid == key){
+                html = $("<option value='"+key+"' selected>"+value+"</option>");
+            }
+            return html;
+        }
+
+
+
+    });
+
+
+</script>
 
 <script type="text/javascript">
     function docheck() {

@@ -123,16 +123,18 @@ public class ProductClassifyService {
 
 		List<ProductClassify> list = findByLevel(0);
 
-		Map<String,Object> map = Maps.newHashMap();
 
+		List<Map<String,Object>> data= Lists.newArrayList();
 		for(ProductClassify classify:list){
-
+			Map<String,Object> map = Maps.newHashMap();
 			List<ProductClassify> ls = findByRootId(classify.getId());
 			map.put("id",classify.getId());
 			map.put("classify", classify);
 			map.put("items", ls);
+
+			data.add(map);
 		}
-		ret = JSONUtil.successResultJson(map);
+		ret = JSONUtil.successResultJson(data);
 
 		return ret;
 	}

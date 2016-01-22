@@ -38,6 +38,8 @@ public class SellController extends BaseController {
 
     @Resource
     SellService sellService;
+    @Resource
+    ProductClassifyService classifyService;
 
     /**
      * 商品管理
@@ -126,7 +128,7 @@ public class SellController extends BaseController {
      * @param request
      * @return
      */
-    @RequestMapping(value = {"/sell/classify/","/sell/classify/"})
+    @RequestMapping(value = {"/sell/classify/","/sell/classify"}, method = {RequestMethod.GET, RequestMethod.POST},produces = "application/json;charset=utf-8")
     public @ResponseBody String getClassify(Model model,HttpServletRequest request){
         String ret = "";
         try {
@@ -144,7 +146,8 @@ public class SellController extends BaseController {
             @RequestParam(value = "id", required = false) Long id,
             @RequestParam(value = "name", required = true) String name,
             @RequestParam(value = "files") MultipartFile[] file,
-            @RequestParam(value = "classify", required = true) int classify,
+            @RequestParam(value = "classify", required = true) int rootId,
+            @RequestParam(value = "classify2", required = true) int classifyId,
             @RequestParam(value = "type", required = true) int type,
             @RequestParam(value = "type2", required = true) String type2,
             @RequestParam(value = "city_id", required = true) int cityId,
@@ -194,9 +197,9 @@ public class SellController extends BaseController {
                 	imgs[i] = "";
                 }
             }
-            
+
             BigDecimal hospitalPay = price.subtract(onlinePay);
-            Product p = sellService.saveItem(fq, type2,id, name, classify, type, cityId,
+            Product p = sellService.saveItem(fq, type2,id, name, rootId,classifyId, type, cityId,
                     hospitalId, price, marketPrice, onlinePay, hospitalPay, start, end, flag,
                     StringUtils.isNotBlank(imgs[0])?imgs[0]:null, isOnline, totalNum, totalNum, saleNum, viewNum, consumeStep, reserve,
                     specialNote, body, cureMeans, cureDur, cureHospital, recoverDur, merit, cureMethod, crowd, tabooCrowd, warning, cureNum, anesMethod, doctorLevel, cureCycle);

@@ -1,26 +1,16 @@
 package com.mfq.admin.web.services;
 
-import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.mfq.admin.web.bean.*;
 import com.mfq.admin.web.bean.coupon.Coupon;
-import com.mfq.admin.web.bean.example.OrderInfoExample;
-import com.mfq.admin.web.bean.example.PayRecordExample;
 import com.mfq.admin.web.constants.*;
-import com.mfq.admin.web.dao.UsersMapper;
-import com.mfq.admin.web.bean.example.OrderInfoExample;
-import com.mfq.admin.web.constants.OrderType;
+import com.mfq.admin.web.dao.CouponMapper;
+import com.mfq.admin.web.dao.FinanceBillMapper;
+import com.mfq.admin.web.dao.OrderInfoMapper;
 import com.mfq.admin.web.models.view.FinanceOrder;
 import com.mfq.admin.web.models.view.FinanceUser;
+import com.mfq.admin.web.security.UserHolder;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,15 +20,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.mfq.admin.web.constants.OrderStatus;
-import com.mfq.admin.web.constants.PayAPIType;
-import com.mfq.admin.web.constants.PayType;
-import com.mfq.admin.web.dao.CouponMapper;
-import com.mfq.admin.web.dao.FinanceBillMapper;
-import com.mfq.admin.web.dao.OrderInfoMapper;
-import com.mfq.admin.web.security.UserHolder;
+import javax.annotation.Resource;
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 public class OrderService {
