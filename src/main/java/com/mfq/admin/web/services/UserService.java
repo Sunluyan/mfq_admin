@@ -1,7 +1,5 @@
 package com.mfq.admin.web.services;
 
-import java.text.SimpleDateFormat;
-import java.util.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -9,19 +7,8 @@ import java.util.*;
 import javax.annotation.Resource;
 
 import com.mfq.admin.web.bean.*;
-import com.mfq.admin.web.bean.coupon.Coupon;
-import com.mfq.admin.web.bean.example.NurseExample;
-import com.mfq.admin.web.bean.example.OrderInfoExample;
-import com.mfq.admin.web.bean.example.UsersExample;
-import com.mfq.admin.web.bean.example.UsersQuotaExample;
-import com.mfq.admin.web.bean.model.OrderModel;
-import com.mfq.admin.web.bean.model.OrderPayModel;
-import com.mfq.admin.web.constants.*;
-import com.mfq.admin.web.bean.DeviceExample;
-import com.mfq.admin.web.bean.Nurse;
-import com.mfq.admin.web.bean.Product;
-import com.mfq.admin.web.bean.User;
 import com.mfq.admin.web.bean.example.*;
+import com.mfq.admin.web.bean.example.NurseExample;
 import com.mfq.admin.web.constants.OrderStatus;
 import com.mfq.admin.web.dao.*;
 import com.mfq.admin.web.utils.DateUtil;
@@ -29,10 +16,12 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
 
 import com.google.common.collect.Lists;
+
 
 @Service
 public class UserService {
@@ -63,6 +52,8 @@ public class UserService {
     HospitalMapper hospitalMapper;
     @Resource
     ProductMapper productMapper;
+    @Resource
+    UserFeedbackMapper userFeedbackMapper;
 
     public int PageSize = 50;
 
@@ -114,21 +105,32 @@ public class UserService {
         }
         Integer start = (page - 1) * PageSize;
         List<Map<String, Object>> data = mapper.queryCertify(start, PageSize, type, uid, phone, cardid, applytimefrom, applytimeto, checktimefrom, checktimeto, null);
+        List<Long> uids = new ArrayList<>();
         for (Map<String, Object> map : data) {
-
             String createtime = map.get("createtime").toString();
             String updatetime = map.get("updatetime").toString();
             map.put("createtime", createtime);
             map.put("updatetime", updatetime);
-
+            uids.add(Long.parseLong(map.get("uid").toString()));
             Integer authStatus = Integer.parseInt(map.get("auth_status").toString());
             map.put("auth_status", AuthStatus.fromId(authStatus).getDesc());
-
         }
         List<Map<String, Object>> count = mapper.queryCertify(start, PageSize, type, uid, phone, cardid, applytimefrom, applytimeto, checktimefrom, checktimeto, "yes");
+        //查询用户备注
+        UserFeedbackExample example = new UserFeedbackExample();
+        if(CollectionUtils.isEmpty(uids)){
+            example.or().andUidEqualTo(0l);
+        }else{
+            example.or().andUidIn(uids);
+
+        }
+        List<UserFeedback> feedbacks = userFeedbackMapper.selectByExample(example);
+
+
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("data", data);
         result.put("count", count);
+        result.put("feedback",feedbacks);
         return result;
     }
 
@@ -324,6 +326,38 @@ public class UserService {
         example.or().andFlagNotEqualTo(-1);
         long count = productMapper.countByExample(example);
         return count;
+    }
+
+    public long updateUserFeedbackRemark(long uid , String remark){
+        UserFeedbackExample example = new UserFeedbackExample();
+        example.or().andUidEqualTo(uid);
+        List<UserFeedback> list = userFeedbackMapper.selectByExample(example);
+        if(CollectionUtils.isEmpty(list)){
+            UserFeedback userFeedback = new UserFeedback();
+            userFeedback.setUid(uid);
+            userFeedback.setRemark(remark);
+            return userFeedbackMapper.insertSelective(userFeedback);
+        }else{
+            UserFeedback userFeedback = list.get(0);
+            userFeedback.setRemark(remark);
+            return userFeedbackMapper.updateByPrimaryKey(userFeedback);
+        }
+    }
+    @Transactional
+    public long updateUserFeedbackFeedback(long uid , String feedback){
+        UserFeedbackExample example = new UserFeedbackExample();
+        example.or().andUidEqualTo(uid);
+        List<UserFeedback> list = userFeedbackMapper.selectByExample(example);
+        if(CollectionUtils.isEmpty(list)){
+            UserFeedback userFeedback = new UserFeedback();
+            userFeedback.setUid(uid);
+            userFeedback.setFeedback(feedback);
+            return userFeedbackMapper.insertSelective(userFeedback);
+        }else{
+            UserFeedback userFeedback = list.get(0);
+            userFeedback.setFeedback(feedback);
+            return userFeedbackMapper.updateByPrimaryKey(userFeedback);
+        }
     }
 
 

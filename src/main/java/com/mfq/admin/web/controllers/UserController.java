@@ -113,13 +113,56 @@ public class UserController {
     	}
     	else if(method.equals("ajaxFinanceList")){
     		return orderController.ajaxFinanceList(request);
-    	}
+    	}else if(method.equals("editUserFeedback")){
+			return editUserFeedback(request);
+		}
     
     
     	return null;
     }
-    
-    //ajax 方法 更新护士
+
+	/**
+	 * 修改或添加认证反馈或备注
+	 * @param request
+	 * @return
+     */
+	private String editUserFeedback(HttpServletRequest request) {
+		//todo
+		long uid = 0;
+		String feedback = null;
+		String remark = null;
+
+		try{
+			uid = Long.parseLong(request.getParameter("uid"));
+			if(uid == 0){
+				return null;
+			}
+			System.out.println(request.getParameter("remark"));
+			if(request.getParameter("feedback") != null){
+				feedback = request.getParameter("feedback");
+				long count = service.updateUserFeedbackFeedback(uid,feedback);
+				if(count != 1){
+					return JSONUtil.toJson(9999,"插入或更新出错",null);
+				}else{
+					return JSONUtil.successResultJson();
+				}
+			}else if(request.getParameter("remark") != null){
+				remark = request.getParameter("remark");
+				long count = service.updateUserFeedbackRemark(uid,remark);
+				if(count != 1){
+					return JSONUtil.toJson(9999,"插入或更新出错",null);
+				}else{
+					return JSONUtil.successResultJson();
+				}
+			}
+
+		}catch(Exception e){
+			return e.toString();
+		}
+		return null;
+	}
+
+	//ajax 方法 更新护士
     public String updateNurse(HttpServletRequest request){
 		String phone = null;
 		String address = null;
@@ -170,7 +213,7 @@ public class UserController {
     	return service.addNurse(nurse).toString();
     }
     
-    //修改面签状态和备注
+    //修改面签状态或备注
     public String certifyStatus(HttpServletRequest request){
     	
     	long uid = 0L;
@@ -214,12 +257,11 @@ public class UserController {
 		applytimeto = request.getParameter("applytimeto");
 		checktimefrom = request.getParameter("checktimefrom");
 		checktimeto = request.getParameter("checktimeto");
-		
-    	
-    	Map<String,Object> list = service.certifyData(page, type, uid, phone, cardid, applytimefrom, applytimeto, checktimefrom, checktimeto);
+
+		Map<String,Object> list = service.certifyData(page, type, uid, phone, cardid, applytimefrom, applytimeto, checktimefrom, checktimeto);
     	return JSONUtil.successResultJson(list);
     }
-    
+
     
     
     
