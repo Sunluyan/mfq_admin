@@ -1,22 +1,25 @@
 package com.mfq.admin.web.services;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
-import com.mfq.admin.web.bean.Product;
-import com.mfq.admin.web.bean.UserQuota;
+import com.mfq.admin.web.bean.*;
 import com.mfq.admin.web.bean.example.UsersQuotaExample;
 import com.mfq.admin.web.constants.Status;
 import com.mfq.admin.web.dao.ProductMapper;
+import com.mfq.admin.web.dao.UserFeedbackMapper;
+import com.mfq.admin.web.dao.UsersMapper;
 import com.mfq.admin.web.dao.UsersQuotaMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 
 @Service
@@ -27,6 +30,10 @@ public class UserQuotaService {
 
     @Resource
     UsersQuotaMapper mapper;
+    @Resource
+    UsersMapper usersMapper;
+    @Resource
+    UserFeedbackMapper userFeedbackMapper;
 
     /**
      * 
@@ -134,7 +141,29 @@ public class UserQuotaService {
      * @return
      */
     public Map<String,Object> queryCertifyQuota(long uid){
-
+        User user = usersMapper.selectByPrimaryKey(uid);
+        UsersQuotaExample quotaExample = new UsersQuotaExample();
+        quotaExample.or().andUidEqualTo(uid);
+        UserQuota userQuota = mapper.selectByExample(quotaExample).get(0);
+        UserFeedbackExample example = new UserFeedbackExample();
+        example.or().andUidEqualTo(uid);
+        List<UserFeedback> userFeedbacks = userFeedbackMapper.selectByExample(example);
+        UserFeedback userFeedback = new UserFeedback();
+        if(!CollectionUtils.isEmpty(userFeedbacks)){
+            userFeedback = userFeedbacks.get(0);
+        }
+        Map<String,Object> map = new HashMap<>();
+        map.put("uid",user.getUid());
+        map.put("nick",user.getNick());
+        map.put("mobile",user.getMobile());
+        map.put("realname",userQuota.getRealname());
+        map.put("id_card", userQuota.getIdCard());
+        map.put("origin",userQuota.getOrigin());
+        map.put("location",userQuota.getLocation());
+        map.put("contact",userQuota.getContact());
+        map.put("idcard_front",userQuota.getIdcardFront());
+        map.put("idcard_reverse",userQuota.getIdcardReverse());
+        map.put("remark",userFeedback.getRemark());
     	return mapper.queryCertifyQuota(uid);
     }
     

@@ -81,6 +81,7 @@
 		<mapper resource="mybatis/mapping/InviteMoneyMapper.xml"/>
 		<mapper resource="mybatis/mapping/InviteRecordMapper.xml"/>
 		<mapper resource="mybatis/mapping/OperationRecordMapper.xml"/>
+		<mapper resource="mybatis/mapping/UserFeedbackMapper.xml"/>
 
 	</mappers>
 

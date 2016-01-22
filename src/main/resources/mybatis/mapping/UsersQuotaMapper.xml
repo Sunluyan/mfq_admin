@@ -569,11 +569,12 @@
     select
 
     quota.uid , u.nick , quota.realname , u.mobile , quota.contact , u.origin,
-    quota.id_card , u.origin ,quota.school_location as location , quota.idcard_reverse , quota.idcard_front
+    quota.id_card , u.origin ,quota.school_location as location , quota.idcard_reverse , quota.idcard_front ,
+    feedback.remark
 
-    from users_quota quota, users u
+    from users_quota quota, users u , user_feedback feedback
 
-    where u.uid = quota.uid
+    where u.uid = quota.uid and feedback.uid = quota.uid
 
     and quota.uid = #{uid}
   </select>

@@ -8,7 +8,7 @@ body{
 }
 </style>
 
-<div class="popover-title">用户实名认证审核页</div>
+<div class="popover-title container">用户实名认证审核页</div>
 <table width="96%" border="0" align="center" cellpadding="3" cellspacing="2" class="bk" style="position:absolute; z-index:1;">
   <tr>
     <td width="100" align="right" class="bold">用户ID</td>
@@ -29,6 +29,10 @@ body{
   <tr>
     <td width="100" align="right" class="bold">身份证号码</td>
     <td class="neirong">${user.id_card}</td>
+  </tr>
+  <tr>
+      <td width="100" align="right" class="bold">备注</td>
+      <td class="neirong"><input type="text" class="form-control input-lg input-remark" value="${user.remark}" /></td>
   </tr>
   <tr>
     <td width="100" align="right" class="bold">籍贯地址</td>
@@ -115,7 +119,34 @@ body{
     </td>
     </tr>
     <script type="text/javascript">
-      
+        $(".input-remark").on("input webChange", function () {
+            $(this).css("background-color", "pink");
+        })
+        $(".input-remark").keypress(function (event) {
+            var $obj = $(this);
+            var uid = $obj.parent().parent().parent().find(".uid").html();
+            if (event.which == 13) {
+                $.ajax({
+                    url: "/ajax",
+                    data: {
+                        method: "editUserFeedback",
+                        uid: uid,
+                        remark: $obj.val()
+                    },
+                    type: "post",
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.code == 0) {
+                            $obj.css("background-color", "white");
+                            $obj.blur()
+                        } else {
+                            alert(data.msg)
+                        }
+                    }
+                })
+
+            }
+        })
     </script>
 </table>
 
