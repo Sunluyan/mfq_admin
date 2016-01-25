@@ -131,7 +131,7 @@ public class UserController {
 		long uid = 0;
 		String feedback = null;
 		String remark = null;
-
+		String feedback_type = null;
 		try{
 			uid = Long.parseLong(request.getParameter("uid"));
 			if(uid == 0){
@@ -149,6 +149,14 @@ public class UserController {
 			}else if(request.getParameter("remark") != null){
 				remark = request.getParameter("remark");
 				long count = service.updateUserFeedbackRemark(uid,remark);
+				if(count != 1){
+					return JSONUtil.toJson(9999,"插入或更新出错",null);
+				}else{
+					return JSONUtil.successResultJson();
+				}
+			}else if(request.getParameter("feedback_type")!=null){
+				feedback_type = request.getParameter("feedback_type");
+				long count = service.updateUserFeedbackFeedbackType(uid,feedback_type);
 				if(count != 1){
 					return JSONUtil.toJson(9999,"插入或更新出错",null);
 				}else{

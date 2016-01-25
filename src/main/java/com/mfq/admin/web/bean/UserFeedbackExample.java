@@ -363,6 +363,76 @@ public class UserFeedbackExample {
             addCriterion("remark not between", value1, value2, "remark");
             return (Criteria) this;
         }
+
+        public Criteria andFeedbackTypeIsNull() {
+            addCriterion("feedback_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeedbackTypeIsNotNull() {
+            addCriterion("feedback_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeedbackTypeEqualTo(String value) {
+            addCriterion("feedback_type =", value, "feedbackType");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeedbackTypeNotEqualTo(String value) {
+            addCriterion("feedback_type <>", value, "feedbackType");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeedbackTypeGreaterThan(String value) {
+            addCriterion("feedback_type >", value, "feedbackType");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeedbackTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("feedback_type >=", value, "feedbackType");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeedbackTypeLessThan(String value) {
+            addCriterion("feedback_type <", value, "feedbackType");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeedbackTypeLessThanOrEqualTo(String value) {
+            addCriterion("feedback_type <=", value, "feedbackType");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeedbackTypeLike(String value) {
+            addCriterion("feedback_type like", value, "feedbackType");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeedbackTypeNotLike(String value) {
+            addCriterion("feedback_type not like", value, "feedbackType");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeedbackTypeIn(List<String> values) {
+            addCriterion("feedback_type in", values, "feedbackType");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeedbackTypeNotIn(List<String> values) {
+            addCriterion("feedback_type not in", values, "feedbackType");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeedbackTypeBetween(String value1, String value2) {
+            addCriterion("feedback_type between", value1, value2, "feedbackType");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeedbackTypeNotBetween(String value1, String value2) {
+            addCriterion("feedback_type not between", value1, value2, "feedbackType");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

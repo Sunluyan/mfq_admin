@@ -9,6 +9,8 @@ public class UserFeedback {
 
     private String remark;
 
+    private String feedbackType;
+
     public Long getId() {
         return id;
     }
@@ -39,5 +41,13 @@ public class UserFeedback {
 
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
+    }
+
+    public String getFeedbackType() {
+        return feedbackType;
+    }
+
+    public void setFeedbackType(String feedbackType) {
+        this.feedbackType = feedbackType == null ? null : feedbackType.trim();
     }
 }

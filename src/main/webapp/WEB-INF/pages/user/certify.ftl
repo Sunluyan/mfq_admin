@@ -145,6 +145,7 @@
                         <td>手机号</td>
                         <td>姓名</td>
                         <td>身份证号</td>
+                        <td>认证类型</td>
                         <td>认证反馈</td>
                         <td>操作</td>
                     </tr>
@@ -155,7 +156,18 @@
                         <td class="phone">18338751231</td>
                         <td class="realname">刘志国</td>
                         <td class="cardid">411425199407130016</td>
-                        <td class="feedback"><input type="text" class="form-control feedback-input" / ></td>
+                        <td class="feedback-type-td">
+                            <select class="feedback-type">
+                                <option value="无状态">无状态</option>
+                                <option value="争取中">争取中</option>
+                                <option value="待处理">待处理</option>
+                                <option value="已弃疗">已弃疗</option>
+                                <option value="重下单">重下单</option>
+                                <option value="重复取消">重复取消</option>
+                                <option value="已下单">已下单</option>
+                            </select>
+                        </td>
+                        <td class="feed"><textarea type="text" class="form-control feedback-input" / ></textarea></td>
                         <td class="oparite"><a href="/user/certify/check/" target="_blank" data-id=''>详情</a></td>
                     </tr>
                 </table>
@@ -168,6 +180,7 @@
                         <td>手机号</td>
                         <td>姓名</td>
                         <td>身份证号</td>
+                        <td>认证类型</td>
                         <td>认证反馈</td>
                         <td>操作</td>
                     </tr>
@@ -179,7 +192,18 @@
                         <td class="phone">18338751231</td>
                         <td class="realname">刘志国</td>
                         <td class="cardid">411425199407130016</td>
-                        <td class="feed"><input type="text" class="form-control feedback-input" / ></td>
+                        <td class="feedback-type-td">
+                            <select class="feedback-type">
+                                <option value="无状态">无状态</option>
+                                <option value="争取中">争取中</option>
+                                <option value="待处理">待处理</option>
+                                <option value="已弃疗">已弃疗</option>
+                                <option value="重下单">重下单</option>
+                                <option value="重复取消">重复取消</option>
+                                <option value="已下单">已下单</option>
+                            </select>
+                        </td>
+                        <td class="feed"><textarea type="text" class="form-control feedback-input" / ></textarea></td>
                         <td class="oparite"><a href="/user/certify/check/" data-id='' target="_blank">详情</a></td>
                     </tr>
                 </table>
@@ -191,6 +215,7 @@
                         <td>手机号</td>
                         <td>姓名</td>
                         <td>身份证号</td>
+                        <td>认证类型</td>
                         <td>认证反馈</td>
                         <td>操作</td>
                     </tr>
@@ -201,7 +226,18 @@
                         <td class="phone">18338751231</td>
                         <td class="realname">刘志国</td>
                         <td class="cardid">411425199407130016</td>
-                        <td class="feedback"><input type="text" class="form-control feedback-input" / ></td>
+                        <td class="feedback-type-td">
+                            <select class="feedback-type">
+                                <option value="无状态">无状态</option>
+                                <option value="争取中">争取中</option>
+                                <option value="待处理">待处理</option>
+                                <option value="已弃疗">已弃疗</option>
+                                <option value="重下单">重下单</option>
+                                <option value="重复取消">重复取消</option>
+                                <option value="已下单">已下单</option>
+                            </select>
+                        </td>
+                        <td class="feed"><textarea type="text" class="form-control feedback-input" / ></textarea></td>
                         <td class="oparite"><a href="/user/certify/check/" data-id='' target="_blank">详情</a></td>
                     </tr>
 
@@ -350,9 +386,9 @@
                 for (var j = 0; j < feedbacks.length ; j++){
                     if(json[i].uid == feedbacks[j].uid){
                         $tr.find(".feedback-input").val(feedbacks[j].feedback);
+                        $tr.find("option[value='"+feedbacks[j].feedbackType+"']").attr("selected",true);
                     }
                 }
-
                 $tr.show()
                 $(".table-unsee").append($tr);
             }
@@ -373,6 +409,8 @@
                 for (var j = 0; j < feedbacks.length ; j++){
                     if(json[i].uid == feedbacks[j].uid){
                         $tr.find(".feedback-input").val(feedbacks[j].feedback);
+                        $tr.find("option[value='"+feedbacks[j].feedbackType+"']").attr("selected",true);
+
                     }
                 }
                 $tr.show();
@@ -399,6 +437,7 @@
                 for (var j = 0; j < feedbacks.length ; j++){
                     if(json[i].uid == feedbacks[j].uid){
                         $tr.find(".feedback-input").val(feedbacks[j].feedback);
+                        $tr.find("option[value='"+feedbacks[j].feedbackType+"']").attr("selected",true);
                     }
                 }
                 $tr.show()
@@ -482,9 +521,31 @@
                     }
                 }
             })
-
         }
     })
+
+    $(".feedback-type").change(function(){
+        var value = $(this).val();
+        var uid = $(this).parent().parent().find(".uid").html();
+
+        $.ajax({
+            url: "/ajax",
+            data: {
+                method: "editUserFeedback",
+                uid: uid,
+                feedback_type:value
+            },
+            type: "post",
+            dataType: "json",
+            success: function (data) {
+                if(data.code != 0){
+                    alert(data.msg)
+                }
+            }
+        })
+
+    })
+
 
 
 </script>

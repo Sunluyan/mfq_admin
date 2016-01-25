@@ -363,6 +363,23 @@ public class UserService {
         }
     }
 
+    @Transactional
+    public long updateUserFeedbackFeedbackType(long uid, String feedback_type) {
+        UserFeedbackExample example = new UserFeedbackExample();
+        example.or().andUidEqualTo(uid);
+        List<UserFeedback> list = userFeedbackMapper.selectByExample(example);
+        if(CollectionUtils.isEmpty(list)){
+            UserFeedback userFeedback = new UserFeedback();
+            userFeedback.setUid(uid);
+            userFeedback.setFeedbackType(feedback_type);
+            return userFeedbackMapper.insertSelective(userFeedback);
+        }else{
+            UserFeedback userFeedback = list.get(0);
+            userFeedback.setFeedbackType(feedback_type);
+            return userFeedbackMapper.updateByPrimaryKey(userFeedback);
+        }
+    }
+
 
     public static void main(String[] args) throws Exception {
         ApplicationContext ac = new ClassPathXmlApplicationContext("spring/spring.xml");
@@ -543,5 +560,7 @@ public class UserService {
 
         return models;
     }
+
+
 }
 
