@@ -476,7 +476,7 @@
     <if test="orderNo != null and orderNo != ''">
       and order_no=#{orderNo}
     </if>
-    <if test="uid != null and uid != 0">
+    <if test="uid != null">
       and uid=#{uid}
     </if>
     <if test="securityCode != null and securityCode != ''">
@@ -500,7 +500,7 @@
     <if test="orderNo != null and orderNo != ''">
       and order_no=#{orderNo}
     </if>
-    <if test="uid != null and uid != 0">
+    <if test="uid != null">
       and uid=#{uid}
     </if>
     <if test="securityCode != null and securityCode != ''">
@@ -528,7 +528,7 @@
     <if test="orderNo != null and orderNo != ''">
       and order_info.order_no=#{orderNo}
     </if>
-    <if test="uid != null and uid != 0">
+    <if test="uid != null">
       and order_info.uid=#{uid}
     </if>
     <if test="securityCode != null and securityCode != ''">
