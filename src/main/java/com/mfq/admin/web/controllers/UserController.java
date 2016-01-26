@@ -81,6 +81,7 @@ public class UserController {
     		@RequestParam("uid")String uid
     		){
     	Map<String,Object> user = quotaService.queryCertifyQuota(Long.parseLong(uid));
+		logger.info("user in UserController at certifyCheck() : {}",user.toString());
     	model.addAttribute("user",user);
     	return "/user/check_certify";
     }

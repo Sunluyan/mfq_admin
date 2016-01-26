@@ -50,4 +50,15 @@ public class UserFeedback {
     public void setFeedbackType(String feedbackType) {
         this.feedbackType = feedbackType == null ? null : feedbackType.trim();
     }
+
+    @Override
+    public String toString() {
+        return "UserFeedback{" +
+                "id=" + id +
+                ", uid=" + uid +
+                ", feedback='" + feedback + '\'' +
+                ", remark='" + remark + '\'' +
+                ", feedbackType='" + feedbackType + '\'' +
+                '}';
+    }
 }

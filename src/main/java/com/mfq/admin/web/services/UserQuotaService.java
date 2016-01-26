@@ -141,30 +141,37 @@ public class UserQuotaService {
      * @return
      */
     public Map<String,Object> queryCertifyQuota(long uid){
-        User user = usersMapper.selectByPrimaryKey(uid);
-        UsersQuotaExample quotaExample = new UsersQuotaExample();
-        quotaExample.or().andUidEqualTo(uid);
-        UserQuota userQuota = mapper.selectByExample(quotaExample).get(0);
-        UserFeedbackExample example = new UserFeedbackExample();
-        example.or().andUidEqualTo(uid);
-        List<UserFeedback> userFeedbacks = userFeedbackMapper.selectByExample(example);
-        UserFeedback userFeedback = new UserFeedback();
-        if(!CollectionUtils.isEmpty(userFeedbacks)){
-            userFeedback = userFeedbacks.get(0);
+        try{
+
+            User user = usersMapper.selectByPrimaryKey(uid);
+            UsersQuotaExample quotaExample = new UsersQuotaExample();
+            quotaExample.or().andUidEqualTo(uid);
+            UserQuota userQuota = mapper.selectByExample(quotaExample).get(0);
+            UserFeedbackExample example = new UserFeedbackExample();
+            example.or().andUidEqualTo(uid);
+            List<UserFeedback> userFeedbacks = userFeedbackMapper.selectByExample(example);
+            UserFeedback userFeedback = new UserFeedback();
+            if(!CollectionUtils.isEmpty(userFeedbacks)){
+                userFeedback = userFeedbacks.get(0);
+            }
+            Map<String,Object> map = new HashMap<>();
+            map.put("uid",user.getUid());
+            map.put("nick",user.getNick());
+            map.put("mobile",user.getMobile());
+            map.put("realname",userQuota.getRealname());
+            map.put("id_card", userQuota.getIdCard());
+            map.put("origin",userQuota.getOrigin());
+            map.put("location",userQuota.getLocation());
+            map.put("contact",userQuota.getContact());
+            map.put("idcard_front",userQuota.getIdcardFront());
+            map.put("idcard_reverse",userQuota.getIdcardReverse());
+            map.put("remark",userFeedback.getRemark());
+            return map;
+        }catch(Exception e){
+            logger.error(e+e.toString());
+            return null;
         }
-        Map<String,Object> map = new HashMap<>();
-        map.put("uid",user.getUid());
-        map.put("nick",user.getNick());
-        map.put("mobile",user.getMobile());
-        map.put("realname",userQuota.getRealname());
-        map.put("id_card", userQuota.getIdCard());
-        map.put("origin",userQuota.getOrigin());
-        map.put("location",userQuota.getLocation());
-        map.put("contact",userQuota.getContact());
-        map.put("idcard_front",userQuota.getIdcardFront());
-        map.put("idcard_reverse",userQuota.getIdcardReverse());
-        map.put("remark",userFeedback.getRemark());
-    	return mapper.queryCertifyQuota(uid);
+
     }
     
    /**

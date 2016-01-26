@@ -48,7 +48,7 @@ body{
   </tr>
   <tr>
     <td width="100" align="right" style="font-weight:bold;padding-right:40px">身份证正面</td>
-    <td><a href="#"><img src="http://7xowbr.com2.z0.glb.qiniucdn.com/${user.idcard_front}" width="200" height="78" class="img-circle"></a></td>
+    <td><a href="#"><img src="http://7xowbr.com2.z0.glb.qiniucdn.com/${user.idcard_front}" width="200" height="78" class="img-responsive"></a></td>
   </tr>
   <tr>
     <td width="100" align="right" style="font-weight:bold;padding-right:40px">身份证背面</td>
@@ -144,7 +144,7 @@ body{
                         }
                     }
                 })
-
+                return false;
             }
         })
     </script>

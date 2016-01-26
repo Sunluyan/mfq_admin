@@ -383,4 +383,48 @@ public class UserQuota {
     public void setDepartment(String department) {
         this.department = department == null ? null : department.trim();
     }
+
+    @Override
+    public String toString() {
+        return "UserQuota{" +
+                "uid=" + uid +
+                ", realname='" + realname + '\'' +
+                ", school='" + school + '\'' +
+                ", contact='" + contact + '\'' +
+                ", grade=" + grade +
+                ", classes='" + classes + '\'' +
+                ", startschoolAt=" + startschoolAt +
+                ", gender=" + gender +
+                ", idCard='" + idCard + '\'' +
+                ", idcardFront='" + idcardFront + '\'' +
+                ", idcardReverse='" + idcardReverse + '\'' +
+                ", balance=" + balance +
+                ", quotaAll=" + quotaAll +
+                ", quotaLeft=" + quotaLeft +
+                ", schoolLocationId=" + schoolLocationId +
+                ", schoolLocation='" + schoolLocation + '\'' +
+                ", origin='" + origin + '\'' +
+                ", location='" + location + '\'' +
+                ", homesite='" + homesite + '\'' +
+                ", authStatus=" + authStatus +
+                ", present=" + present +
+                ", wishPlastic=" + wishPlastic +
+                ", schoolRemark='" + schoolRemark + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", studentId='" + studentId + '\'' +
+                ", schoolLevel='" + schoolLevel + '\'' +
+                ", scholasticYears=" + scholasticYears +
+                ", company='" + company + '\'' +
+                ", salary='" + salary + '\'' +
+                ", faculty='" + faculty + '\'' +
+                ", speciality='" + speciality + '\'' +
+                ", userType=" + userType +
+                ", socialInsuranceId='" + socialInsuranceId + '\'' +
+                ", workRemark='" + workRemark + '\'' +
+                ", workYears='" + workYears + '\'' +
+                ", position='" + position + '\'' +
+                ", department='" + department + '\'' +
+                '}';
+    }
 }

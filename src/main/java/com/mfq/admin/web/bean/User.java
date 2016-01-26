@@ -212,4 +212,32 @@ public class User {
     public void setSign(Integer sign) {
         this.sign = sign;
     }
+
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "uid=" + uid +
+                ", status=" + status +
+                ", nick='" + nick + '\'' +
+                ", email='" + email + '\'' +
+                ", mobile='" + mobile + '\'' +
+                ", gender=" + gender +
+                ", icon='" + icon + '\'' +
+                ", img='" + img + '\'' +
+                ", pic='" + pic + '\'' +
+                ", locationId=" + locationId +
+                ", location='" + location + '\'' +
+                ", birthday=" + birthday +
+                ", intro='" + intro + '\'' +
+                ", interest='" + interest + '\'' +
+                ", origin='" + origin + '\'' +
+                ", homesite='" + homesite + '\'' +
+                ", career='" + career + '\'' +
+                ", realname='" + realname + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", sign=" + sign +
+                '}';
+    }
 }
