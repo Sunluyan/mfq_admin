@@ -122,6 +122,8 @@
                         <td>手机号</td>
                         <td>姓名</td>
                         <td>身份证号</td>
+                        <td>认证类型</td>
+                        <td>认证反馈</td>
                         <td>操作</td>
                     </tr>
                     
@@ -131,6 +133,18 @@
                         <td class="phone">18338751231</td>
                         <td class="realname">刘志国</td>
                         <td class="cardid">411425199407130016</td>
+                        <td class="feedback-type-td">
+                            <select class="feedback-type">
+                                <option value="无状态">无状态</option>
+                                <option value="争取中">争取中</option>
+                                <option value="待处理">待处理</option>
+                                <option value="已弃疗">已弃疗</option>
+                                <option value="重下单">重下单</option>
+                                <option value="重复取消">重复取消</option>
+                                <option value="已下单">已下单</option>
+                            </select>
+                        </td>
+                        <td class="feed"><textarea type="text" class="form-control feedback-input" / ></textarea></td>
                         <td class="oparite"><a href="/user/certify/check/" target="_blank" data-id=''>详情</a></td>
                     </tr>
                 </table>
@@ -143,6 +157,8 @@
                         <td>手机号</td>
                         <td>姓名</td>
                         <td>身份证号</td>
+                        <td>认证类型</td>
+                        <td>认证反馈</td>
                         <td>操作</td>
                     </tr>
                     
@@ -153,6 +169,18 @@
                         <td class="phone">18338751231</td>
                         <td class="realname">刘志国</td>
                         <td class="cardid">411425199407130016</td>
+                        <td class="feedback-type-td">
+                            <select class="feedback-type">
+                                <option value="无状态">无状态</option>
+                                <option value="争取中">争取中</option>
+                                <option value="待处理">待处理</option>
+                                <option value="已弃疗">已弃疗</option>
+                                <option value="重下单">重下单</option>
+                                <option value="重复取消">重复取消</option>
+                                <option value="已下单">已下单</option>
+                            </select>
+                        </td>
+                        <td class="feed"><textarea type="text" class="form-control feedback-input" / ></textarea></td>
                         <td class="oparite"><a href="/user/certify/check/" data-id='' target="_blank">详情</a></td>
                     </tr>
                 </table>
@@ -164,6 +192,8 @@
                         <td>手机号</td>
                         <td>姓名</td>
                         <td>身份证号</td>
+                        <td>认证类型</td>
+                        <td>认证反馈</td>
                         <td>操作</td>
                     </tr>
   
@@ -173,6 +203,18 @@
                         <td class="phone">18338751231</td>
                         <td class="realname">刘志国</td>
                         <td class="cardid">411425199407130016</td>
+                        <td class="feedback-type-td">
+                            <select class="feedback-type">
+                                <option value="无状态">无状态</option>
+                                <option value="争取中">争取中</option>
+                                <option value="待处理">待处理</option>
+                                <option value="已弃疗">已弃疗</option>
+                                <option value="重下单">重下单</option>
+                                <option value="重复取消">重复取消</option>
+                                <option value="已下单">已下单</option>
+                            </select>
+                        </td>
+                        <td class="feed"><textarea type="text" class="form-control feedback-input" / ></textarea></td>
                         <td class="oparite"><a href="/user/certify/check/" data-id='' target="_blank">详情</a></td>
                     </tr>
 
@@ -281,7 +323,7 @@
           $(".total").html(count)
           $(".totalpage").html(Math.ceil(count/50))
           nextPrevCss()
-          insertTable(json.data.data)
+          insertTable(json.data)
           canClick = true;
 
         }
@@ -306,8 +348,10 @@
 
 
     //填充表格
-    function insertTable (json) {
-      if(tables.tableindex==1){
+    function insertTable (data) {
+        var json = data.data;
+        var feedbacks = data.feedback;
+        if(tables.tableindex==1){
         $(".tr-unsee-clone").remove()
 
         for(var i = 0;i<json.length;i++){
@@ -318,6 +362,12 @@
           $tr.find(".realname").html(json[i].realname)
           $tr.find(".cardid").html(json[i].cardid)
           $tr.find(".oparite").children('a').attr("href","/user/interview/detail/?uid="+json[i].uid);
+            for (var j = 0; j < feedbacks.length ; j++){
+                if(json[i].uid == feedbacks[j].uid){
+                    $tr.find(".feedback-input").val(feedbacks[j].feedback);
+                    $tr.find("option[value='"+feedbacks[j].feedbackType+"']").attr("selected",true);
+                }
+            }
           $tr.show()
           $(".table-unsee").append($tr);
         }
@@ -335,6 +385,12 @@
           $tr.find(".realname").html(json[i].realname)
           $tr.find(".cardid").html(json[i].cardid)
           $tr.find(".oparite").children('a').attr("href","/user/interview/detail/?uid="+json[i].uid);
+            for (var j = 0; j < feedbacks.length ; j++){
+                if(json[i].uid == feedbacks[j].uid){
+                    $tr.find(".feedback-input").val(feedbacks[j].feedback);
+                    $tr.find("option[value='"+feedbacks[j].feedbackType+"']").attr("selected",true);
+                }
+            }
           $tr.show();
           $(".table-pass").append($tr);
         }
@@ -356,6 +412,12 @@
           $tr.find(".oparite").children('a').attr("href","/user/interview/detail/?uid="+json[i].uid);
           var $trmark = $trRemark.eq(0).clone(true)
           $trmark.find(".remark").html(json[i].remark)
+            for (var j = 0; j < feedbacks.length ; j++){
+                if(json[i].uid == feedbacks[j].uid){
+                    $tr.find(".feedback-input").val(feedbacks[j].feedback);
+                    $tr.find("option[value='"+feedbacks[j].feedbackType+"']").attr("selected",true);
+                }
+            }
           $tr.show()
           $trmark.show()
           $(".table-out").append($tr).append($trmark);
@@ -412,6 +474,58 @@
     $(".loading").ajaxStop(function  () {
       $(this).hide();
     })
+
+
+  $(".feedback-input").on("input webChange", function () {
+      $(this).css("background-color", "pink");
+  })
+  $(".feedback-input").keypress(function (event) {
+      var $obj = $(this);
+      var uid = $obj.parent().parent().find(".uid").html();
+      if (event.which == 13) {
+          $.ajax({
+              url: "/ajax",
+              data: {
+                  method: "editUserFeedback",
+                  uid: uid,
+                  feedback: $obj.val()
+              },
+              type: "post",
+              dataType: "json",
+              success: function (data) {
+                  if (data.code == 0) {
+                      $obj.css("background-color", "white");
+                      $obj.blur()
+                  } else {
+                      alert(data.msg)
+                  }
+              }
+          })
+          return false;
+      }
+  })
+
+  $(".feedback-type").change(function(){
+      var value = $(this).val();
+      var uid = $(this).parent().parent().find(".uid").html();
+
+      $.ajax({
+          url: "/ajax",
+          data: {
+              method: "editUserFeedback",
+              uid: uid,
+              feedback_type:value
+          },
+          type: "post",
+          dataType: "json",
+          success: function (data) {
+              if(data.code != 0){
+                  alert(data.msg)
+              }
+          }
+      })
+
+  })
 
 </script>
 <#include "commons/footer.ftl" />
