@@ -39,13 +39,13 @@ public interface OrderInfoMapper {
 
 
     public long findCount(@Param("orderNo") String orderNo,
-                          @Param("uid") long uid, @Param("securityCode") String securityCode,
+                          @Param("uid") Long uid, @Param("securityCode") String securityCode,
                           @Param("status") int status, @Param("ob") String ob,
                           @Param("oe") String oe, @Param("start") long start,
                           @Param("pagesize") long pagesize);
 
     public List<OrderInfo> findByPage(@Param("orderNo") String orderNo,
-                                      @Param("uid") long uid, @Param("securityCode") String securityCode,
+                                      @Param("uid") Long uid, @Param("securityCode") String securityCode,
                                       @Param("status") int status, @Param("ob") String ob,
                                       @Param("oe") String oe, @Param("start") long start,
                                       @Param("pagesize") long pagesize);
@@ -53,7 +53,7 @@ public interface OrderInfoMapper {
 
 
     public List<OrderInfo> findByPageByHospital(@Param("orderNo") String orderNo,
-                                                @Param("uid") long uid, @Param("securityCode") String securityCode,
+                                                @Param("uid") Long uid, @Param("securityCode") String securityCode,
                                                 @Param("status") int status, @Param("ob") String ob,
                                                 @Param("oe") String oe, @Param("start") long start,
                                                 @Param("hospitalId") long hospitalId, @Param("pagesize") long pagesize);

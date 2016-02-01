@@ -74,7 +74,10 @@ public class OrderService {
         User user = userService.queryUserByMobile(mobile);
         long end = System.currentTimeMillis();
         System.out.println(end - begin+"毫秒运行完queryUserByMobile");
-        long uid = user != null && user.getUid() == null ? 0 : user.getUid();
+        Long uid = user != null && user.getUid() == null ? 0 : user.getUid();
+        if("".equals(StringUtils.stripToEmpty(mobile))){
+            uid = null;
+        }
         logger.info("search uid is {}",uid);
         long size = mapper.findCount(orderNo, uid, securityCode,
                 status, ob, oe, start, PageSize);

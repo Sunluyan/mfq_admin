@@ -480,7 +480,7 @@
       and uid=#{uid}
     </if>
     <if test="securityCode != null and securityCode != ''">
-      and security_code =# {securityCode}
+      and security_code =#{securityCode}
     </if>
     <if test="status != null and status != 100">
       and status =#{status}
