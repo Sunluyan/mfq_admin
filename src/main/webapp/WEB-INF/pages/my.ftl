@@ -17,12 +17,13 @@
                 <label class="control-label">用户名</label>
                 <div class="controls">
                     <span class="input uneditable-input">${user.username}</span>
+                    <input type="hidden" class="input-large" name="name" value="${user.username}">
                 </div>
             </div>
           <div class="control-group">
                 <label class="control-label" for="cname">中文名</label>
                 <div class="controls">
-                    <input type="text" class="input-large" name="cname" value="${user.cname}">
+                    <input type="text" class="input-large" name="cname" value="${user.realname}">
                 </div>
             </div>
             <div class="control-group">
@@ -34,9 +35,10 @@
             <div class="control-group">
                 <label class="control-label" for="phone">电话号码</label>
                 <div class="controls">
-                    <span class="input uneditable-input">${user.phone}</span>
+                    <input type="text" class="input-large" name="phone" value="${user.mobile}"></input>
                 </div>
             </div>
+            <#--
             <div class="control-group">
                 <label class="control-label">角色列表</label>
                 <div class="controls">
@@ -45,7 +47,10 @@
                     </span>
                 </div>
             </div>
-            <#--
+
+            -->
+
+
             <div class="control-group">
                 <label class="control-label" for="opassword">原始密码</label>
                 <div class="controls">
@@ -65,15 +70,15 @@
                     <input type="password" class="input-large" id="cpassword" name="cpassword">
                 </div>
             </div>
-            -->
+
             <div class="form-actions">
                 <button type="submit" class="btn btn-primary">保存更改</button>
             </div>
         </fieldset>
     </form>
     <ul>
-      <li>修改用户名、邮件地址、电话号码、角色等需要联系管理员(@Jordan @Felix @Ady)</li>
-      <li>修改密码请前往 <a href="http://www.shijiebang.com/setting/password/">主站修改密码</a></li>
+      <li>修改用户名、邮件地址、电话号码、角色等需要联系管理员</li>
+      <li>修改密码请前往 <a href="http://c.5imfq.com/setting/password/">修改密码</a></li>
     </ul>
 </div>
 

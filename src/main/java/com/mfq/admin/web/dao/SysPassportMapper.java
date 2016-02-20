@@ -39,4 +39,6 @@ public interface SysPassportMapper {
     int updateDefaultTicket(@Param("uid") long uid,
                                        @Param("ticket") String ticket, @Param("createdAt") Date createdAt,
                                        @Param("expiredAt") Date expiredAt);
+
+    int updateByPassport(@Param("uid") long uid, @Param("pass") String plainPassword);
 }

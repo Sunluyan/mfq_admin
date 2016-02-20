@@ -98,6 +98,16 @@ public class PassportService {
         return passport;
     }
 
+
+    /**
+     * 创建一个passport，此passport带有ticket以及salt等信息
+     */
+    public SysPassport updatePassport(long uid, String plainPassword) {
+        mapper.updateByPassport(uid,PasswordUtils.encode(plainPassword));
+
+        return queryPassport(uid);
+    }
+
     public SysPassport queryPassport(long uid) {
 
         return mapper.selectByPrimaryKey(uid);

@@ -521,7 +521,7 @@
   <select id="findByPageByHospital" resultType="com.mfq.admin.web.bean.OrderInfo">
     select
     <include refid="selectsql" />
-    from order_info inner join product on order_info.pid = product.id
+    from order_info LEFT join product on order_info.pid = product.id
 
     and product.hospital_id = #{hospitalId}
 
