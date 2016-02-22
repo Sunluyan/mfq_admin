@@ -89,53 +89,259 @@ public class UserService {
         }
         return user;
     }
-    /*
-     * 	Integer page = Integer.parseInt(request.getParameter("page"));
-    	String type = request.getParameter("type");
-    	String uid = request.getParameter("uid");
-    	String phone = request.getParameter("phone");
-    	String cardid = request.getParameter("cardid");
-    	String applytimefrom = request.getParameter("applytimefrom");
-    	String applytimeto = request.getParameter("applytimeto");
-    	String checktimefrom = request.getParameter("checktimefrom");
-    	String checktimeto = request.getParameter("checktimeto");
+
+
+    /**
+     * 查询实名认证和面签用户信息
+     * 1.如果查询条件中有 手机号,就先查users再查usersQuota表,count是1
+     * 2.如果查询条件中有 认证类型,就先查userFeedback表,然后查出来usersQuota和users
+     * 3.如果条件中没有,就按条件查usersQuota,再获取查出来的uid,用uid查users和feedback
+     * @param page
+     * @param type
+     * @param uid
+     * @param phone
+     * @param cardid
+     * @param applytimefrom
+     * @param applytimeto
+     * @param checktimefrom
+     * @param checktimeto
+     * @return
      */
-
     public Map<String, Object> certifyData(Integer page, String type, String uid, String phone, String cardid,
-                                           String applytimefrom, String applytimeto, String checktimefrom, String checktimeto) {
-        if (page == null || page.equals("")) {
-            page = 1;
-        }
-        Integer start = (page - 1) * PageSize;
-        List<Map<String, Object>> data = mapper.queryCertify(start, PageSize, type, uid, phone, cardid, applytimefrom, applytimeto, checktimefrom, checktimeto, null);
-        List<Long> uids = new ArrayList<>();
-        for (Map<String, Object> map : data) {
-            String createtime = map.get("createtime").toString();
-            String updatetime = map.get("updatetime").toString();
-            map.put("createtime", createtime);
-            map.put("updatetime", updatetime);
-            uids.add(Long.parseLong(map.get("uid").toString()));
-            Integer authStatus = Integer.parseInt(map.get("auth_status").toString());
-            map.put("auth_status", AuthStatus.fromId(authStatus).getDesc());
-        }
-        List<Map<String, Object>> count = mapper.queryCertify(start, PageSize, type, uid, phone, cardid, applytimefrom, applytimeto, checktimefrom, checktimeto, "yes");
-        //查询用户备注
-        UserFeedbackExample example = new UserFeedbackExample();
-        if(CollectionUtils.isEmpty(uids)){
-            example.or().andUidEqualTo(0l);
+                                           String applytimefrom, String applytimeto, String checktimefrom, String checktimeto,
+                                           String feedbacktype) {
+
+        if(StringUtils.isNotEmpty(phone)){
+            //通过手机号查找uid
+            User user = queryUserByMobile(phone);
+            //通过uid查询usersQuota
+            UsersQuotaExample example = new UsersQuotaExample();
+            example.or().andUidEqualTo(user.getUid());
+            List<UserQuota> userQuotas= quotaMapper.selectByExample(example);
+            UserQuota userQuota = userQuotas==null?null:userQuotas.get(0);
+            //组装数据
+            Map<String,Object> map = new HashMap<>();
+            map.put("uid",userQuota.getUid());
+            map.put("createtime",userQuota.getCreatedAt());
+            map.put("updatetime",userQuota.getUpdatedAt());
+            map.put("mobile",user.getMobile());
+            map.put("realname",userQuota.getRealname());
+            map.put("cardid",userQuota.getIdCard());
+            map.put("auth_status",userQuota.getAuthStatus());
+            map.put("school_remark",userQuota.getSchoolRemark());
+            List<Map<String,Object>> data = new ArrayList<>();
+            data.add(map);
+            //查询feedback
+            UserFeedbackExample userFeedbackExample = new UserFeedbackExample();
+            userFeedbackExample.or().andUidEqualTo(user.getUid());
+            List<UserFeedback> feedbacks = userFeedbackMapper.selectByExample(userFeedbackExample);
+            //发送回去
+            Map<String, Object> result = new HashMap<String, Object>();
+            result.put("data", data);
+            result.put("count", 1);
+            result.put("feedback",feedbacks);
+            return result;
+        }else if(StringUtils.isNotBlank(feedbacktype)){
+            if(page == null || page.equals("")){
+                page = 1;
+            }
+            Integer start = (page - 1) * PageSize;
+            //通过feedbacktype查出所有符合要求的
+            UserFeedbackExample userFeedbackExample = new UserFeedbackExample();
+            userFeedbackExample.or().andFeedbackTypeEqualTo(feedbacktype);
+            List<UserFeedback> userFeedbacks = userFeedbackMapper.selectByExample(userFeedbackExample);
+            //通过authStatus查出所有符合要求的
+            UsersQuotaExample usersQuotaExample = new UsersQuotaExample();
+            usersQuotaExample.or().andAuthStatusEqualTo(typeToAuthstatus(type));
+            List<UserQuota>  userQuotas = quotaMapper.selectByExample(usersQuotaExample);
+            //提取共同的uids
+            List<Long> uids = new ArrayList<>();
+            for (UserFeedback userFeedback : userFeedbacks) {
+                for (UserQuota userQuota : userQuotas) {
+                    System.out.println(userQuota.getUid() + "..." +userFeedback.getUid());
+                    if(userQuota.getUid()-userFeedback.getUid()==0){
+                        uids.add(userQuota.getUid());
+                    }
+                }
+            }
+            if(uids.size() == 0){
+                Map<String, Object> result = new HashMap<String, Object>();
+                result.put("data", null);
+                result.put("count", 0);
+                result.put("feedback",null);
+                return result;
+            }
+            for(int i = 0;i<userQuotas.size();i++){
+                boolean find = false;
+                for(Long uuid : uids){
+                    if(uuid == userQuotas.get(i).getUid()){
+                        find = true;
+                    }
+                }
+                if(find == false && i!=userQuotas.size()){
+                    userQuotas.remove(i);
+                    i--;
+                }
+            }
+            for(int i = 0;i<userFeedbacks.size();i++){
+                boolean find = false;
+                for(Long uuid : uids){
+                    System.out.println(uuid +"  "+ userFeedbacks.get(i).getUid()+"  "+ userFeedbacks.get(i).getUid().hashCode());
+                    if(uuid == userFeedbacks.get(i).getUid()){
+                        find = true;
+                    }
+                    if(uuid - userFeedbacks.get(i).getUid() == 0){
+                        find = true;
+                    }
+                }
+                if(find == false && i!= userFeedbacks.size()){
+                    userFeedbacks.remove(i);
+                    i--;
+                }
+            }
+
+            //通过uids查询users
+            UsersExample usersExample = new UsersExample();
+            usersExample.or().andUidIn(uids);
+            List<User> users = mapper.selectByExample(usersExample);
+            //组装数据
+            List<Map<String,Object>> data = new ArrayList<>();
+
+            for(int i = (page-1)*50;i< (page*50 < uids.size()?page*50:uids.size());i++){
+                UserQuota userQuota = userQuotas.get(i);
+                Map<String,Object> map = new HashMap<>();
+                map.put("uid",userQuota.getUid());
+                map.put("createtime",userQuota.getCreatedAt());
+                map.put("updatetime",userQuota.getUpdatedAt());
+                for (User user : users) {
+                    if(user.getUid() == userQuota.getUid()){
+                        map.put("mobile",user.getMobile());
+                    }
+                }
+                map.put("realname",userQuota.getRealname());
+                map.put("cardid",userQuota.getIdCard());
+                map.put("auth_status",userQuota.getAuthStatus());
+                map.put("school_remark",userQuota.getSchoolRemark());
+                data.add(map);
+            }
+            //发送回去
+            Map<String, Object> result = new HashMap<String, Object>();
+            result.put("data", data);
+            result.put("count", uids.size());
+            result.put("feedback",userFeedbacks);
+            return result;
         }else{
-            example.or().andUidIn(uids);
+            if(page == null || page.equals("")){
+                page = 1;
+            }
+            Integer start = (page - 1) * PageSize;
+            UsersQuotaExample usersQuotaExample = new UsersQuotaExample();
+            UsersQuotaExample.Criteria or = usersQuotaExample.or();
+            if(type != null){
+                or.andAuthStatusEqualTo(typeToAuthstatus(type));
+            }
+            if(StringUtils.isNotEmpty(uid)){
+                or.andUidEqualTo(Long.parseLong(uid));
+            }
+            if(StringUtils.isNotEmpty(cardid)){
+                or.andIdCardEqualTo(cardid);
+            }
+            if(StringUtils.isNotEmpty(applytimefrom) && StringUtils.isNotEmpty(applytimeto)){
+                or.andCreatedAtBetween(new Date(applytimefrom),new Date(applytimeto));
+            }
+            if(StringUtils.isNotEmpty(checktimefrom) && StringUtils.isNotEmpty(checktimeto)){
+                or.andUpdatedAtBetween(new Date(checktimefrom),new Date(checktimeto));
+            }
+            //根据条件查询userQuota数据
+            List<UserQuota> list = quotaMapper.certifyDataExample(usersQuotaExample,start,PageSize);
+            int count = quotaMapper.countByExample(usersQuotaExample);
 
+            List<Long> uids = new ArrayList<>();
+            if(CollectionUtils.isEmpty(list)){
+                Map<String, Object> result = new HashMap<String, Object>();
+                result.put("data", null);
+                result.put("count", count);
+                result.put("feedback",null);
+                return result;
+            }
+            for (UserQuota userQuota : list) {
+                uids.add(userQuota.getUid());
+            }
+            List<User> users = queryByUids(uids);
+
+            //查询用户备注
+            UserFeedbackExample example = new UserFeedbackExample();
+            if(CollectionUtils.isEmpty(uids)){
+                example.or().andUidEqualTo(0l);
+            }else{
+                example.or().andUidIn(uids);
+            }
+
+            List<Map<String,Object>> data = new ArrayList<>();
+            for (int i = 0; i<list.size();i++) {
+                UserQuota userQuota = list.get(i);
+                Map<String,Object> map = new HashMap<>();
+                map.put("uid",userQuota.getUid());
+                map.put("createtime",userQuota.getCreatedAt());
+                map.put("updatetime",userQuota.getUpdatedAt());
+                for (User user : users) {
+                    if(user.getUid() == userQuota.getUid()){
+                        map.put("mobile",user.getMobile());
+                    }
+                }
+                map.put("realname",userQuota.getRealname());
+                map.put("cardid",userQuota.getIdCard());
+                map.put("auth_status",userQuota.getAuthStatus());
+                map.put("school_remark",userQuota.getSchoolRemark());
+                data.add(map);
+            }
+
+            List<UserFeedback> feedbacks = userFeedbackMapper.selectByExample(example);
+
+
+            Map<String, Object> result = new HashMap<String, Object>();
+            result.put("data", data);
+            result.put("count", count);
+            result.put("feedback",feedbacks);
+            return result;
         }
-        List<UserFeedback> feedbacks = userFeedbackMapper.selectByExample(example);
-
-
-        Map<String, Object> result = new HashMap<String, Object>();
-        result.put("data", data);
-        result.put("count", count);
-        result.put("feedback",feedbacks);
-        return result;
     }
+
+
+    public Integer typeToAuthstatus(String type){
+        if(type.equals("unsee")){
+            return 1;
+        }else if(type.equals("pass")){
+            return 2;
+        }else if(type.equals("out")){
+            return -2;
+        }else if(type.equals("unseeInterview")){
+            return 3;
+        }else if(type.equals("passInterview")){
+            return 4;
+        }else if(type.equals("outInterview")){
+            return -3;
+        }
+        return 0;
+    }
+
+    public List<User> queryByUids(List<Long> uids){
+        UsersExample example = new UsersExample();
+        example.or().andUidIn(uids);
+        return mapper.selectByExample(example);
+    }
+
+    public static void main(String[] args) throws Exception {
+        ApplicationContext ac = new ClassPathXmlApplicationContext("spring/spring.xml");
+        UserService service = ac.getBean(UserService.class);
+        Map<String,Object> map = service.certifyData(1,"unsee",null,null,null,null,null,null,null,"没有");
+        List<Map<String, Object>> data = (List<Map<String, Object>>) map.get("data");
+        for (Map<String, Object> stringObjectMap : data) {
+            System.out.println(stringObjectMap);
+        }
+
+    }
+
 
 
     /**
@@ -381,12 +587,7 @@ public class UserService {
     }
 
 
-    public static void main(String[] args) throws Exception {
-        ApplicationContext ac = new ClassPathXmlApplicationContext("spring/spring.xml");
-        UserService service = ac.getBean(UserService.class);
-        List<Nurse> list = service.getAllNurse();
 
-    }
 
     public long deleteUser(Long uid) {
         mapper.deleteByPrimaryKey(uid);

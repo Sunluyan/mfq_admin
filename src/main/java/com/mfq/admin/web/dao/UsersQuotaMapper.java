@@ -1,6 +1,7 @@
 package com.mfq.admin.web.dao;
 
 import com.mfq.admin.web.annotation.MQMDao;
+import com.mfq.admin.web.bean.User;
 import com.mfq.admin.web.bean.UserQuota;
 import com.mfq.admin.web.bean.example.UsersQuotaExample;
 import java.util.List;
@@ -28,4 +29,5 @@ public interface UsersQuotaMapper {
 
     public Map<String,Object> queryCertifyQuota(@Param("uid") long uid);
 
+    List<UserQuota> certifyDataExample(@Param("example")UsersQuotaExample example, @Param("start")int start, @Param("size")int page);
 }

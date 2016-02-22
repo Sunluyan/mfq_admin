@@ -6,6 +6,7 @@ import com.mfq.admin.web.bean.example.UsersExample;
 import java.util.List;
 import java.util.Map;
 
+import com.mfq.admin.web.bean.example.UsersQuotaExample;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
@@ -23,6 +24,7 @@ public interface UsersMapper {
     int insertSelective(User record);
 
     List<User> selectByExample(UsersExample example);
+
 
     User selectByPrimaryKey(Long uid);
 

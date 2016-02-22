@@ -145,7 +145,16 @@
                         <td>手机号</td>
                         <td>姓名</td>
                         <td>身份证号</td>
-                        <td>认证类型</td>
+                        <td><select class="feedback-choiced" style="width:130px;">
+                            <option value="">认证类型</option>
+                            <option value="">无状态</option>
+                            <option value="争取中">争取中</option>
+                            <option value="待处理">待处理</option>
+                            <option value="已弃疗">已弃疗</option>
+                            <option value="重下单">重下单</option>
+                            <option value="重复取消">重复取消</option>
+                            <option value="已下单">已下单</option>
+                        </select></td>
                         <td>认证反馈</td>
                         <td>操作</td>
                     </tr>
@@ -157,7 +166,7 @@
                         <td class="realname">刘志国</td>
                         <td class="cardid">411425199407130016</td>
                         <td class="feedback-type-td">
-                            <select class="feedback-type">
+                            <select class="feedback-type" style="width:100px;">
                                 <option value="无状态">无状态</option>
                                 <option value="争取中">争取中</option>
                                 <option value="待处理">待处理</option>
@@ -167,7 +176,7 @@
                                 <option value="已下单">已下单</option>
                             </select>
                         </td>
-                        <td class="feed"><textarea type="text" class="form-control feedback-input" / ></textarea></td>
+                        <td class="feed"><textarea type="text" class="form-control feedback-input" rows="5" style="width:280px;" /></textarea></td>
                         <td class="oparite"><a href="/user/certify/check/" target="_blank" data-id=''>详情</a></td>
                     </tr>
                 </table>
@@ -180,7 +189,16 @@
                         <td>手机号</td>
                         <td>姓名</td>
                         <td>身份证号</td>
-                        <td>认证类型</td>
+                        <td><select class="feedback-choiced" style="width:130px;">
+                            <option value="">认证类型</option>
+                            <option value="">无状态</option>
+                            <option value="争取中">争取中</option>
+                            <option value="待处理">待处理</option>
+                            <option value="已弃疗">已弃疗</option>
+                            <option value="重下单">重下单</option>
+                            <option value="重复取消">重复取消</option>
+                            <option value="已下单">已下单</option>
+                        </select></td>
                         <td>认证反馈</td>
                         <td>操作</td>
                     </tr>
@@ -193,7 +211,7 @@
                         <td class="realname">刘志国</td>
                         <td class="cardid">411425199407130016</td>
                         <td class="feedback-type-td">
-                            <select class="feedback-type">
+                            <select class="feedback-type" style="width:100px;">
                                 <option value="无状态">无状态</option>
                                 <option value="争取中">争取中</option>
                                 <option value="待处理">待处理</option>
@@ -203,7 +221,8 @@
                                 <option value="已下单">已下单</option>
                             </select>
                         </td>
-                        <td class="feed"><textarea type="text" class="form-control feedback-input" / ></textarea></td>
+                        <td class="feed"><textarea type="text" class="form-control feedback-input" rows="5" style="width:280px;" /></textarea></td>
+
                         <td class="oparite"><a href="/user/certify/check/" data-id='' target="_blank">详情</a></td>
                     </tr>
                 </table>
@@ -215,7 +234,16 @@
                         <td>手机号</td>
                         <td>姓名</td>
                         <td>身份证号</td>
-                        <td>认证类型</td>
+                        <td><select class="feedback-choiced" style="width:130px;">
+                            <option value="">认证类型</option>
+                            <option value="">无状态</option>
+                            <option value="争取中">争取中</option>
+                            <option value="待处理">待处理</option>
+                            <option value="已弃疗">已弃疗</option>
+                            <option value="重下单">重下单</option>
+                            <option value="重复取消">重复取消</option>
+                            <option value="已下单">已下单</option>
+                        </select></td>
                         <td>认证反馈</td>
                         <td>操作</td>
                     </tr>
@@ -227,7 +255,7 @@
                         <td class="realname">刘志国</td>
                         <td class="cardid">411425199407130016</td>
                         <td class="feedback-type-td">
-                            <select class="feedback-type">
+                            <select class="feedback-type" style="width:100px;">
                                 <option value="无状态">无状态</option>
                                 <option value="争取中">争取中</option>
                                 <option value="待处理">待处理</option>
@@ -237,7 +265,8 @@
                                 <option value="已下单">已下单</option>
                             </select>
                         </td>
-                        <td class="feed"><textarea type="text" class="form-control feedback-input" / ></textarea></td>
+                        <td class="feed"><textarea type="text" class="form-control feedback-input" rows="5" style="width:280px;" /></textarea></td>
+
                         <td class="oparite"><a href="/user/certify/check/" data-id='' target="_blank">详情</a></td>
                     </tr>
 
@@ -312,7 +341,7 @@
         var checktimefrom = $("#checktimefrom").val()
         var checktimeto = $("#checktimeto").val()
         var type = tables.tableindex == 1 ? "unsee" : tables.tableindex == 2 ? "pass" : "out"
-
+        var feedbackType = $(".feedback-choiced").eq(tables.tableindex-1).val();
         $.ajax({
             url: '/ajax',
             type: 'post',
@@ -326,7 +355,8 @@
                 applytimefrom: applytimefrom,
                 applytimeto: applytimeto,
                 checktimefrom: checktimefrom,
-                checktimeto: checktimeto
+                checktimeto: checktimeto,
+                feedbackType:feedbackType
             },
             dataType: 'json',
             success: function (json) {
@@ -342,7 +372,14 @@
                 }
 
                 //填入总条数
-                var count = json.data.count[0].count;
+                if(json == null || json.data == null || json.data.data == null){
+                    $(".tr-unsee-clone").remove();
+                    $(".tr-pass-clone").remove()
+                    $(".tr-out-clone").remove()
+                    $(".tr-remark-clone").remove()
+                    return false;
+                }
+                var count = json.data.count;
                 $(".total").html(count)
                 $(".totalpage").html(Math.ceil(count / 50))
                 nextPrevCss()

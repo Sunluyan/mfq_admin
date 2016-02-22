@@ -256,6 +256,7 @@ public class UserController {
 		String applytimeto = null;
 		String checktimefrom = null;
 		String checktimeto = null;
+		String feedbackType = null;
 		
 		if(request.getParameter("page")!=null)page = Integer.parseInt(request.getParameter("page"));
 		type = request.getParameter("type");
@@ -266,8 +267,9 @@ public class UserController {
 		applytimeto = request.getParameter("applytimeto");
 		checktimefrom = request.getParameter("checktimefrom");
 		checktimeto = request.getParameter("checktimeto");
+		feedbackType = request.getParameter("feedbackType");
 
-		Map<String,Object> list = service.certifyData(page, type, uid, phone, cardid, applytimefrom, applytimeto, checktimefrom, checktimeto);
+		Map<String,Object> list = service.certifyData(page, type, uid, phone, cardid, applytimefrom, applytimeto, checktimefrom, checktimeto,feedbackType);
     	return JSONUtil.successResultJson(list);
     }
 
@@ -388,7 +390,6 @@ public class UserController {
     	model.addAttribute("nurse",nurse);
     	return "/user/nurse_edit";
     }
-
 
 
 }

@@ -578,4 +578,16 @@
 
     and quota.uid = #{uid}
   </select>
+
+  <select id="certifyDataExample" resultMap="BaseResultMap" parameterType="map" >
+    select
+    <include refid="Base_Column_List" />
+    from users_quota
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+    order by updated_at desc
+    LIMIT #{start},#{size}
+  </select>
+
 </mapper>

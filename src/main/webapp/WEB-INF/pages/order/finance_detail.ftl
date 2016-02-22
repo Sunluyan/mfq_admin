@@ -153,7 +153,8 @@
 				<#list payRecords as record>
 					
 					<tr>
-						<td class="td04">${record.payAt?string('yyyy-MM-dd HH:mm:ss')}</td>
+						<#--<td class="td04">${record.payAt?string('yyyy-MM-dd HH:mm:ss')}</td>-->
+						<td class="td04">${record.payAt}</td>
 						<td class="td04">${record.amount+record.balance+record.present}</td>
 						<td class="td04">${record.tpp}</td>
 						<td class="td04">${record.payPeriod}</td>

@@ -3,9 +3,12 @@
 <#include "commons/toolbar.ftl" />
 <link rel="stylesheet" type="text/css" href="/static/css/user/check_certify.css">
 <style>
-body{
-  height:1000px;
-}
+    .dropdown-toggle{
+        font-size: 14px;
+    }
+    .popover-title{
+        margin-top: 40px;
+    }
 </style>
 
 <div class="popover-title container">用户实名认证审核页</div>
@@ -43,12 +46,15 @@ body{
     <td class="neirong">${user.location}</td>
   </tr>
   <tr>
-    <td width="100" align="right" class="bold">紧急联系电话</td>
+    <td width="100" align="right" class="bold">紧急联系电话<img src="http://7xowbr.com2.z0.glb.qiniucdn.com/${user.idcard_front}" width="200" height="78" class="img-responsive"></td>
     <td class="neirong">${user.contact}</td>
   </tr>
   <tr>
     <td width="100" align="right" style="font-weight:bold;padding-right:40px">身份证正面</td>
-    <td><a href="#"><img src="http://7xowbr.com2.z0.glb.qiniucdn.com/${user.idcard_front}" width="200" height="78" class="img-responsive"></a></td>
+    <td>
+        <a href="#"><img src="http://7xowbr.com2.z0.glb.qiniucdn.com/${user.idcard_front}" width="200" height="78" class="img-responsive"></a>
+
+    </td>
   </tr>
   <tr>
     <td width="100" align="right" style="font-weight:bold;padding-right:40px">身份证背面</td>

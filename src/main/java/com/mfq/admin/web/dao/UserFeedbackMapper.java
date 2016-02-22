@@ -22,6 +22,8 @@ public interface UserFeedbackMapper {
 
     List<UserFeedback> selectByExample(UserFeedbackExample example);
 
+    List<UserFeedback> selectByExampleLimit(@Param("example")UserFeedbackExample example,@Param("start")int start,@Param("size")int size);
+
     UserFeedback selectByPrimaryKey(Long id);
 
     int updateByExampleSelective(@Param("record") UserFeedback record, @Param("example") UserFeedbackExample example);

@@ -208,4 +208,17 @@
       feedback_type = #{feedbackType,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="selectByExampleLimit" parameterType="map" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from user_feedback
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+    limit #{start},#{size}
+  </select>
 </mapper>

@@ -138,8 +138,6 @@
                         <td>真实姓名</td>
                         <td>实名认证</td>
                         <td>性别</td>
-                        <td>同盾信用</td>
-                        <td>支付宝</td>
                         <td>面签状态</td>
                         <td>已支付订单</td>
                         <td>未支付订单</td>
@@ -157,8 +155,6 @@
                         <td>${user.realname}</td>
                         <td>${user.status}</td>
                         <td>${user.gender}</td>
-                        <td>无</td>
-                        <td>无</td>
                         <td>无</td>
                         <td>${user.alreadypay}</td>
                         <td>${user.notpay}</td>
