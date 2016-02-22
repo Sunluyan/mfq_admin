@@ -9,7 +9,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
+import com.mfq.admin.web.bean.SysUser;
 import com.mfq.admin.web.dao.OpLogsMapper;
+import com.mfq.admin.web.security.UserDetail;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,6 +51,10 @@ public class BaseController {
 
     public String currentUser() {
         return UserHolder.currentUser();
+    }
+
+    public UserDetail getLoginUserDetail(){
+        return UserHolder.currentUserDetail();
     }
 
     protected Map<String, Object> getResultMap() {

@@ -264,4 +264,8 @@
     uid=#{uid}
   </update>
 
+  <update id="updateByPassport">
+    UPDATE sys_passport set password = #{pass} WHERE uid=#{uid}
+  </update>
+
 </mapper>
