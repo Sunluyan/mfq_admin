@@ -64,6 +64,10 @@ public class DateUtil {
         }
     }
 
+    public static void main(String[] args) {
+        System.out.println(formatYYYYMMDDHHMMSS(new Date()));
+    }
+
     public static Date convertYYYYMMDDHHMMSS(String strDate) {
         if (strDate == null || strDate.indexOf("null") >= 0)
             return null;
@@ -257,8 +261,6 @@ public class DateUtil {
     /**
      * 取得时间间隔,相差的时间，XX小时XX分钟
      * 
-     * @param d1
-     * @param d2
      * @return 不会超过24小时
      */
     public static String getTimeBetween(String time1, String time2) {

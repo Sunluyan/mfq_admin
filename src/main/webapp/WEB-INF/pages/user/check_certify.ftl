@@ -9,21 +9,30 @@
     .popover-title{
         margin-top: 40px;
     }
+    .past{
+        border-bottom: 1px dashed #ccc;
+    }
+    .past:last{
+        border:none;
+    }
+    .past-content{
+        color:#333;
+        font-size: 14px;
+        float:left;
+    }
+    .past-time,.past-author{
+        color:#aaa;
+        float:right;
+        font-size: 13px;
+    }
+
 </style>
 
 <div class="popover-title container">用户实名认证审核页</div>
-<table width="96%" border="0" align="center" cellpadding="3" cellspacing="2" class="bk" style="position:absolute; z-index:1;">
+<table width="50%" border="0" align="center" cellpadding="3" cellspacing="2" class="bk" style="float:left;">
   <tr>
     <td width="100" align="right" class="bold">用户ID</td>
-    <td class="neirong uid" >${user.uid}</td>
-  </tr>
-  <tr>
-    <td width="100" align="right" class="bold">用户名</td>
-    <td class="neirong">${user.nick}</td>
-  </tr>
-  <tr>
-    <td width="100" align="right" class="bold">手机号</td>
-    <td class="neirong">${user.mobile}</td>
+    <td class="neirong" ><a class="uid" href = "http://t.5imfq.com:8080/user/list/detail/?uid=${user.uid}">${user.uid}</a></td>
   </tr>
   <tr>
     <td width="100" align="right" class="bold">姓名</td>
@@ -34,10 +43,6 @@
     <td class="neirong">${user.id_card}</td>
   </tr>
   <tr>
-      <td width="100" align="right" class="bold">备注</td>
-      <td class="neirong"><input type="text" class="form-control input-lg input-remark" value="${user.remark}" /></td>
-  </tr>
-  <tr>
     <td width="100" align="right" class="bold">籍贯地址</td>
     <td class="neirong">${user.origin}</td>
   </tr>
@@ -46,19 +51,29 @@
     <td class="neirong">${user.location}</td>
   </tr>
   <tr>
-    <td width="100" align="right" class="bold">紧急联系电话<img src="http://7xowbr.com2.z0.glb.qiniucdn.com/${user.idcard_front}" width="200" height="78" class="img-responsive"></td>
+    <td width="100" align="right" class="bold">紧急联系电话</td>
     <td class="neirong">${user.contact}</td>
   </tr>
   <tr>
     <td width="100" align="right" style="font-weight:bold;padding-right:40px">身份证正面</td>
     <td>
-        <a href="#"><img src="http://7xowbr.com2.z0.glb.qiniucdn.com/${user.idcard_front}" width="200" height="78" class="img-responsive"></a>
-
+        <#if user.idcard_front == "">
+            无
+        </#if>
+        <#if user.idcard_front != "">
+            <img src="http://7xowbr.com2.z0.glb.qiniucdn.com/${user.idcard_front}" width="200" height="78" class="img-responsive">
+        </#if>
     </td>
   </tr>
   <tr>
     <td width="100" align="right" style="font-weight:bold;padding-right:40px">身份证背面</td>
-    <td><a href="#"><img src="http://7xowbr.com2.z0.glb.qiniucdn.com/${user.idcard_reverse}" width="200" height="78" class="img-responsive"></a></td>
+    <td>
+    <#if user.idcard_reverse == "">
+        无
+    </#if>
+    <#if user.idcard_reverse != "">
+        <img src="http://7xowbr.com2.z0.glb.qiniucdn.com/${user.idcard_reverse}" width="200" height="78" class="img-responsive">
+    </#if></td>
   </tr>
   <tr>
     <td height="90" colspan="2" align="center" valign="middle">
@@ -100,8 +115,53 @@
   </td>
   </tr>
 </table>
+<#--
+数据组织方式:
+xxx&&&&xxx&&&&xx****asd&&&&sadf&&&&
+-->
+<table style="background:white;border:1px solid #ccc;border-radius: 20px;float:left;width: 43%;"   align="center" class="remark-table">
+    <tr >
+        <td style="padding:5px 10px;">
+            <p class="past" style="overflow:hidden;">
+                <span class="past-content"></span> <span class="past-author"></span><span class="past-time"></span>
+            </p>
+            <textarea type="text" class="remark-new" style="width:97%;height:50px;"></textarea>
+            <div>
+                <button class="btn-primary add-remark" style="border-radius:15%;padding:3px 8px;float:right;">添加</button>
+            </div>
+        </td>
+    </tr>
+    <script>
+        $(".add-remark").click(function(){
+            var newValue = $(".remark-new").val();
+            //ajax发送到服务器
+            var uid = $(".uid").html();
+            var data = $(".remark-new").val();
 
-  <table width="99%" height="99%" border="0" cellpadding="0" cellspacing="0" id="windows" style="display:none; z-index:100; position:absolute;" >
+            $.get("/ajax",{method:"addRemark",uid:uid,data:data}).done(function(data){
+                insertRemark(data)
+            })
+        })
+        var json = "${user.remark}";
+        var index = 1;
+        function insertRemark(json){
+            for(var i = 0;i<json.split("****").length-1;i++){
+                var p = $(".past").last();
+                var pClone = p.clone();
+                pClone.find(".past-content").html((index++)+"、"+json.split("****")[i].split("&&&&")[0]);
+                pClone.find(".past-time").html("-- "+json.split("****")[i].split("&&&&")[1]+"&nbsp;")
+                pClone.find(".past-author").html("by "+json.split("****")[i].split("&&&&")[2]);
+                pClone.show()
+                p.after(pClone)
+            }
+        }
+        insertRemark(json)
+    </script>
+</table>
+
+
+
+  <table width="99%" height="99%" border="0" cellpadding="0" cellspacing="0" id="windows" style="display:none; z-index:100; position:absolute;top:0px;" >
     <tr>
       <td align="center" valign="middle">
       <table width="300" border="0" cellpadding="0" cellspacing="0">
@@ -124,36 +184,6 @@
       </table>
     </td>
     </tr>
-    <script type="text/javascript">
-        $(".input-remark").on("input webChange", function () {
-            $(this).css("background-color", "pink");
-        })
-        $(".input-remark").keypress(function (event) {
-            var $obj = $(this);
-            var uid = $obj.parent().parent().parent().find(".uid").html();
-            if (event.which == 13) {
-                $.ajax({
-                    url: "/ajax",
-                    data: {
-                        method: "editUserFeedback",
-                        uid: uid,
-                        remark: $obj.val()
-                    },
-                    type: "post",
-                    dataType: "json",
-                    success: function (data) {
-                        if (data.code == 0) {
-                            $obj.css("background-color", "white");
-                            $obj.blur()
-                        } else {
-                            alert(data.msg)
-                        }
-                    }
-                })
-                return false;
-            }
-        })
-    </script>
 </table>
 
 

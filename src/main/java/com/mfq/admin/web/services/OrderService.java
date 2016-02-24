@@ -8,6 +8,7 @@ import com.mfq.admin.web.constants.*;
 import com.mfq.admin.web.dao.CouponMapper;
 import com.mfq.admin.web.dao.FinanceBillMapper;
 import com.mfq.admin.web.dao.OrderInfoMapper;
+import com.mfq.admin.web.dao.UsersQuotaMapper;
 import com.mfq.admin.web.models.view.FinanceOrder;
 import com.mfq.admin.web.models.view.FinanceUser;
 import com.mfq.admin.web.security.UserHolder;
@@ -705,20 +706,12 @@ public class OrderService {
     static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
     public static void main(String[] args) throws Exception {
         ApplicationContext ac = new ClassPathXmlApplicationContext("spring/spring.xml");
-        PayRecordService service =(PayRecordService) ac.getBean("payRecordService");
-        OrderService orderService =(OrderService) ac.getBean("orderService");
-        Date b = format.parse("2015-06-03");
-        Date e = new Date();
-//        List<PayRecord> list = service.queryFinanceByPrames(b, e, OrderType.RECHARGE, null,1,100,null);
-        
-//        orderService.queryFinance(null, "", "", 1, 2, "", 1);
-        
-//        for(PayRecord p:list){
-//        	System.out.println("id="+p.getId()+"||||"+p.getOrderNo());
-//        }
-//        System.out.println("size is "+ list.size());
-        
-        
+        UserQuotaService service = ac.getBean(UserQuotaService.class);
+        String fuck = "368,373,392,394,423,425,430,451,452,491,513,522,537,537,544,549,555,577,600,613,617,619,637,682,733,1266,1787,2164,2182,2191,2192,2193,2194,2197,2199,2214,2217,2221,2243,2253,2254,2264,2265,2266,2269,2270,2271,2272,2273,2274,2278,2279,2287,2291,2292,2299,2366,2371,2527,2798,2804,2815,2821,2828,2839,2840,2840,2930,2930,2936,2950,2951,2952,2952,2957,2964,2966,2973,2992,2995,2995,3029,3044,3050,3050,3053,3053,3053,3073,3073,3074,3075,3084,3085,3091,3134,3168,3214,3225,3244,3486,3532,3598,3622,3686";
+        for(int i = 0;i<fuck.split(",").length;i++){
+            UserQuota userQuota = service.queryUserQuota(Long.parseLong(fuck.split(",")[i]));
+            if(userQuota == null)System.out.println(fuck.split(",")[i]);
+        }
 
     }
 

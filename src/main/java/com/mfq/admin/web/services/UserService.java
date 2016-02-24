@@ -122,8 +122,8 @@ public class UserService {
             //组装数据
             Map<String,Object> map = new HashMap<>();
             map.put("uid",userQuota.getUid());
-            map.put("createtime",userQuota.getCreatedAt());
-            map.put("updatetime",userQuota.getUpdatedAt());
+            map.put("createtime",DateUtil.formatLong(userQuota.getCreatedAt()));
+            map.put("updatetime",DateUtil.formatLong(userQuota.getUpdatedAt()));
             map.put("mobile",user.getMobile());
             map.put("realname",userQuota.getRealname());
             map.put("cardid",userQuota.getIdCard());
@@ -211,8 +211,8 @@ public class UserService {
                 UserQuota userQuota = userQuotas.get(i);
                 Map<String,Object> map = new HashMap<>();
                 map.put("uid",userQuota.getUid());
-                map.put("createtime",userQuota.getCreatedAt());
-                map.put("updatetime",userQuota.getUpdatedAt());
+                map.put("createtime",DateUtil.formatLong(userQuota.getCreatedAt()));
+                map.put("updatetime",DateUtil.formatLong(userQuota.getUpdatedAt()));
                 for (User user : users) {
                     if(user.getUid() == userQuota.getUid()){
                         map.put("mobile",user.getMobile());
@@ -282,8 +282,8 @@ public class UserService {
                 UserQuota userQuota = list.get(i);
                 Map<String,Object> map = new HashMap<>();
                 map.put("uid",userQuota.getUid());
-                map.put("createtime",userQuota.getCreatedAt());
-                map.put("updatetime",userQuota.getUpdatedAt());
+                map.put("createtime",DateUtil.formatLong(userQuota.getCreatedAt()));
+                map.put("updatetime",DateUtil.formatLong(userQuota.getUpdatedAt()));
                 for (User user : users) {
                     if(user.getUid() == userQuota.getUid()){
                         map.put("mobile",user.getMobile());
@@ -537,19 +537,26 @@ public class UserService {
         return count;
     }
 
-    public long updateUserFeedbackRemark(long uid , String remark){
+    public String updateUserFeedbackRemark(long uid,String data,String sysName,Long time){
         UserFeedbackExample example = new UserFeedbackExample();
         example.or().andUidEqualTo(uid);
         List<UserFeedback> list = userFeedbackMapper.selectByExample(example);
         if(CollectionUtils.isEmpty(list)){
             UserFeedback userFeedback = new UserFeedback();
             userFeedback.setUid(uid);
-            userFeedback.setRemark(remark);
-            return userFeedbackMapper.insertSelective(userFeedback);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String newRemark = data+"&&&&"+sysName+"&&&&"+sdf.format(new Date(time))+"****";
+            userFeedback.setRemark(newRemark);
+            userFeedbackMapper.insertSelective(userFeedback);
+            return newRemark;
         }else{
             UserFeedback userFeedback = list.get(0);
-            userFeedback.setRemark(remark);
-            return userFeedbackMapper.updateByPrimaryKey(userFeedback);
+            String oldRemark = userFeedback.getRemark();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String newRemark = data+"&&&&"+sysName+"&&&&"+sdf.format(new Date(time))+"****";
+            userFeedback.setRemark(oldRemark+newRemark);
+            userFeedbackMapper.updateByPrimaryKey(userFeedback);
+            return newRemark;
         }
     }
     @Transactional

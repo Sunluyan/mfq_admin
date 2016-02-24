@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-	<settings>
-		<setting name="lazyLoadingEnabled" value="false" />
-	</settings>
+    <settings>
+        <setting name="lazyLoadingEnabled" value="false"/>
+    </settings>
 
     <typeAliases>
         <typeAlias alias="SysAcl" type="com.mfq.admin.web.bean.SysAcl"/>
-        <typeAlias alias="SysUser" type="com.mfq.admin.web.bean.SysUser" />
-        <typeAlias alias="SysRole" type="com.mfq.admin.web.bean.SysRole" />
+        <typeAlias alias="SysUser" type="com.mfq.admin.web.bean.SysUser"/>
+        <typeAlias alias="SysRole" type="com.mfq.admin.web.bean.SysRole"/>
         <typeAlias alias="SysPermission" type="com.mfq.admin.web.bean.SysPermission"/>
         <typeAlias alias="User" type="com.mfq.admin.web.bean.User"/>
         <typeAlias alias="UserQuota" type="com.mfq.admin.web.bean.UserQuota"/>
@@ -31,62 +31,65 @@
         <typeAlias alias="Coupon" type="com.mfq.admin.web.bean.coupon.Coupon"/>
         <typeAlias alias="CouponBatchInfo" type="com.mfq.admin.web.bean.coupon.CouponBatchInfo"/>
         <typeAlias alias="Device" type="com.mfq.admin.web.bean.Device"/>
-		<typeAlias alias="OrderFreedom" type="com.mfq.admin.web.bean.OrderFreedom"/>
-		<typeAlias alias="OrderFreedomExample" type="com.mfq.admin.web.bean.OrderFreedomExample"/>
+        <typeAlias alias="OrderFreedom" type="com.mfq.admin.web.bean.OrderFreedom"/>
+        <typeAlias alias="OrderFreedomExample" type="com.mfq.admin.web.bean.OrderFreedomExample"/>
     </typeAliases>
 
-	<typeHandlers>
-		<typeHandler javaType="com.mfq.admin.web.constants.Status"
-			handler="com.mfq.admin.web.handler.SysUserStatusEnumHandler" />
-		<typeHandler javaType="com.mfq.admin.web.bean.Status"
-			handler="com.mfq.admin.web.handler.UserStatusEnumHandler"/>
-		<typeHandler javaType="com.mfq.admin.web.bean.Gender"
-			handler="com.mfq.admin.web.handler.GenderEnumHandler"/>
-		<typeHandler javaType="com.mfq.admin.web.bean.Grade"
-			handler="com.mfq.admin.web.handler.GradeEnumHandler"/>
-		<typeHandler javaType="com.mfq.admin.web.constants.ProductType"
-			handler="com.mfq.admin.web.handler.ProductTypeEnumHandler"/>
-		<typeHandler javaType="com.mfq.admin.web.constants.BannerType"
-			handler="com.mfq.admin.web.handler.BannerTypeEnumHandler"/>
-	</typeHandlers>
+    <typeHandlers>
+        <typeHandler javaType="com.mfq.admin.web.constants.Status"
+                     handler="com.mfq.admin.web.handler.SysUserStatusEnumHandler"/>
+        <typeHandler javaType="com.mfq.admin.web.bean.Status"
+                     handler="com.mfq.admin.web.handler.UserStatusEnumHandler"/>
+        <typeHandler javaType="com.mfq.admin.web.bean.Gender"
+                     handler="com.mfq.admin.web.handler.GenderEnumHandler"/>
+        <typeHandler javaType="com.mfq.admin.web.bean.Grade"
+                     handler="com.mfq.admin.web.handler.GradeEnumHandler"/>
+        <typeHandler javaType="com.mfq.admin.web.constants.ProductType"
+                     handler="com.mfq.admin.web.handler.ProductTypeEnumHandler"/>
+        <typeHandler javaType="com.mfq.admin.web.constants.BannerType"
+                     handler="com.mfq.admin.web.handler.BannerTypeEnumHandler"/>
+        <typeHandler javaType="com.mfq.admin.web.constants.SysOperationType"
+                     handler="com.mfq.admin.web.handler.SysOperationTypeEnumHandler"/>
+    </typeHandlers>
 
-	<mappers>
-		<mapper resource="mybatis/mapping/AreaCityMapper.xml"/>
-		<mapper resource="mybatis/mapping/FinanceBillMapper.xml"/>
-		<mapper resource="mybatis/mapping/HomeBannerMapper.xml"/>
-		<mapper resource="mybatis/mapping/HomeClassifyMapper.xml"/>
-		<mapper resource="mybatis/mapping/HospitalMapper.xml"/>
-		<mapper resource="mybatis/mapping/NotificationMapper.xml"/>
-		<mapper resource="mybatis/mapping/NurseMapper.xml"/>
-		<mapper resource="mybatis/mapping/OpLogsMapper.xml"/>
-		<mapper resource="mybatis/mapping/SysUserMapper.xml"/>
+    <mappers>
+        <mapper resource="mybatis/mapping/AreaCityMapper.xml"/>
+        <mapper resource="mybatis/mapping/FinanceBillMapper.xml"/>
+        <mapper resource="mybatis/mapping/HomeBannerMapper.xml"/>
+        <mapper resource="mybatis/mapping/HomeClassifyMapper.xml"/>
+        <mapper resource="mybatis/mapping/HospitalMapper.xml"/>
+        <mapper resource="mybatis/mapping/NotificationMapper.xml"/>
+        <mapper resource="mybatis/mapping/NurseMapper.xml"/>
+        <mapper resource="mybatis/mapping/OpLogsMapper.xml"/>
+        <mapper resource="mybatis/mapping/SysUserMapper.xml"/>
 
-		<mapper resource="mybatis/mapping/OrderInfoMapper.xml"/>
-		<mapper resource="mybatis/mapping/PayRecordMapper.xml"/>
-		<mapper resource="mybatis/mapping/PresentalMapper.xml"/>
-		<mapper resource="mybatis/mapping/ProductClassifyMapper.xml"/>
-		<mapper resource="mybatis/mapping/ProductDetailMapper.xml"/>
-		<mapper resource="mybatis/mapping/ProductImgMapper.xml"/>
-		<mapper resource="mybatis/mapping/ProductMapper.xml"/>
-		<mapper resource="mybatis/mapping/SysAclMapper.xml"/>
-		<mapper resource="mybatis/mapping/SysPassportMapper.xml"/>
-		<mapper resource="mybatis/mapping/SysPermissionMapper.xml"/>
-		<mapper resource="mybatis/mapping/SysRoleMapper.xml"/>
-		<mapper resource="mybatis/mapping/UsersExtendMapper.xml"/>
-		<mapper resource="mybatis/mapping/UsersMapper.xml"/>
-		<mapper resource="mybatis/mapping/UsersQuotaMapper.xml"/>
-		<mapper resource="mybatis/mapping/WechatMsgMapper.xml"/>
-		<mapper resource="mybatis/mapping/coupon_batch_info.xml"/>
-		<mapper resource="mybatis/mapping/coupon.xml"/>
-		<mapper resource="mybatis/mapping/OrderFreedomMapper.xml"/>
-		<mapper resource="mybatis/mapping/ActivityRecordMapper.xml"/>
-		<mapper resource="mybatis/mapping/DeviceMapper.xml"/>
-		<mapper resource="mybatis/mapping/InviteMoneyMapper.xml"/>
-		<mapper resource="mybatis/mapping/InviteRecordMapper.xml"/>
-		<mapper resource="mybatis/mapping/OperationRecordMapper.xml"/>
-		<mapper resource="mybatis/mapping/UserFeedbackMapper.xml"/>
+        <mapper resource="mybatis/mapping/OrderInfoMapper.xml"/>
+        <mapper resource="mybatis/mapping/PayRecordMapper.xml"/>
+        <mapper resource="mybatis/mapping/PresentalMapper.xml"/>
+        <mapper resource="mybatis/mapping/ProductClassifyMapper.xml"/>
+        <mapper resource="mybatis/mapping/ProductDetailMapper.xml"/>
+        <mapper resource="mybatis/mapping/ProductImgMapper.xml"/>
+        <mapper resource="mybatis/mapping/ProductMapper.xml"/>
+        <mapper resource="mybatis/mapping/SysAclMapper.xml"/>
+        <mapper resource="mybatis/mapping/SysPassportMapper.xml"/>
+        <mapper resource="mybatis/mapping/SysPermissionMapper.xml"/>
+        <mapper resource="mybatis/mapping/SysRoleMapper.xml"/>
+        <mapper resource="mybatis/mapping/UsersExtendMapper.xml"/>
+        <mapper resource="mybatis/mapping/UsersMapper.xml"/>
+        <mapper resource="mybatis/mapping/UsersQuotaMapper.xml"/>
+        <mapper resource="mybatis/mapping/WechatMsgMapper.xml"/>
+        <mapper resource="mybatis/mapping/coupon_batch_info.xml"/>
+        <mapper resource="mybatis/mapping/coupon.xml"/>
+        <mapper resource="mybatis/mapping/OrderFreedomMapper.xml"/>
+        <mapper resource="mybatis/mapping/ActivityRecordMapper.xml"/>
+        <mapper resource="mybatis/mapping/DeviceMapper.xml"/>
+        <mapper resource="mybatis/mapping/InviteMoneyMapper.xml"/>
+        <mapper resource="mybatis/mapping/InviteRecordMapper.xml"/>
+        <mapper resource="mybatis/mapping/OperationRecordMapper.xml"/>
+        <mapper resource="mybatis/mapping/UserFeedbackMapper.xml"/>
+        <mapper resource="mybatis/mapping/SysOperationRecordMapper.xml"/>
 
-	</mappers>
+    </mappers>
 
 
 </configuration>

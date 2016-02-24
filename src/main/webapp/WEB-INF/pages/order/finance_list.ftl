@@ -220,7 +220,6 @@
         dataType:'json',
         success:function (json) {
             if(json.code != 0 || json.data.length==0){
-                alert(json.msg=="success"?"没有数据":json.msg)
                 return false;
             }
           insertTable(json.data)

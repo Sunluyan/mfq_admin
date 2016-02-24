@@ -150,7 +150,7 @@
                             <option value="">无状态</option>
                             <option value="争取中">争取中</option>
                             <option value="待处理">待处理</option>
-                            <option value="已弃疗">已弃疗</option>
+                            <option value="已放弃">已放弃</option>
                             <option value="重下单">重下单</option>
                             <option value="重复取消">重复取消</option>
                             <option value="已下单">已下单</option>
@@ -170,13 +170,13 @@
                                 <option value="无状态">无状态</option>
                                 <option value="争取中">争取中</option>
                                 <option value="待处理">待处理</option>
-                                <option value="已弃疗">已弃疗</option>
+                                <option value="已放弃">已放弃</option>
                                 <option value="重下单">重下单</option>
                                 <option value="重复取消">重复取消</option>
                                 <option value="已下单">已下单</option>
                             </select>
                         </td>
-                        <td class="feed"><textarea type="text" class="form-control feedback-input" rows="5" style="width:280px;" /></textarea></td>
+                        <td class="feed"><textarea type="text" class="form-control feedback-input" rows="3" style="width:220px;" /></textarea></td>
                         <td class="oparite"><a href="/user/certify/check/" target="_blank" data-id=''>详情</a></td>
                     </tr>
                 </table>
@@ -194,7 +194,7 @@
                             <option value="">无状态</option>
                             <option value="争取中">争取中</option>
                             <option value="待处理">待处理</option>
-                            <option value="已弃疗">已弃疗</option>
+                            <option value="已放弃">已放弃</option>
                             <option value="重下单">重下单</option>
                             <option value="重复取消">重复取消</option>
                             <option value="已下单">已下单</option>
@@ -215,13 +215,13 @@
                                 <option value="无状态">无状态</option>
                                 <option value="争取中">争取中</option>
                                 <option value="待处理">待处理</option>
-                                <option value="已弃疗">已弃疗</option>
+                                <option value="已放弃">已放弃</option>
                                 <option value="重下单">重下单</option>
                                 <option value="重复取消">重复取消</option>
                                 <option value="已下单">已下单</option>
                             </select>
                         </td>
-                        <td class="feed"><textarea type="text" class="form-control feedback-input" rows="5" style="width:280px;" /></textarea></td>
+                        <td class="feed"><textarea type="text" class="form-control feedback-input" rows="3" style="width:220px;" /></textarea></td>
 
                         <td class="oparite"><a href="/user/certify/check/" data-id='' target="_blank">详情</a></td>
                     </tr>
@@ -239,7 +239,7 @@
                             <option value="">无状态</option>
                             <option value="争取中">争取中</option>
                             <option value="待处理">待处理</option>
-                            <option value="已弃疗">已弃疗</option>
+                            <option value="已放弃">已放弃</option>
                             <option value="重下单">重下单</option>
                             <option value="重复取消">重复取消</option>
                             <option value="已下单">已下单</option>
@@ -259,13 +259,13 @@
                                 <option value="无状态">无状态</option>
                                 <option value="争取中">争取中</option>
                                 <option value="待处理">待处理</option>
-                                <option value="已弃疗">已弃疗</option>
+                                <option value="已放弃">已放弃</option>
                                 <option value="重下单">重下单</option>
                                 <option value="重复取消">重复取消</option>
                                 <option value="已下单">已下单</option>
                             </select>
                         </td>
-                        <td class="feed"><textarea type="text" class="form-control feedback-input" rows="5" style="width:280px;" /></textarea></td>
+                        <td class="feed"><textarea type="text" class="form-control feedback-input" rows="3" style="width:220px;" /></textarea></td>
 
                         <td class="oparite"><a href="/user/certify/check/" data-id='' target="_blank">详情</a></td>
                     </tr>
@@ -401,7 +401,6 @@
         if (page >= totalpage) {
             $(".next").addClass("disabled")
         }
-
     }
 
 
