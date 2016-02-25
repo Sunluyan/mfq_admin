@@ -72,7 +72,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, img, p_type, p_id, url, `index`, type, flag, created_at
+    id, name, img, p_type, p_id, url, `index`, `type`, flag, created_at
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.mfq.admin.web.bean.example.HomeBannerExample" >
     select
@@ -107,7 +107,7 @@
   <insert id="insert" parameterType="com.mfq.admin.web.bean.HomeBanner" >
     insert into home_banner (id, name, img, 
       p_type, p_id, url, `index`,
-      type, flag, created_at
+      `type`, flag, created_at
       )
     values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{img,jdbcType=VARCHAR}, 
       #{pType,jdbcType=TINYINT}, #{pId,jdbcType=BIGINT}, #{url,jdbcType=VARCHAR}, #{index,jdbcType=INTEGER},
@@ -136,10 +136,10 @@
         url,
       </if>
       <if test="index != null" >
-        index,
+        `index`,
       </if>
       <if test="type != null" >
-        type,
+        `type`,
       </if>
       <if test="flag != null" >
         flag,
@@ -209,10 +209,10 @@
         url = #{record.url,jdbcType=VARCHAR},
       </if>
       <if test="record.index != null" >
-        index = #{record.index,jdbcType=INTEGER},
+        `index` = #{record.index,jdbcType=INTEGER},
       </if>
       <if test="record.type != null" >
-        type = #{record.type,jdbcType=TINYINT},
+        `type` = #{record.type,jdbcType=TINYINT},
       </if>
       <if test="record.flag != null" >
         flag = #{record.flag,jdbcType=TINYINT},
@@ -233,8 +233,8 @@
       p_type = #{record.pType,jdbcType=TINYINT},
       p_id = #{record.pId,jdbcType=BIGINT},
       url = #{record.url,jdbcType=VARCHAR},
-      index = #{record.index,jdbcType=INTEGER},
-      type = #{record.type,jdbcType=TINYINT},
+      `index` = #{record.index,jdbcType=INTEGER},
+      `type` = #{record.type,jdbcType=TINYINT},
       flag = #{record.flag,jdbcType=TINYINT},
       created_at = #{record.createdAt,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
@@ -260,10 +260,10 @@
         url = #{url,jdbcType=VARCHAR},
       </if>
       <if test="index != null" >
-        index = #{index,jdbcType=INTEGER},
+        `index` = #{index,jdbcType=INTEGER},
       </if>
       <if test="type != null" >
-        type = #{type,jdbcType=TINYINT},
+        `type` = #{type,jdbcType=TINYINT},
       </if>
       <if test="flag != null" >
         flag = #{flag,jdbcType=TINYINT},
@@ -281,9 +281,9 @@
       p_type = #{pType,jdbcType=TINYINT},
       p_id = #{pId,jdbcType=BIGINT},
       url = #{url,jdbcType=VARCHAR},
-      index = #{index,jdbcType=INTEGER},
-      type = #{type,jdbcType=TINYINT},
-      flag = #{flag,jdbcType=TINYINT},
+      `index` = #{index,jdbcType=INTEGER},
+      `type` = #{type,jdbcType=TINYINT},
+      `flag` = #{flag,jdbcType=TINYINT},
       created_at = #{createdAt,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>

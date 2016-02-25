@@ -27,7 +27,7 @@ public class HomeBanner {
 
 
 
-    public HomeBanner(long id, String img, String name, BannerType pType, long pId, String url){
+    public HomeBanner(long id, String name, String img, BannerType pType, long pId, String url){
         this.id = id;
         this.img = img;
         this.name = name;

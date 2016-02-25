@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import com.google.common.collect.Lists;
@@ -37,21 +38,30 @@ public class SysUserService {
     @Resource
     PassportService passportService;
     
-    private static final int LIMIT = 20;
+    private static final int LIMIT = 200;
     
     
     /**
      * 事务管理，用于关联用户创建
-     * @param mobile
      * @return
      */
-    public long createUser(String username, String realname, String mobile, long roleId) {
-        if (StringUtils.isBlank(username) && StringUtils.isBlank(realname)) {
+    @Transactional
+    public long createUser(SysUser user, String password) throws Exception {
+        if (StringUtils.isBlank(user.getUsername()) && StringUtils.isBlank(user.getRealname())) {
             throw new RuntimeException("username and realname both are empty");
         }
-        SysUser sysUser = new SysUser(username, realname, mobile, roleId);
-        insertSysUser(sysUser);
-        return sysUser == null? 0 : sysUser.getId();
+        SysUser sysUser = user;
+        long ret =insertSysUser(sysUser);
+        if(ret>0){
+            SysPassport passport=passportService.createPassport(sysUser.getId(),password);
+            if(passport==null){
+                throw new Exception("创建秘钥错误!");
+            }
+            return sysUser.getId();
+        }else{
+            return 0;
+        }
+
     }
     
     public List<SysUser> querySysUserByPage(Long page) {
@@ -69,7 +79,7 @@ public class SysUserService {
     public long insertSysUser(SysUser user){
         return mapper.insert(user);
     }
-    
+
     public SysUser querySysUser(long uid) {
         SysUser user = mapper.selectByPrimaryKey(uid);
         if(user == null){

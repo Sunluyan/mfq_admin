@@ -6,10 +6,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import com.mfq.admin.web.bean.Hospital;
-import com.mfq.admin.web.bean.SysAcl;
-import com.mfq.admin.web.bean.SysRole;
-import com.mfq.admin.web.bean.SysUser;
+import com.mfq.admin.web.bean.*;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -106,8 +103,12 @@ public class SysUserController {
                 if(roleId == 6 || roleId == 7){
                 	user.setHospitalId(hospitalId);
                 }
-                sysUserService.insertSysUser(user);
-                passportService.createPassport(user.getId(), password); // 创建passport
+                long uid=sysUserService.createUser(user, password);
+                if(uid==0){
+                    model.addAttribute("error", "创建时间失败!!");
+                    return "redirect:/sysuser/add/";       // 调用user_add的模版
+                }
+
             }
         }catch(Exception e){
             logger.error("exception_in_adduser", e);

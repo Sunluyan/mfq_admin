@@ -23,6 +23,18 @@ public class SysUser {
 
     private Date updated;
 
+    public SysUser(String username, String realname, String mobile, long roleId, long hospitalId) {
+        this.username = username;
+        this.realname = realname;
+        this.mobile = mobile;
+        this.status = Status.NORMAL;
+        this.roleId = roleId;
+        this.hospitalId = hospitalId;
+        this.created = new Date();
+        this.updated = new Date();
+
+    }
+
     public SysUser(String username, String realname, String mobile, long roleId) {
         this.username = username;
         this.realname = realname;
@@ -34,6 +46,8 @@ public class SysUser {
         this.updated = new Date();
 
     }
+
+
 
     public SysUser() {
         super();

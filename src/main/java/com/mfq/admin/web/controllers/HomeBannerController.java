@@ -94,6 +94,7 @@ public class HomeBannerController {
         		url = "#";
         	}
         	long result = service.insertBanner(id, img, name, type, pid,  url);
+			logger.info("banner edit result {}",result);
         	
     		if(result > 0){
     			return "redirect:/home/banner/";

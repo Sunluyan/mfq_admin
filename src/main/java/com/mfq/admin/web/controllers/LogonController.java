@@ -1,6 +1,7 @@
 package com.mfq.admin.web.controllers;
 
 import java.net.URLDecoder;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -8,9 +9,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.mfq.admin.web.bean.SysPassport;
 import com.mfq.admin.web.bean.SysUser;
+import com.mfq.admin.web.bean.User;
 import com.mfq.admin.web.bean.example.SysUserExample;
 import com.mfq.admin.web.dao.SysUserMapper;
 import org.apache.commons.lang.StringUtils;
+import org.apache.xmlbeans.impl.xb.xsdschema.ListDocument;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -67,9 +70,11 @@ public class LogonController extends BaseController {
             System.out.println(passwordMd5);
             SysUserExample example = new SysUserExample();
             example.or().andUsernameEqualTo(username);
-            SysUser user = sysUserMapper.selectByExample(example).get(0);
-            System.out.println(user+"logon");
-            if (user != null) {
+
+            List<SysUser> users = sysUserMapper.selectByExample(example);
+            if (users.size()>0 && users != null) {
+                SysUser user = users.get(0);
+                System.out.println(user+"logon");
                 SysPassport passport = passportService.login(user.getId(),
                         passwordMd5);
                 // if login ok
@@ -82,6 +87,8 @@ public class LogonController extends BaseController {
                 _r = StringUtils.isBlank(_r) ? "/" : _r;
                 return "redirect:" + _r;
             }
+
+
         }
         return "redirect:/login/" + queryString;
     }
@@ -93,4 +100,11 @@ public class LogonController extends BaseController {
         CookieUtils.deletePassport(request, response);
         return "/logout";
     }
+
+
+    public static void main(String[] args) {
+        String ttt=PasswordUtils.encode("zhanghui");
+        System.out.print(ttt);
+    }
+
 }

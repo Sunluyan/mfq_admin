@@ -87,6 +87,7 @@ public class PassportService {
      * 创建一个passport，此passport带有ticket以及salt等信息
      */
     public SysPassport createPassport(long uid, String plainPassword) {
+        logger.info("创建passport    uid={}",uid);
         SysPassport passport = new SysPassport();
         passport.setUid(uid);
         passport.setTicket(CommonUtil.createTicket());
@@ -94,8 +95,12 @@ public class PassportService {
         passport.setActivedAt(new Date());
         passport.setExpiredAt(DateUtil.addDay(new Date(), 7));
         passport.setPassword(PasswordUtils.encode(plainPassword));
-        mapper.insert(passport);
-        return passport;
+        int ret =mapper.insert(passport);
+        logger.info("create passport ret {}",ret);
+        if(ret>0){
+            return passport;
+        }
+        return null;
     }
 
 
