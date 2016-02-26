@@ -65,7 +65,6 @@
     //This will get the first returned node in the jQuery collection.
     var myNewChart = new Chart(ctx).Pie(data,options);
 
-
 </script>
 
 <#include "commons/footer.ftl" />

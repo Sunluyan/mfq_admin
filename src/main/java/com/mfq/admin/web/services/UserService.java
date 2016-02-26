@@ -559,6 +559,7 @@ public class UserService {
             return newRemark;
         }
     }
+
     @Transactional
     public long updateUserFeedbackFeedback(long uid , String feedback){
         UserFeedbackExample example = new UserFeedbackExample();

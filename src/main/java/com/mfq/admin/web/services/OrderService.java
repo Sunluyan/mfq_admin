@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mfq.admin.web.bean.*;
 import com.mfq.admin.web.bean.coupon.Coupon;
+import com.mfq.admin.web.bean.example.OrderInfoExample;
 import com.mfq.admin.web.constants.*;
 import com.mfq.admin.web.dao.CouponMapper;
 import com.mfq.admin.web.dao.FinanceBillMapper;
@@ -17,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
@@ -54,6 +56,7 @@ public class OrderService {
     OrderFreedomService freedomService;
 
     Integer PageSize = 30;
+    private List<OrderInfo> list;
 
     public void findByPage(String orderNo, String mobile, String securityCode,
                            int status, long page, String ob, String oe, Model model) {
@@ -288,6 +291,8 @@ public class OrderService {
             e = fmt.parse(oe);
         }
 
+
+
         List<Long> uids = Lists.newArrayList();
 
 
@@ -303,11 +308,19 @@ public class OrderService {
         }
 
         OrderType orderType = OrderType.fromId(type);
-        PayAPIType apiType= null;
-        long size = payRecordService.countFinanceByPrames(b, e, orderType, apiType, pids);
-        List<PayRecord> payRecords = payRecordService.queryFinanceByPrames(b, e, orderType, apiType, start, PageSize, pids);
 
-        List<FinanceOrder> orders = createFinanceOrders(payRecords);
+        OrderInfoExample example = new OrderInfoExample();
+
+        example.or().andCreatedAtBetween(b,e).andPidIn(pids).andPayTypeEqualTo(type);
+
+        List<OrderInfo> orderInfos = mapper.selectByExample(example);
+
+        PayAPIType apiType= null;
+
+//        long size = payRecordService.countFinanceByPrames(b, e, orderType, apiType, pids);
+//        List<PayRecord> payRecords = payRecordService.queryFinanceByPrames(b, e, orderType, apiType, start, PageSize, pids);
+//
+//        List<FinanceOrder> orders = createFinanceOrders(orderInfos);
         
         //List<FinanceUser> users = genFinanceUsersByPayRecords(payRecords);
 
@@ -316,11 +329,11 @@ public class OrderService {
 
         model.addAttribute("hospitals", hospitals);
         //model.addAttribute("users",users);
-        model.addAttribute("orders", orders);
+//        model.addAttribute("orders", orders);
 
         model.addAttribute("page", page);
-        model.addAttribute("size",size);
-        model.addAttribute("total",size);
+//        model.addAttribute("size",size);
+//        model.addAttribute("total",size);
 
         model.addAttribute("hid",hid);
         model.addAttribute("ob", b);
@@ -333,6 +346,17 @@ public class OrderService {
     }
 
 
+//
+//    private List<FinanceOrder> createFinanceOrders(List<OrderInfo> lists) throws Exception {
+//        list = lists;
+//        List<FinanceOrder> data = Lists.newArrayList();
+//
+//
+//
+//
+//
+//        return data;
+//    }
 
     private List<FinanceOrder> createFinanceOrders(List<PayRecord> list) throws Exception {
         List<FinanceOrder> data = Lists.newArrayList();
