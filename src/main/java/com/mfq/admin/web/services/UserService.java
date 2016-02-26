@@ -463,6 +463,15 @@ public class UserService {
         if (contact == null || contact.length() < 1) {
             data.put("contact", data.get("mobile"));
         }
+        //// TODO: 16/2/26  加入用户的认证反馈备注
+        UserFeedbackExample example = new UserFeedbackExample();
+        example.or().andUidEqualTo(uid);
+        List<UserFeedback> userFeedbacks = userFeedbackMapper.selectByExample(example);
+        UserFeedback userFeedback = new UserFeedback();
+        if(!CollectionUtils.isEmpty(userFeedbacks)){
+            userFeedback = userFeedbacks.get(0);
+        }
+        data.put("remark",userFeedback.getRemark());
         return data;
     }
 

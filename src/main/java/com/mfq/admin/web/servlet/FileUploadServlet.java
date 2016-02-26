@@ -99,7 +99,6 @@ public class FileUploadServlet extends HttpServlet {
 						int idx = filenewName.indexOf('.');
 						if (idx >= 0)
 							ext = filenewName.substring(idx);
-						// TODO restrict file extension
 						String filename = String.format("banner%d.%d%s", id + 1, Math.abs(random.nextLong()), ext);
 						if (log.isInfoEnabled()) {
 							log.info("filename--------"+filename);

@@ -61,7 +61,6 @@ public class PassportService {
     }
 
     public SysPassport validateTicket(long uid, String ticket) {
-        //TODO 暂用该方法,试试别的
         SysPassport passport = mapper.queryValidPassportByTicket(uid, ticket, Status.DELETED.getValue());
 
        // SysPassport passport = null;

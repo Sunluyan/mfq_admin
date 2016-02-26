@@ -120,7 +120,6 @@
 
   /**
    * attach events from a container to a sender 
-   * todo[
    *  events => { eventName => function, }
    *  onces  => { eventName => function, }  
    *  data   => mixed data         

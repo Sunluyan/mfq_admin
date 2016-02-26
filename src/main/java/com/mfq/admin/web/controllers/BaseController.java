@@ -137,7 +137,6 @@ public class BaseController {
         return out.toString();
     }
 
-    //fixme 提取为统一的封装
     /**
      * 发送短信
      * 

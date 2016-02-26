@@ -36,7 +36,6 @@ public class SysRoleService {
         for (int i = 0; i < list.size(); i++) {
             lists.add(it.next());
         }
-        //TODO
         example.or().andIdIn(lists);
         return mapper.selectByExample(example);
     }

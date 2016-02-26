@@ -598,7 +598,6 @@
       and extend.invite_code = #{inviteid}
     </if>
 
-    <!-- alipay TODO -->
 
     <if test="fromtime != null and fromtime != '' and totime != null and totime != ''">
       <![CDATA[

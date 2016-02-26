@@ -113,7 +113,7 @@ public class CookieUtils {
                     pt.setTicket(ticket);
                     return pt;
                 } catch (Exception ex) {
-                    // fixme
+
                 }
             }
         }

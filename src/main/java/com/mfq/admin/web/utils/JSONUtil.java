@@ -150,7 +150,6 @@ public class JSONUtil {
 			List<Map<String,Object>> list = JSONUtil.toBean(json, List.class);
 			System.out.println(list.get(0).get("a"));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
