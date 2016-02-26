@@ -105,15 +105,27 @@
 					</tr>
 					<tr>
 						<td class="td01">每期还款额：</td>
-						<td class="td02">${finance.newBalance}元</td>
+						<td class="td02">${finance[0].newBalance}元</td>
 					</tr>
 					<tr>
 						<td class="td01">申请日期：</td>
-						<td class="td02">${finance.billAt?string('yyyy-MM-dd HH:mm:ss')}</td>
+						<td class="td02">${finance[0].billAt?string('yyyy-MM-dd HH:mm:ss')}</td>
 					</tr>
 					<tr>
-						<td class="td01">剩余日期：</td>
-						<td class="td02">${finance.allPeriod-finance.curPeriod}月</td>
+						<td class="td01">剩余未还：</td>
+
+						<td class="td02">
+                            <#assign find = false>
+						<#list finance as f>
+                            <#if f.status != -1>
+                                ${f.allPeriod - f.curPeriod+1}个
+                            <#assign find = true>
+                                <#break>
+                            </#if>
+						</#list>
+                        <#if find == false>
+                            0
+                        </#if>
 					</tr>
 				</table>
 				<script type="text/javascript">
@@ -124,11 +136,11 @@
 				<table class="current table-striped">
 					<tr>
 						<td class="td01">用户类型：</td>
-						<td class="td02"><#if quota.userType==1>学生党</#if><#if quota.userType==2>上班族</#if></td>
+						<td class="td02"><#if quota.userType==1>学生党</#if><#if quota.userType==2>上班族</#if><#if quota.userType!=1 && quota.userType!=2>未设置</#if></td>
 					</tr>
-					<tr>
+					<tr>roo
 						<td class="td01">学校：</td>
-						<td class="td02">${quota.school}</td>
+						<td class="td02">${quota.school} <#if quota.school==""||quota.school == null>未设置</#if></td>
 					</tr>
 					<tr>
 						<td class="td01">入学时间：</td>
@@ -146,18 +158,25 @@
 				<table class="current table-striped">
 				<tr>
 						<td class="td03">还款日期</td>
-						<td class="td03">还款额度</td>
+						<td class="td03">还款金额</td>
 						<td class="td03">支付方式</td>
 						<td class="td03">还款期数</td>
 					</tr>
+				<#assign month = 1>
 				<#list payRecords as record>
-					
 					<tr>
-						<#--<td class="td04">${record.payAt?string('yyyy-MM-dd HH:mm:ss')}</td>-->
-						<td class="td04">${record.payAt}</td>
+						<td class="td04">${record.payAt?string('yyyy-MM-dd HH:mm:ss')}</td>
+						<#--<td class="td04">${record.toString()}${record.payAt}</td>-->
 						<td class="td04">${record.amount+record.balance+record.present}</td>
 						<td class="td04">${record.tpp}</td>
-						<td class="td04">${record.payPeriod}</td>
+						<td class="td04 payrecord-for-finance">
+							<#assign max = ((record.amount+record.balance)/finance[0].newBalance)+month-1>
+							<#list month..max as i>
+								${month}
+								<#assign month = month+1>
+								<#if max != i>,</#if>
+							</#list>
+						</td>
 					</tr>
 				</#list>
 					

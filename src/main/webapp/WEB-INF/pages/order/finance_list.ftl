@@ -271,18 +271,19 @@
           $tr.find(".username").html(data[i].realname==''?'未设置':data[i].realname)
           $tr.find(".phone").html(data[i].mobile)
           $tr.find(".usertype").html(data[i].user_type=="0"?"未设置":data[i].user_type=="1"?"学生党":"上班族")
-          $tr.find(".returnDate").html(data[i].due_at)
-          $tr.find(".allMoney").html(data[i].period*data[i].period_pay)
-          var period = data[i].period=="0"?data[i].all_period:data[i].period;
-          $tr.find(".countTime").html(period)
+            var returndate = new Date(data[i].due_at);
 
-          $tr.find(".everyTimeMoney").html(data[i].period_pay)
+          $tr.find(".returnDate").html(returndate.getFullYear()+"-"+(returndate.getMonth()+1)+"-"+returndate.getDate()+" "+returndate.getHours()+":"+returndate.getMinutes()+":"+returndate.getSeconds())
+          $tr.find(".allMoney").html(data[i].period_pay)
+          $tr.find(".countTime").html(data[i].all_period)
+
+          $tr.find(".everyTimeMoney").html(data[i].new_balance)
           var billAt = new Date(data[i].bill_at);
           $tr.find(".applytime").html(billAt.getFullYear()+"-"+(billAt.getMonth()+1)+"-"+billAt.getDate()+" "+billAt.getHours()+":"+billAt.getMinutes()+":"+billAt.getSeconds())
           var endTime = new Date(data[i].bill_at)
           endTime.setMonth(endTime.getMonth()+13)
           $tr.find(".endTime").html(endTime.getFullYear()+"-"+(endTime.getMonth()+1)+"-"+endTime.getDate()+" "+endTime.getHours()+":"+endTime.getMinutes()+":"+endTime.getSeconds())
-          $tr.find(".detail").attr("href","/order/finance/detail/?id="+data[i].id)
+          $tr.find(".detail").attr("href","/order/finance/detail/?order="+data[i].orderNo)
           $tr.show()
           $(".table-bordered").append($tr)
         }

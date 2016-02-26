@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import com.mfq.admin.web.bean.*;
+import com.mfq.admin.web.constants.OrderType;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -281,22 +282,34 @@ public class OrderController extends BaseController {
     	return "/order/finance_list";
     }
 
+
+	/**
+	 * 首先通过orderNo查出所有对应账单
+	 * 通过账单号查到流水信息
+	 * @param model
+	 * @param orderNo
+	 * @return
+     */
     @RequestMapping("/order/finance/detail/")
-    public String financeDetail(Model model,@RequestParam(value="id",defaultValue="0")long id){
-    	if(id==0)return null;
-    	FinanceBill finance = financeService.selectByPrimaryKey(id);
-    	long uid = finance.getUid();
+    public String financeDetail(Model model,@RequestParam(value="order",defaultValue="")String orderNo) throws Exception{
+    	if(StringUtils.isBlank(orderNo) || OrderType.ONLINE != payService.getOrderType(orderNo)) throw new Exception("订单号格式错误");
+
+		//1,查出所有对应账单
+		List<FinanceBill> finances = financeService.selectByOrderNo(orderNo);
+
+
+    	long uid = finances.get(0).getUid();
     	UserQuota quota = userQuotaService.queryUserQuota(uid);
     	User user = userService.queryUser(uid);
-    	OrderInfo orderinfo = orderService.findByOrderNo(finance.getOrderNo());
-    	List<PayRecord> payRecords = payService.selectByOrderNo(finance.getOrderNo());
-    	
-    	model.addAttribute("finance",finance);
+    	OrderInfo orderinfo = orderService.findByOrderNo(orderNo);
+
+    	List<PayRecord> payRecords = payService.selectByOrderNo(orderinfo.getOrderNo());
+    	model.addAttribute("finance",finances);
     	model.addAttribute("quota",quota);
     	model.addAttribute("user",user);
     	model.addAttribute("orderinfo",orderinfo);
     	model.addAttribute("payRecords",payRecords);
-    	
+		//还有一个流水对应的还款期数 应该是通过这个这条流水对应的金额与每条账单之比
     	return "/order/finance_detail";
     }
     /**
@@ -328,10 +341,7 @@ public class OrderController extends BaseController {
     	if(request.getParameter("count")!=null && !request.getParameter("count").equals("") )count=request.getParameter("type");
     	
     	List<Map<String,Object>> list = orderService.selectFinanceByPage(page, size, uid, realname, phone, idcard, applytimefrom, applytimeto, type,count);
-    	for (Map<String, Object> map : list) {
-			System.out.println(map);
-		}
-    	
+
     	return JSONUtil.successResultJson(list);
     }
     

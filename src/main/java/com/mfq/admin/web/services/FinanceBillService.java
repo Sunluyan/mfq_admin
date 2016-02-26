@@ -33,6 +33,12 @@ public class FinanceBillService {
 		example.or().andStatusLessThan(1);
 		return mapper.selectByExample(example);
 	}
+
+	public List<FinanceBill> selectByOrderNo(String orderNo) throws Exception{
+		FinanceBillExample example = new FinanceBillExample();
+		example.or().andOrderNoEqualTo(orderNo);
+		return mapper.selectByExample(example);
+	}
 	
 	public static void main(String[] args) {
 		ApplicationContext ac = new ClassPathXmlApplicationContext("spring/spring.xml");

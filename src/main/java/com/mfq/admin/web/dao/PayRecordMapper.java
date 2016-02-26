@@ -9,9 +9,11 @@ import com.mfq.admin.web.bean.example.PayRecordExample;
 import org.apache.ibatis.annotations.Param;
 
 import com.mfq.admin.web.annotation.MQMDao;
+import org.springframework.stereotype.Component;
 
 
 @MQMDao
+@Component
 public interface PayRecordMapper {
 	int countByExample(PayRecordExample example);
 

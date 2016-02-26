@@ -150,7 +150,7 @@ xxx&&&&xxx&&&&xx****asd&&&&sadf&&&&
                 var pClone = p.clone();
                 pClone.find(".past-content").html((index++)+"、"+json.split("****")[i].split("&&&&")[0]);
                 pClone.find(".past-time").html("-- "+json.split("****")[i].split("&&&&")[1]+"&nbsp;")
-                pClone.find(".past-author").html("by "+json.split("****")[i].split("&&&&")[2]);
+                pClone.find(".past-author").html("at "+json.split("****")[i].split("&&&&")[2]);
                 pClone.show()
                 p.after(pClone)
             }

@@ -239,9 +239,9 @@ public class OrderService {
 
         List<FinanceBill> list = financeMapper.selectFinanceByPage(start, size, uid, realname, phone, idcard,
                 endTime, applytimefrom, applytimeto, type, count);
-       List<Map<String, Object>> result = new ArrayList<>();
+        List<Map<String, Object>> result = new ArrayList<>();
         for (FinanceBill financeBill : list) {
-            Map<String, Object> map = new HashMap<String, Object>();
+            Map<String, Object> map = new HashMap<>();
 
             User user = userService.queryUser(financeBill.getUid());
             UserQuota userQuota = userQuotaService.queryUserQuota(financeBill.getUid());
@@ -252,7 +252,7 @@ public class OrderService {
             map.put("user_type", userQuota.getUserType());
             map.put("due_at", financeBill.getDueAt());
             map.put("price", orderInfo.getPrice());
-            map.put("period_pay", financeBill.getNewBalance());
+            map.put("period_pay", orderInfo.getPeriodPay());
             map.put("period", financeBill.getCurPeriod());
             map.put("all_period", financeBill.getAllPeriod());
             map.put("new_balance", financeBill.getNewBalance());
@@ -260,6 +260,7 @@ public class OrderService {
             map.put("id", financeBill.getId());
             map.put("uid", financeBill.getUid());
             map.put("pay_at", financeBill.getPayAt());
+            map.put("orderNo", financeBill.getOrderNo());
             result.add(map);
         }
         return result;

@@ -163,4 +163,26 @@ public class PayRecord {
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+    @Override
+    public String toString() {
+        return "PayRecord{" +
+                "id=" + id +
+                ", orderType=" + orderType +
+                ", tradeNo='" + tradeNo + '\'' +
+                ", orderNo='" + orderNo + '\'' +
+                ", amount=" + amount +
+                ", balance=" + balance +
+                ", present=" + present +
+                ", uid=" + uid +
+                ", tpp='" + tpp + '\'' +
+                ", bankCode='" + bankCode + '\'' +
+                ", cardType=" + cardType +
+                ", cardNo='" + cardNo + '\'' +
+                ", status=" + status +
+                ", payAt=" + payAt +
+                ", callbackAt=" + callbackAt +
+                ", updatedAt=" + updatedAt +
+                '}';
+    }
 }
