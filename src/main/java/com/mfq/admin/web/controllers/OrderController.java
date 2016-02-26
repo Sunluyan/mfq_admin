@@ -203,18 +203,25 @@ public class OrderController extends BaseController {
 		return "order/order_finance";
 	}
 
-	@RequestMapping(value = "/order/budget/", method = {RequestMethod.GET, RequestMethod.POST})
-	public String budget(Model model,
-						 @RequestParam(value = "ob", defaultValue = "") String ob,
-						 @RequestParam(value = "oe", defaultValue = "") String oe,
-						 @RequestParam(value = "page", defaultValue = "1")int page,
-						 @RequestParam(value = "hid", defaultValue="0")int hid,
-						 @RequestParam(value = "pname", defaultValue="")String pname,
-						 @RequestParam(value = "type", defaultValue="0")int type,
-						 @RequestParam(value = "mobile", defaultValue = "")String mobile,
-						 @RequestParam(value = "status", defaultValue = "status")int status,
-						 @RequestParam(value = "uname", defaultValue = "")String uname){
+	/**
+	 * 财务对账用
+	 * @param model
+     * @return
+     */
+	@RequestMapping(value = {"/order/budget","/order/budget/"} , method = RequestMethod.GET)
+	public String budgetRe(Model model,
+						   @RequestParam(value = "ob", defaultValue = "") String ob,
+							@RequestParam(value = "oe", defaultValue = "") String oe,
+							@RequestParam(value = "page", defaultValue = "1")int page,
+							@RequestParam(value = "hid", defaultValue="0")int hid,
+							@RequestParam(value = "pname", defaultValue="")String pname,
+							@RequestParam(value = "type", defaultValue="0")int type,
+							@RequestParam(value = "mobile", defaultValue = "")String mobile,
+							@RequestParam(value = "status", defaultValue = "0")int status,
+							@RequestParam(value = "uname", defaultValue = "")String uname){
+		String ret = "";
 		try {
+
 			orderService.queryFinance(model, ob, oe, page, hid, pname, type, mobile, uname, status);
 			return "order/order_budget";
 		}catch (Exception e){
@@ -224,7 +231,18 @@ public class OrderController extends BaseController {
 	}
 
 
-	@RequestMapping(value = "/order/budget2/", method = {RequestMethod.GET, RequestMethod.POST})
+//	,
+//	@RequestParam(value = "ob", defaultValue = "") String ob,
+//	@RequestParam(value = "oe", defaultValue = "") String oe,
+//	@RequestParam(value = "page", defaultValue = "1")int page,
+//	@RequestParam(value = "hid", defaultValue="0")int hid,
+//	@RequestParam(value = "pname", defaultValue="")String pname,
+//	@RequestParam(value = "type", defaultValue="0")int type,
+//	@RequestParam(value = "mobile", defaultValue = "")String mobile,
+//	@RequestParam(value = "status", defaultValue = "status")int status,
+//	@RequestParam(value = "uname", defaultValue = "")String uname
+
+	@RequestMapping(value = "/order/budgetp/", method = {RequestMethod.GET, RequestMethod.POST})
 	public String budget2(Model model,
 						 @RequestParam(value = "ob", defaultValue = "") String ob,
 						 @RequestParam(value = "oe", defaultValue = "") String oe,

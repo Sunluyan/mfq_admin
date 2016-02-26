@@ -90,70 +90,152 @@
 					
 				</table>
 			</div>
-			
+		<#elseif user.user_type ==2>
+            <div class="worker">
+                <h3 class="page-header">
+                    上班族用户工作信息
+                </h3>
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <td class="text-center">公司名称</td>
+                        <td class="text-center">部门/职位</td>
+                        <td class="text-center">月收入</td>
+                        <td class="text-center">工作年限</td>
+                        <td class="text-center">其他</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center" >
+                            <input type="text" value="${user.company}">
+                        </td>
+                        <td>${user.department}/${user.position}</td>
+                        <td class="text-center">
+						<#--<select >-->
+							<#--<option value="0">${user.salary}</option>-->
+						  <#--<option value="1">3500以下</option>  -->
+						  <#--<option value="2">3500到5000</option>  -->
+						  <#--<option value="3">5000到7000</option>  -->
+						  <#--<option value="4">7000到10000</option> -->
+						  <#--<option value="4">10000到15000</option>-->
+						  <#--<option value="4">15000到20000</option>-->
+						  <#--<option value="4">20000到30000</option>-->
+						  <#--<option value="4">30000以上</option>-->
+						 <#---->
+						<#--</select>-->
+						${user.salary}
+                        </td>
+                        <td class="text-center">
+						<#--<select >  -->
+						  <#--<option value = "1">1年以下</option>  -->
+						  <#--<option value = "2">2年</option>  -->
+						  <#--<option value = "3">3年</option>  -->
+						  <#--<option value = "4">4年</option> -->
+						  <#--<option value = "4">5年</option>-->
+						  <#--<option value = "4">6年</option>-->
+						  <#--<option value = "4">7年</option>-->
+						  <#--<option value = "4">8年</option>-->
+						  <#--<option value = "4">9年</option>-->
+						  <#--<option value = "4">10年以上</option> -->
+						<#--</select>-->
+						${user.work_years}
+                        </td>
+                        <td class="text-center">
+                            <input type="text" value="${user.work_remark}">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+
+		<#else >
+
+
+            <div class="student">
+                <h3 class="page-header">
+                    学生用户学校详细信息
+                </h3>
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <td class="text-center">学院名称</td>
+                        <td class="text-center">学院地址</td>
+                        <td class="text-center">院系</td>
+                        <td class="text-center">专业</td>
+                        <td class="text-center">学号</td>
+                        <td class="text-center">学制</td>
+                        <td class="text-center">学校所在地</td>
+                        <td class="text-center">入学时间</td>
+                    </tr>
+
+                    <tr>
+                        <td class="text-center">${user.school}</td>
+                        <td class="text-center">${user.school_location}</td>
+                        <td class="text-center">${user.faculty}</td>
+                        <td class="text-center">${user.speciality}</td>
+                        <td class="text-center">${user.student_id}</td>
+                        <td class="text-center">${user.school_level}</td>
+                        <td class="text-center">${user.school_location_id}</td>
+                        <td class="text-center">${user.startschool_at}</td>
+                    </tr>
+
+                </table>
+            </div>
+
+
+            <div class="worker">
+                <h3 class="page-header">
+                    上班族用户工作信息
+                </h3>
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <td class="text-center">公司名称</td>
+                        <td class="text-center">部门/职位</td>
+                        <td class="text-center">月收入</td>
+                        <td class="text-center">工作年限</td>
+                        <td class="text-center">其他</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center" >
+                            <input type="text" value="${user.company}">
+                        </td>
+                        <td>${user.department}/${user.position}</td>
+                        <td class="text-center">
+						<#--<select >-->
+							<#--<option value="0">${user.salary}</option>-->
+						  <#--<option value="1">3500以下</option>  -->
+						  <#--<option value="2">3500到5000</option>  -->
+						  <#--<option value="3">5000到7000</option>  -->
+						  <#--<option value="4">7000到10000</option> -->
+						  <#--<option value="4">10000到15000</option>-->
+						  <#--<option value="4">15000到20000</option>-->
+						  <#--<option value="4">20000到30000</option>-->
+						  <#--<option value="4">30000以上</option>-->
+						 <#---->
+						<#--</select>-->
+						${user.salary}
+                        </td>
+                        <td class="text-center">
+						<#--<select >  -->
+						  <#--<option value = "1">1年以下</option>  -->
+						  <#--<option value = "2">2年</option>  -->
+						  <#--<option value = "3">3年</option>  -->
+						  <#--<option value = "4">4年</option> -->
+						  <#--<option value = "4">5年</option>-->
+						  <#--<option value = "4">6年</option>-->
+						  <#--<option value = "4">7年</option>-->
+						  <#--<option value = "4">8年</option>-->
+						  <#--<option value = "4">9年</option>-->
+						  <#--<option value = "4">10年以上</option> -->
+						<#--</select>-->
+						${user.work_years}
+                        </td>
+                        <td class="text-center">
+                            <input type="text" value="${user.work_remark}">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
 		</#if>
-		
 
-
-		<#if user.user_type == 2>
-		<div class="worker">
-			<h3 class="page-header">
-				上班族用户工作信息
-			</h3>
-			<table class="table table-bordered table-striped">
-				<tr>
-					<td class="text-center">公司名称</td>
-					
-					<td class="text-center">月收入</td>
-					<td class="text-center">社保号</td>
-					<td class="text-center">工作年限</td>
-					<td class="text-center">其他</td>
-				</tr>
-				<tr>
-					<td class="text-center" >
-						<input type="text">
-					</td>
-
-					<td class="text-center">
-						<select >  
-						  <option value="1">3500以下</option>  
-						  <option value="2">3500到5000</option>  
-						  <option value="3">5000到7000</option>  
-						  <option value="4">7000到10000</option> 
-						  <option value="4">10000到15000</option>
-						  <option value="4">15000到20000</option>
-						  <option value="4">20000到30000</option>
-						  <option value="4">30000以上</option>
-						 
-						</select>
-					</td>
-					<td class="text-center">
-						<input type="text">
-					</td>
-					<td class="text-center">
-						<select >  
-						  <option value = "1">1年以下</option>  
-						  <option value = "2">2年</option>  
-						  <option value = "3">3年</option>  
-						  <option value = "4">4年</option> 
-						  <option value = "4">5年</option>
-						  <option value = "4">6年</option>
-						  <option value = "4">7年</option>
-						  <option value = "4">8年</option>
-						  <option value = "4">9年</option>
-						  <option value = "4">10年以上</option> 
-						</select>
-						
-					</td>
-					<td class="text-center">
-						<input type="text">
-					</td>
-				</tr>
-			</table>
-		</div>
-
-
-		</#if>
 		
 	</div>
 
