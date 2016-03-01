@@ -139,7 +139,6 @@
                 </div>
             </div>
 
-        <#list fqs as fq>
             <div class="control-group fq">
                 <label class="control-label" for="alias">分期情况</label>
                 <div class="controls">
@@ -148,23 +147,6 @@
                     <input type="button" class="btn btn-danger delete-fq" value="删除" data="${fq.id}"/>
                 </div>
             </div>
-        </#list>
-        <#if fqs.size() != 3>
-            <div class="control-group add-fq-div">
-                <label class="control-label" for="alias">分期价格</label>
-                <div class="controls">
-                    <select id='fq' name="fq" style="width:80px;">
-
-                        <option value="无">无</option>
-                        <option value="3">3</option>
-                        <option value="6">6</option>
-                        <option value="12">12</option>
-                    </select>
-                    <input type="text" class="periodPay" placeholder="每期价格"/>
-                    <input type="button" class="btn btn-info add-fq" value="添加"/>
-                </div>
-            </div>
-        </#if>
 
             <div class="control-group">
                 <label class="control-label" for="lname">团购价格</label>
@@ -608,7 +590,8 @@
                 $this.parent().parent().remove();
             }
         })
-    })
+    });
+
     $(".add-fq").click(function () {
         var period = $("#fq").val()
         var periodPay = $(".periodPay").val()
@@ -626,7 +609,9 @@
             success: function (json) {
                 if (json.code != 0) {
                     alert("添加出错")
+                    return false;
                 }
+
                 var $fq = $(
                         '<div class="control-group fq"> ' +
                             '<label class="control-label" for="alias">分期情况</label>' +
@@ -640,7 +625,6 @@
                 $(".add-fq-div").before($fq)
                 ;
             }
-
         })
     })
 
