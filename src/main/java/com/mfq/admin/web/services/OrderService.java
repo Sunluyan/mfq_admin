@@ -337,11 +337,15 @@ public class OrderService {
 
         criteria.andPayTypeNotEqualTo(OrderStatus.BOOK_OK.getValue());
 
+        example.setOrderByClause("created_at desc");
+
         example.setStart(start);
         example.setSize(PageSize);
 
 
         List<OrderInfo> orderInfos = mapper.selectByExample(example);
+
+        logger.info("order size is {}",orderInfos.size());
 
         List<FinanceOrder> orders = createFinanceOrders(orderInfos);
 
@@ -352,7 +356,16 @@ public class OrderService {
         model.addAttribute("hospitals", hospitals);
         model.addAttribute("orders", orders);
 
-        model.addAttribute("order_status", OrderStatus.values());
+        List<Map<String,Object>> orderstatus = Lists.newArrayList();
+
+        for(OrderStatus status1 : OrderStatus.values()) {
+            Map<String,Object> tt = Maps.newHashMap();
+            tt.put("id",status1.getValue());
+            tt.put("name",status1.getName());
+            tt.put("desc",status1.getDesc());
+            orderstatus.add(tt);
+        }
+                model.addAttribute("order_status", orderstatus);
         model.addAttribute("page",page);
 
         model.addAttribute("hid",hid);
@@ -382,6 +395,7 @@ public class OrderService {
             PayRecord payRecord = payRecordService.queryPayRecordByOrderNo(info.getOrderNo());
 
             if(user==null || quota==null ||payRecord == null){
+                logger.info("finance order is null {}|{}", info.getUid(), info.getOrderNo());
                 continue;
             }
 
@@ -731,6 +745,7 @@ public class OrderService {
 
         example.setSize(PageSize);
         example.setStart(start);
+        example.setOrderByClause("updated_at desc");
 
         List<PayRecord> pays = payRecordService.mapper.selectByExample(example);
         List<FinancePay> pas = createFinancePayByPays(pays);

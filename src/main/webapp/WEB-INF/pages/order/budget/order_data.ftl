@@ -19,11 +19,10 @@
             </div>
             <div class="form-group">
                 <label>状态</label>
-                <input type="text" class="form-control" id="status" name="status" value="${status}" size="20">
                 <select name="status">
                     <option value="0">所有</option>
                     <#list order_status as s>
-                        <option value="${s}" <#if (status == (s.value))>selected</#if>>${s.value}-${s.name}</option>
+                        <option value="${s}" <#if (status == (s.value))>selected</#if>>${s.name}</option>
                     </#list>
                 </select>
             </div>
