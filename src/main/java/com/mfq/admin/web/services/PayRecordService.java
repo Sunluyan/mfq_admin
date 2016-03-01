@@ -1,5 +1,6 @@
 package com.mfq.admin.web.services;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -37,7 +38,7 @@ public class PayRecordService {
 
     public List<PayRecord> selectByOrderNo(String orderNo) {
         PayRecordExample example = new PayRecordExample();
-        example.or().andOrderNoEqualTo(orderNo).andStatusEqualTo(2);
+        example.or().andOrderNoEqualTo(orderNo).andStatusEqualTo(2).andAmountNotEqualTo(BigDecimal.valueOf(19));
         return mapper.selectByExample(example);
     }
 

@@ -30,10 +30,23 @@
         float: right;
         font-size: 13px;
     }
+
+    .group-span-filestyle{
+        width:150px;
+    }
+    .form-control{
+        width:160px;
+    }
+    .upload{
+        float:right;
+    }
 </style>
 
 <link rel="stylesheet" href="/static/css/user/mianqian-information.css">
+<script src="/static/js/user/jquery.upload.js"></script>
 <script src="/static/js/user/mianqian-information.js"></script>
+<script src="/static/js/user/bootstrap-filestyle.min.js"></script>
+<script src="/static/js/layer-v2.1/layer/layer.js"></script>
 
 <div class="container">
     <h1 class="page-header text-left">面签用户详情</h1>
@@ -88,9 +101,9 @@
             </tr>
         </table>
     </div>
-    <div class="jc-information span7">
+    <div class="span7" style="border:1px solid #ccc;border-radius: 7px; padding:0 10px 10px 10px;">
 
-        <h3 class="past" style="overflow:hidden;">
+        <h3 class="past" style="overflow:hidden;display: none;">
             <span class="past-content"></span> <span class="past-author"></span><span
                 class="past-time"></span>
         </h3>
@@ -122,6 +135,7 @@
                     pClone.find(".past-author").html("at " + json.split("****")[i].split("&&&&")[2]);
                     pClone.show()
                     p.after(pClone)
+                    pClone.show();
                     $(".remark-new").val("")
                 }
             }
@@ -129,144 +143,133 @@
         </script>
         </table>
     </div>
+
+    <div style="clear:both;"></div>
+    <h3 class="page-header">
+        用户面签资料上传
+    </h3>
+
+    <table class="table table-bordered table-striped">
+        <tr>
+            <td class="text-center">资料名称</td>
+            <td class="text-center">预览</td>
+            <td class="text-center">备注</td>
+            <td class="text-center">上传</td>
+            <td class="text-center">操作</td>
+        </tr>
+        <#list user.interview_info as info>
+
+            <tr class="tr">
+                <td class="text-center span1 desc">
+                    ${info.desc}
+                </td>
+                <td class="span2 center">
+                    <div>
+                        <img src="${info.img}" alt="图片1"  class="img" style="width: 150px;cursor:pointer;">
+                    </div>
+                </td>
+                <td class="span4">
+                    <textarea style="width:300px;height:100px;" class="remark">${info.remark}</textarea>
+                </td>
+                <td class="text-center text-center">
+
+                </td>
+                <td>
+                    <button href="javascript:void(0)" class="btn-danger delete" data="${info.id}">删除</button>
+                </td>
+            </tr>
+        </#list>
+
+        <tr class="last-tr">
+            <td><input type="text" class="input desc"> </td>
+            <td>
+                <div>
+                    <img src="#" alt="图片1"  class="img" style="width: 150px;cursor:pointer;">
+                </div>
+            </td>
+            <td>
+                <textarea style="width:300px;height:100px;" class="remark">${info.remark}</textarea>
+
+            </td>
+            <td><form class="uploadForm" enctype="multipart/form-data" style="margin:0 auto;" target="frameFile" ">
+                <input id="file" type="file" name="file" class="file filestyle" data-buttonBefore="true" data-buttonText="选择文件" style="display: block;"/>
+                <button class="btn upload"  data="${info.id}" index="${info_index}">上传</button>
+                <img src="/static/img/loading.gif" class="loading" width="20" height="20"
+                     style="margin-top: 6px;margin-left: 5px; display:none;">
+                </form></td>
+            <td><button class="btn-success add-tr" style="float: right;">添加</button></td>
+        </tr>
+    </table>
+
+    <iframe id='frameFile' name='frameFile' style='display: none;'></iframe>
     <div style="clear:both;"></div>
 
+<#if user.user_type == 1>
+    <div class="student">
+        <h3 class="page-header">
+            学生用户学校详细信息
+        </h3>
+        <table class="table table-bordered table-striped">
+            <tr>
+                <td class="text-center">学院名称</td>
+                <td class="text-center">学院地址</td>
+                <td class="text-center">院系</td>
+                <td class="text-center">专业</td>
+                <td class="text-center">学号</td>
+                <td class="text-center">学制</td>
+                <td class="text-center">学校所在地</td>
+                <td class="text-center">入学时间</td>
+            </tr>
 
+            <tr>
+                <td class="text-center">${user.school}</td>
+                <td class="text-center">${user.school_location}</td>
+                <td class="text-center">${user.faculty}</td>
+                <td class="text-center">${user.speciality}</td>
+                <td class="text-center">${user.student_id}</td>
+                <td class="text-center">${user.school_level}</td>
+                <td class="text-center">${user.school_location_id}</td>
+                <td class="text-center">${user.startschool_at}</td>
+            </tr>
 
-
-		<#if user.user_type == 1>
-			<div class="student">
-				<h3 class="page-header">
-					学生用户学校详细信息
-				</h3>
-				<table class="table table-bordered table-striped">
-					<tr>
-						<td class="text-center">学院名称</td>
-						<td class="text-center">学院地址</td>
-						<td class="text-center">院系</td>
-						<td class="text-center">专业</td>
-						<td class="text-center">学号</td>
-						<td class="text-center">学制</td>
-						<td class="text-center">学校所在地</td>
-						<td class="text-center">入学时间</td>
-					</tr>
-
-					<tr>
-						<td class="text-center">${user.school}</td>
-						<td class="text-center">${user.school_location}</td>
-						<td class="text-center">${user.faculty}</td>
-						<td class="text-center">${user.speciality}</td>
-						<td class="text-center">${user.student_id}</td>
-						<td class="text-center">${user.school_level}</td>
-						<td class="text-center">${user.school_location_id}</td>
-						<td class="text-center">${user.startschool_at}</td>
-					</tr>
-
-				</table>
-			</div>
-		<#elseif user.user_type ==2>
-            <div class="worker">
-                <h3 class="page-header">
-                    上班族用户工作信息
-                </h3>
-                <table class="table table-bordered table-striped">
-                    <tr>
-                        <td class="text-center">公司名称</td>
-                        <td class="text-center">部门/职位</td>
-                        <td class="text-center">月收入</td>
-                        <td class="text-center">工作年限</td>
-                        <td class="text-center">其他</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center" >
-                            <input type="text" value="${user.company}">
-                        </td>
-                        <td>${user.department}/${user.position}</td>
-                        <td class="text-center">
-						${user.salary}
-                        </td>
-                        <td class="text-center">
-						${user.work_years}
-                        </td>
-                        <td class="text-center">
-                            <input type="text" value="${user.work_remark}">
-                        </td>
-                    </tr>
-                </table>
-            </div>
-
-
-		<#else >
-
-
-            <div class="student">
-                <h3 class="page-header">
-                    学生用户学校详细信息
-                </h3>
-                <table class="table table-bordered table-striped">
-                    <tr>
-                        <td class="text-center">学院名称</td>
-                        <td class="text-center">学院地址</td>
-                        <td class="text-center">院系</td>
-                        <td class="text-center">专业</td>
-                        <td class="text-center">学号</td>
-                        <td class="text-center">学制</td>
-                        <td class="text-center">学校所在地</td>
-                        <td class="text-center">入学时间</td>
-                    </tr>
-
-                    <tr>
-                        <td class="text-center">${user.school}</td>
-                        <td class="text-center">${user.school_location}</td>
-                        <td class="text-center">${user.faculty}</td>
-                        <td class="text-center">${user.speciality}</td>
-                        <td class="text-center">${user.student_id}</td>
-                        <td class="text-center">${user.school_level}</td>
-                        <td class="text-center">${user.school_location_id}</td>
-                        <td class="text-center">${user.startschool_at}</td>
-                    </tr>
-
-                </table>
-            </div>
-
-
-            <div class="worker">
-                <h3 class="page-header">
-                    上班族用户工作信息
-                </h3>
-                <table class="table table-bordered table-striped">
-                    <tr>
-                        <td class="text-center">公司名称</td>
-                        <td class="text-center">部门/职位</td>
-                        <td class="text-center">月收入</td>
-                        <td class="text-center">工作年限</td>
-                        <td class="text-center">其他</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center" >
-                            <input type="text" value="${user.company}">
-                        </td>
-                        <td>${user.department}/${user.position}</td>
-                        <td class="text-center">
-
-						${user.salary}
-                        </td>
-                        <td class="text-center">
-						${user.work_years}
-                        </td>
-                        <td class="text-center">
-                            <input type="text" value="${user.work_remark}">
-                        </td>
-                    </tr>
-                </table>
-            </div>
-
-
+        </table>
+    </div>
+<#elseif user.user_type ==2>
+    <div class="worker">
+        <h3 class="page-header">
+            上班族用户工作信息
+        </h3>
+        <table class="table table-bordered table-striped">
+            <tr>
+                <td class="text-center">公司名称</td>
+                <td class="text-center">部门/职位</td>
+                <td class="text-center">月收入</td>
+                <td class="text-center">工作年限</td>
+                <td class="text-center">其他</td>
+            </tr>
+            <tr>
+                <td class="text-center">
+                    <input type="text" value="${user.company}">
+                </td>
+                <td>${user.department}/${user.position}</td>
+                <td class="text-center">
+                ${user.salary}
+                </td>
+                <td class="text-center">
+                ${user.work_years}
+                </td>
+                <td class="text-center">
+                    <input type="text" value="${user.work_remark}">
+                </td>
+            </tr>
+        </table>
+    </div>
+<#else >
 </#if>
 
 </div>
 
-	</div>
+</div>
 
 <div class="answer container">
     <div class="child agree-1">
@@ -300,8 +303,6 @@
     <br>
     <input type="submit" class="btn  tijiao" value="提交">
     <input type="button" class="btn quxiao" value="取消">
-
-
 </div>
 
 

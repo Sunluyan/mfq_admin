@@ -15,6 +15,7 @@ import com.mfq.admin.web.bean.model.OrderPayModel;
 import com.mfq.admin.web.constants.*;
 import com.mfq.admin.web.dao.*;
 import com.mfq.admin.web.utils.DateUtil;
+import com.mfq.admin.web.utils.JSONUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -57,6 +58,8 @@ public class UserService {
     ProductMapper productMapper;
     @Resource
     UserFeedbackMapper userFeedbackMapper;
+    @Resource
+    InterviewInfoMapper interviewInfoMapper;
 
     public int PageSize = 50;
 
@@ -463,7 +466,7 @@ public class UserService {
         if (contact == null || contact.length() < 1) {
             data.put("contact", data.get("mobile"));
         }
-        //// TODO: 16/2/26  加入用户的认证反馈备注
+        //加入用户的认证反馈备注
         UserFeedbackExample example = new UserFeedbackExample();
         example.or().andUidEqualTo(uid);
         List<UserFeedback> userFeedbacks = userFeedbackMapper.selectByExample(example);
@@ -472,6 +475,12 @@ public class UserService {
             userFeedback = userFeedbacks.get(0);
         }
         data.put("remark",userFeedback.getRemark());
+
+        //加入用户的面签资料
+        InterviewInfoExample interviewInfoExample = new InterviewInfoExample();
+        interviewInfoExample.or().andUidEqualTo(uid);
+        List<InterviewInfo> interviewInfos = interviewInfoMapper.selectByExample(interviewInfoExample);
+        data.put("interview_info",interviewInfos);
         return data;
     }
 
@@ -772,13 +781,38 @@ public class UserService {
 
         models.add(model);
 
-
-
         }
-
         return models;
     }
 
 
+    public String addInterviewInfo(Long uid ,Long id ,String desc ,String remark , String img){
+        if(id == 0){
+            InterviewInfo interviewInfo = new InterviewInfo();
+            interviewInfo.setDesc(desc);
+            interviewInfo.setUid(uid);
+            interviewInfo.setRemark(remark);
+            interviewInfo.setImg(img);
+            interviewInfoMapper.insertSelective(interviewInfo);
+        }else {//如果已经有了的话
+            InterviewInfoExample example = new InterviewInfoExample();
+            example.or().andIdEqualTo(id);
+            InterviewInfo interviewInfo = interviewInfoMapper.selectByExample(example).get(0);
+            interviewInfo.setImg(img);
+            interviewInfo.setRemark(remark);
+            interviewInfoMapper.updateByPrimaryKey(interviewInfo);
+        }
+        return JSONUtil.successResultJson();
+    }
+
+
+    public String delInterview(long id) throws Exception{
+
+        if(id == 0){
+            throw new Exception("id错误");
+        }
+        interviewInfoMapper.deleteByPrimaryKey(id);
+        return JSONUtil.successResultJson();
+    }
 }
 

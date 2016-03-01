@@ -1,9 +1,11 @@
 package com.mfq.admin.web.controllers;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.mfq.admin.web.bean.*;
 import com.mfq.admin.web.cache.SysUserCache;
 import com.mfq.admin.web.constants.SysOperationType;
+import com.mfq.admin.web.services.QiniuManipulater;
 import com.mfq.admin.web.services.SysOperationService;
 import com.mfq.admin.web.utils.CookieUtils;
 import org.apache.commons.lang.StringUtils;
@@ -105,8 +108,8 @@ public class UserController {
     @RequestMapping(value = "/ajax")
     public
     @ResponseBody
-    String ajax(@RequestParam("method") String method, HttpServletRequest request,HttpServletResponse response) throws Exception {
-        response.setCharacterEncoding( "utf-8");
+    String ajax(@RequestParam("method") String method, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        response.setCharacterEncoding("utf-8");
         if (method.equals("certifyData")) {
             return certifyData(request);
         } else if (method.equals("certifyStatus")) {
@@ -122,20 +125,66 @@ public class UserController {
         } else if (method.equals("editUserFeedback")) {
             return editUserFeedback(request);
         } else if (method.equals("addRemark")) {
-            return addRemark(request,response);
+            return addRemark(request, response);
+        } else if (method.equals("addInterviewRemark")) {
+            return addInterviewRemark(request);
+        } else if(method.equals("delInterview")){
+            return delInterview(request);
         }
 
         return null;
     }
 
     /**
-     * 添加用户备注,用户备注以&&&&分开每个,****分开每条
-     * 添加完用户备注之后添加客服操作记录
+     * 添加用户面签资料备注
+     *
      * @param request
      * @return
      */
-    private String addRemark(HttpServletRequest request,HttpServletResponse response) {
+    public String addInterviewRemark(HttpServletRequest request) {
+        try {
+            String uidStr = request.getParameter("uid");
+            String desc = request.getParameter("desc");
+            String remark = request.getParameter("remark");
+            String idStr = request.getParameter("id");
+            String img = request.getParameter("img");
+
+            if(StringUtils.isBlank(idStr)){
+                idStr = "0";
+            }else if(StringUtils.isBlank(uidStr)){
+                return JSONUtil.toJson(9983, "参数错误", null);
+            }
+            Long id = Long.parseLong(idStr);
+            Long uid = Long.parseLong(uidStr);
+            return service.addInterviewInfo(uid,id,desc,remark,img);
+
+        } catch (Exception e) {
+            logger.info("添加面签出错" + e);
+            return JSONUtil.toJson(9983, e.getMessage(), null);
+        }
+    }
+
+    public String delInterview(HttpServletRequest request){
         try{
+            String id = request.getParameter("id");
+
+            return service.delInterview(Long.parseLong(id));
+        }catch(Exception e){
+            logger.info("删除面签出错" + e);
+            return JSONUtil.toJson(9983, e.getMessage(), null);
+        }
+    }
+
+
+    /**
+     * 添加用户备注,用户备注以&&&&分开每个,****分开每条
+     * 添加完用户备注之后添加客服操作记录
+     *
+     * @param request
+     * @return
+     */
+    private String addRemark(HttpServletRequest request, HttpServletResponse response) {
+        try {
             String uid = request.getParameter("uid");
             String data = request.getParameter("data");
             long time = new Date().getTime();
@@ -143,11 +192,11 @@ public class UserController {
             String sysName = "";
             SysUser sysUser = SysUserCache.validateUser(cookiePassport, true);
             sysName = sysUser.getRealname();
-            String newRemark  = service.updateUserFeedbackRemark(Long.parseLong(uid),data,sysName,time);
+            String newRemark = service.updateUserFeedbackRemark(Long.parseLong(uid), data, sysName, time);
             response.getWriter().append(newRemark);
-        }catch(Exception e){
-            logger.info("添加备注出错"+e);
-            return JSONUtil.toJson(9983,e.getMessage(),null);
+        } catch (Exception e) {
+            logger.info("添加备注出错" + e);
+            return JSONUtil.toJson(9983, e.getMessage(), null);
         }
         return null;
     }
@@ -414,6 +463,22 @@ public class UserController {
         model.addAttribute("nurse", nurse);
         return "/user/nurse_edit";
     }
+
+    @RequestMapping("/user/interview/uploadimg/")
+    public
+    @ResponseBody
+    String addInterviewInfo(@RequestParam("file") MultipartFile file , HttpServletRequest request) throws Exception {
+        String url = "";
+        if (!file.isEmpty()) {
+            File tmpFile = new File("/tmp/" + UUID.randomUUID().toString());
+            file.transferTo(tmpFile);
+            url = QiniuManipulater.qiniuUploadProdImg(tmpFile);
+        }
+        logger.info(url);
+        return url;
+    }
+
+
 
 
 }
