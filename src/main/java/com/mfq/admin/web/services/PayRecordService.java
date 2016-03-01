@@ -187,6 +187,50 @@ public class PayRecordService {
         return mapper.selectByExample(example);
     }
 
+	public PayRecord queryPayRecordByOrderNo(String orderNo) {
+		PayRecordExample example = new PayRecordExample();
+		PayRecordExample.Criteria criteria = example.createCriteria();
+		criteria.andOrderNoEqualTo(orderNo);
+
+		List<PayRecord> pays = mapper.selectByExample(example);
+		if(pays.size()>0){
+			return pays.get(0);
+		}else {
+			return null;
+		}
+	}
+
+//
+//	final String CACHE_LIST = "chche_payrecords";
+//
+//	private static RedisCache cache = new RedisCache();
+//
+//    private static final int exp = 7000;
+//
+//	/**
+//	 * 基于缓存的分页
+//	 * @param list
+//	 * @param start
+//	 * @param size
+//	 * @return
+//	 */
+//	public List<PayRecord> queryByPage(int start, int size){
+//		List<String> alls = null;
+//		if(cache.exist(CACHE_LIST)){
+//			alls = cache.lrange(CACHE_LIST, start, size);
+//		}else{
+//			List<PayRecord> data =  mapper.selectByExample(example);
+//			for(PayRecord p:data){
+//				cache.lpush(CACHE_LIST, JSONUtil.writeToJson(p));
+//			}
+//			alls = cache.lrange(CACHE_LIST, start, size);
+//		}
+//
+//		PayRecordExample.Criteria c =example.or();
+//
+//		List<PayRecord> data =  mapper.selectByExample(example);
+//		return null;
+//	}
 
 }
 

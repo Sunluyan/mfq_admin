@@ -29,6 +29,7 @@ import com.mfq.admin.web.services.UserQuotaService;
 import com.mfq.admin.web.services.UserService;
 import com.mfq.admin.web.utils.DateUtil;
 import com.mfq.admin.web.utils.JSONUtil;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * Order模块
@@ -204,6 +205,63 @@ public class OrderController extends BaseController {
 		return "order/order_finance";
 	}
 
+
+	/**
+	 * 财务对账用
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = {"/order/budget/data","/order/budget/data/"} , method = {RequestMethod.GET,RequestMethod.POST})
+	public  String budgetData(Model model, HttpServletRequest request,
+					  @RequestParam(value = "ob", defaultValue = "") String ob,
+					  @RequestParam(value = "oe", defaultValue = "") String oe,
+					  @RequestParam(value = "page", defaultValue = "1")int page,
+					  @RequestParam(value = "orderNo", defaultValue = "") String orderNo,
+							  @RequestParam(value = "code", defaultValue = "") String code,
+					  @RequestParam(value = "hid", defaultValue="0")int hid,
+					  @RequestParam(value = "pname", defaultValue="")String pname,
+					  @RequestParam(value = "type", defaultValue="0")int type,
+					  @RequestParam(value = "mobile", defaultValue = "")String mobile,
+					  @RequestParam(value = "status", defaultValue = "0")int status,
+					  @RequestParam(value = "uname", defaultValue = "")String uname){
+
+		String ret = "order/order_budget_data";
+		try {
+			String c = request.getParameter("c");
+			String p = StringUtils.stripToEmpty(request.getParameter("p"));
+			if("t".equals(p)){
+				page = 1;
+			}
+			if(c.equals("1")){
+				model.addAttribute("c",1);
+				orderService.queryFinanceOrders(model, ob, oe, page, hid, pname, type, mobile, uname, status, orderNo,code);
+				ret = "order/budget/order_data";
+			}else if(c.equals("2")){
+				model.addAttribute("c",2);
+				orderService.queryFinanceBills(model, ob, oe, page, type, mobile, uname, orderNo);
+				ret = "order/budget/pay_data";
+			}
+
+			model.addAttribute("ob",ob);
+			model.addAttribute("oe",oe);
+			model.addAttribute("page",page);
+			model.addAttribute("orderNo",orderNo);
+			model.addAttribute("code",code);
+			model.addAttribute("hid",hid);
+			model.addAttribute("pname",pname);
+			model.addAttribute("type",type);
+			model.addAttribute("mobile",mobile);
+			model.addAttribute("status",status);
+			model.addAttribute("uname",uname);
+			System.out.print("......");
+		}catch (Exception e){
+			model.addAttribute("msg","系统错误...");
+			logger.error("order data is error {}", e);
+		}
+		logger.info("order data is ret {}",ret);
+		return ret;
+	}
+
 	/**
 	 * 财务对账用
 	 * @param model
@@ -211,7 +269,7 @@ public class OrderController extends BaseController {
      */
 	@RequestMapping(value = {"/order/budget","/order/budget/"} , method = RequestMethod.GET)
 	public String budgetRe(Model model,
-						   @RequestParam(value = "ob", defaultValue = "") String ob,
+						    @RequestParam(value = "ob", defaultValue = "") String ob,
 							@RequestParam(value = "oe", defaultValue = "") String oe,
 							@RequestParam(value = "page", defaultValue = "1")int page,
 							@RequestParam(value = "hid", defaultValue="0")int hid,
@@ -223,25 +281,13 @@ public class OrderController extends BaseController {
 		String ret = "";
 		try {
 
-			orderService.queryFinance(model, ob, oe, page, hid, pname, type, mobile, uname, status);
+
 			return "order/order_budget";
 		}catch (Exception e){
 			logger.error("order budget is error {}",e);
 		}
 		return "order/order_budget";
 	}
-
-
-//	,
-//	@RequestParam(value = "ob", defaultValue = "") String ob,
-//	@RequestParam(value = "oe", defaultValue = "") String oe,
-//	@RequestParam(value = "page", defaultValue = "1")int page,
-//	@RequestParam(value = "hid", defaultValue="0")int hid,
-//	@RequestParam(value = "pname", defaultValue="")String pname,
-//	@RequestParam(value = "type", defaultValue="0")int type,
-//	@RequestParam(value = "mobile", defaultValue = "")String mobile,
-//	@RequestParam(value = "status", defaultValue = "status")int status,
-//	@RequestParam(value = "uname", defaultValue = "")String uname
 
 	@RequestMapping(value = "/order/budgetp/", method = {RequestMethod.GET, RequestMethod.POST})
 	public String budget2(Model model,
@@ -252,7 +298,7 @@ public class OrderController extends BaseController {
 						 @RequestParam(value = "pname", defaultValue="")String pname,
 						 @RequestParam(value = "type", defaultValue="0")int type){
 		try {
-			orderService.queryFinance(model, ob, oe, page, hid, pname, type, "", "", 0);
+			orderService.queryFinanceOrders(model, ob, oe, page, hid, pname, type, "", "", 0, "","");
 			return "order/order_budget";
 		}catch (Exception e){
 			logger.error("order budget is error {}",e);

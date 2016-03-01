@@ -1,237 +1,576 @@
 <#include "commons/header.ftl" />
 <#assign toolbar="items" />
 <#include "commons/toolbar.ftl" />
-  
-  <link rel="stylesheet" type="text/css" href="/static/css/user/user_edit_style.css">
-  
-<table width="100%" height="30" border="0" cellpadding="5" cellspacing="0" bgcolor="#000000">
-  <tr>
-    <td><span class="STYLE2">用户管理</span></td>
-  </tr>
-</table>
-<br />
-<div id="enlarge-body">
-  <legend>用户详细信息</legend>
-  <br />
-</div>
-　<br />
-<div class="tit" id="jbxx_tit">基本信息</div>
-<div id="jbxx">
+<style>
+    .form-inline {
+        line-height: 35px;
+    }
 
-<!-- 
-quota.id , u.nick , u.mobile , quota.auth_status , quota.realname , u.gender
-quota.contact , quota.id_card , quota.origin , quota.location , quota.idcard_reverse , 
-quota.idcard_front 
+    .area-choice {
+        width: 100px;
+    }
 
- -->
-  <table width="90%" border="0" align="center" cellpadding="0" cellspacing="10">
-    <tr>
-      <td width="96" height="30" class="bold">用户ID</td>
-      <td width="263" height="30">&lt;${user.uid}&gt;</td>
-      <td width="96" height="30" class="bold">用户昵称</td>
-      <td width="529" height="30">&lt;${user.nick}&gt;</td>
-    </tr>
-    <tr>
-      <td width="96" height="30" class="bold">注册手机号</td>
-      <td height="30">&lt;${user.mobile}&gt;</td>
-      <td width="96" height="30" class="bold">邀请人手机号</td>
-      <td height="30">&lt;inviter&gt;</td>
-    </tr>
-  </table>
-</div>
-<div class="tit" id="smrz_tit" >
-  <table width="100%" border="0" cellspacing="0" cellpadding="0">
-    <tr>
-      <td width="8%" align="center" onclick="smrz.style.display=''; "><span class="STYLE4">状态：
-      <#if user.auth_status==1 >
-        已认证
-      </#if>
-       <#if user.auth_status!=1 >
-        未认证
-      </#if>
+    .form-group {
+        display: inline;
+    }
 
-      </span></td>
-      <td class="tit" width="89%" align="center" onclick="smrz.style.display=''; ">实名认证　　</td>
-      <td width="3%" align="center" valign="middle" onclick="smrz.style.display='none'"><span class="STYLE4">隐藏</span></td>
-    </tr>
-  </table>
-</div>
-<div id="smrz">
-  <table width="90%" border="0" align="center" cellpadding="0" cellspacing="10">
-    <tr>
-      <td width="94" height="30" class="bold">姓名</td>
-      <td width="229" height="30">&lt;${user.realname}&gt;</td>
-      <td width="48" height="30" class="bold">性别</td>
-      <td width="332" height="30">&lt;
-      <#if user.gender == 1 >
-        男
-      </#if>
-      <#if user.gender == 0 >
-        未设置
-      </#if>
-      <#if user.gender == 2 >
-        女
-      </#if>
+    .tab {
+        width: 100%;
+        height: 40px;
+        background: #f5f5f5;
+        margin-bottom: 15px;
+        border-top-right-radius: 20px;
+        border-bottom-right-radius: 20px;
+        /*1px solid #e3e3e3*/
+        border: 1px solid #e3e3e3;
+    }
 
-      &gt;</td>
-      <td width="78" height="30" class="bold">应急电话</td>
-      <td width="199">&lt;${user.contact}&gt;</td>
-    </tr>
-    <tr>
-      <td width="94" height="30" class="bold">身份证号</td>
-      <td height="30" colspan="5">&lt;${user.id_card}&gt;</td>
-    </tr>
-    <tr>
-      <td width="94" height="30" class="bold">现住地址</td>
-      <td height="30" colspan="5">&lt;${user.location}&gt;</td>
-    </tr>
-    <tr>
-      <td width="94" height="30" class="bold">籍贯地址</td>
-      <td height="30" colspan="5">&lt;${user.origin}&gt;</td>
-    </tr>
+    .prev, .next {
+        width: 40px;
+        height: 40px;
+        background: #e3e3e3;
+        float: right;
+        line-height: 40px;
+        text-align: center;
+        font-size: 16px;
+        cursor: pointer;
+        color: white;
+    }
 
-  </table>
-</div>
+    .next {
+        border-top-right-radius: 50px;
+        border-bottom-right-radius: 50px;
+    }
 
-<div class="tit" id="pays_tit">
-    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-        <tr>
-            <td width="8%" align="center" class="STYLE4" onclick="ali.style.display=''; "></td>
-            <td width="89%" align="center" onclick="pays.style.display=''; ">支付信息</td>
-            <td width="3%" align="center" valign="middle" onclick="pays.style.display='none'; "><span class="STYLE4">隐藏</span></td>
-        </tr>
-    </table>
-</div>
-<div id="pays" style="width: 84%; margin: 0 auto;">
-    <h5>充值</h5>
-    <table  class="table table-bordered">
+    .prev {
+        border-top-left-radius: 50px;
+        border-bottom-left-radius: 50px;
+        border-right: 1px solid #e3e3e3;
+    }
 
-        <tr>
-            <td>订单号</td>
-            <td>支付单号</td>
-            <td>充值金额</td>
-            <td>充值时间</td>
-            <td>支付方式</td>
-            <td>支付银行</td>
-            <td>支付状态</td>
-        </tr>
-    <#list pays as pay>
-        <tr>
-            <td>${pay.orderNo}</td>
-            <td>${pay.tradeNo}</td>
-            <td>${pay.amount}</td>
-            <td>${(pay.callbackAt?string("yyyy-MM-dd"))!}</td>
-            <td>${pay.tpp}</td>
-            <td>${pay.bankCode}</td>
-            <td>
-            <#if (pay.status == 1)> 未支付</#if>
-                <#if (pay.status == 2)> 支付完成</#if>
-                <#if (pay.status == 3)> 取消支付</#if>
-            </td>
+    .next:hover, .prev:hover {
+        background: #d3d3d3;
+    }
 
-        </tr>
+    .disabled {
+        background: #eee;
+    }
 
-    </#list>
-    </table>
-    <h5>订单支付</h5>
-    <div style="overflow: auto;">
-    <table  class="table table-bordered" style="width: 1800px;">
+    .disabled:hover {
+        cursor: auto;
+        background: #eee;
+    }
 
-        <tr>
-            <td>订单号</td>
-            <td>支付单号</td>
-            <td>支付金额</td>
-            <td>余额支付</td>
-            <td>优惠券(金额)</td>
-            <td>支付时间</td>
-            <td>支付方式</td>
-            <td>支付银行</td>
-            <td>支付状态</td>
-            <td>产品名称</td>
-            <td>产品总额</td>
-            <td>订单状态</td>
-            <td>产品类型</td>
-            <td>悟空保</td>
-            <td>医院</td>
-        </tr>
-    <#list mnPays as pay>
-        <tr>
-            <td <#if (pay.status == 0)>style="color:#f0f0f0;" </#if>>${pay.orderNo!}</td>
-            <td <#if (pay.status == 0)>style="color:#f0f0f0;" </#if>>${pay.tradeNo!}</td>
-            <td <#if (pay.status == 0)>style="color:#f0f0f0;" </#if>>${pay.payAmount!}</td>
-            <td <#if (pay.status == 0)>style="color:#f0f0f0;" </#if>>${pay.payBalance!}</td>
-            <td>${pay.payCoupon!}</td>
-            <td>${pay.payDate!}</td>
-            <td>${pay.payType!}</td>
-            <td>${pay.payBlank!}</td>
-            <td>${pay.payStatus!}</td>
-            <td>${pay.productName!}</td>
-            <td>${pay.productMoney!}</td>
-            <td>${pay.orderStatus!}</td>
-            <td>${pay.productType!}</td>
-            <td>${pay.orderPolicy!}</td>
-            <td>${pay.hospital}</td>
+    .table-pass, .table-out {
+        display: none;
+    }
 
-        </tr>
 
-    </#list>
-    </table>
+</style>
+<link href="/static/bootstrap-3.3.4/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+<script type="text/javascript" src="/static/bootstrap-3.3.4/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+<div class="container" id="enlarge-body">
+    <div class="container">
+        <form class="form-inline well" action="#" method="GET">
+            <div class="form-group">
+                <label for="exampleInputName2">用户ID</label>
+                <input type="text" class="form-control" id="uid" name="uid" size="20">
+            </div>
+
+            <div class="form-group">
+                <label>用户手机号</label>
+                <input type="text" class="form-control" id="phone" name="phone" size="20">
+            </div>
+            <div class="form-group">
+                <label>身份证号</label>
+                <input type="text" class="form-control" id="cardid" name="cardId" size="20">
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="exampleInputName1">申请时间</label>
+                <div class="input-append date" id="date1" name="date1" data-date-format="yyyy-mm-dd">
+                    <input class="span2" id="applytimefrom" name="fromtime" size="16" type="text" value="">
+                    <span class="add-on"><i class="icon-th"></i></span>
+                </div>
+                －
+                <div class="input-append date" id="date2" name="date2" data-date-format="yyyy-mm-dd">
+                    <input class="span2" id="applytimeto" name="totime" size="16" type="text" value="">
+                    <span class="add-on"><i class="icon-th"></i></span>
+                    <input type="text" name="page" class="realpage" style="display:none;" value="">
+                </div>
+            </div>
+            <br>
+
+            <div class="input-group">
+                <td colspan="4" style="text-align: center;"><input type="submit" class="btn btn-info btn-sm" value="查询">
+            </div>
+        </form>
+
+        <div class="row-fluid">
+            <ul class="nav nav-pills">
+                <li role="presentation" class="active" index="1"><a href="#">待审核</a></li>
+                <li role="presentation" index="2"><a href="#">已通过</a></li>
+                <li role="presentation" index="3"><a href="#">未通过</a></li>
+                <img src="/static/img/loading.gif" class="loading" width="20" height="20"
+                     style="margin-top: 6px;margin-left: 5px; display:none;">
+            </ul>
+            <div>
+                <legend>面签用户列表（共<span class="totalpage">1</span>页，当前第<span class="page">1</span>页，共<span
+                        class="total">0</span>条）
+
+                    <div class="next" onselectstart="return false;">></div>
+                    <div class="prev" onselectstart="return false;"><</div>
+                </legend>
+
+                <!-- -------------------------三个table------------------------------- -->
+                <table class="table table-bordered table-unsee" index="1">
+                    <tr>
+                        <td>用户ID</td>
+                        <td>申请时间</td>
+                        <td>手机号</td>
+                        <td>姓名</td>
+                        <td>身份证号</td>
+                        <td><select class="feedback-choiced" style="width:130px;">
+                            <option value="">认证类型</option>
+                            <option value="">无状态</option>
+                            <option value="争取中">争取中</option>
+                            <option value="待处理">待处理</option>
+                            <option value="已放弃">已放弃</option>
+                            <option value="重下单">重下单</option>
+                            <option value="重复取消">重复取消</option>
+                            <option value="已下单">已下单</option>
+                        </select></td>
+                        <td>认证反馈</td>
+                        <td>操作</td>
+                    </tr>
+
+                    <tr class="tr-unsee" style="display:none;">
+                        <td class="uid">5</td>
+                        <td class="applytime">2015-12-04 12:22:23</td>
+                        <td class="phone">18338751231</td>
+                        <td class="realname">刘志国</td>
+                        <td class="cardid">411425199407130016</td>
+                        <td class="feedback-type-td">
+                            <select class="feedback-type" style="width:100px;">
+                                <option value="无状态">无状态</option>
+                                <option value="争取中">争取中</option>
+                                <option value="待处理">待处理</option>
+                                <option value="已放弃">已放弃</option>
+                                <option value="重下单">重下单</option>
+                                <option value="重复取消">重复取消</option>
+                                <option value="已下单">已下单</option>
+                            </select>
+                        </td>
+                        <td class="feed"><textarea type="text" class="form-control feedback-input" rows="3" style="width:220px;" /></textarea></td>
+
+                        <td class="oparite"><a href="/user/certify/check/" target="_blank" data-id=''>详情</a></td>
+                    </tr>
+                </table>
+
+                <table class="table table-bordered table-pass" index="2">
+                    <tr>
+                        <td>用户ID</td>
+                        <td>申请时间</td>
+                        <td>通过时间</td>
+                        <td>手机号</td>
+                        <td>姓名</td>
+                        <td>身份证号</td>
+                        <td><select class="feedback-choiced" style="width:130px;">
+                            <option value="">认证类型</option>
+                            <option value="">无状态</option>
+                            <option value="争取中">争取中</option>
+                            <option value="待处理">待处理</option>
+                            <option value="已放弃">已放弃</option>
+                            <option value="重下单">重下单</option>
+                            <option value="重复取消">重复取消</option>
+                            <option value="已下单">已下单</option>
+                        </select></td>
+                        <td>认证反馈</td>
+                        <td>操作</td>
+                    </tr>
+
+                    <tr class="tr-pass" style="display:none;">
+                        <td class="uid">5</td>
+                        <td class="applytime">2015-12-04 12:22:23</td>
+                        <td class="checktime">2015-12-04 12:22:23</td>
+                        <td class="phone">18338751231</td>
+                        <td class="realname">刘志国</td>
+                        <td class="cardid">411425199407130016</td>
+                        <td class="feedback-type-td">
+                            <select class="feedback-type">
+                                <option value="无状态">无状态</option>
+                                <option value="争取中">争取中</option>
+                                <option value="待处理">待处理</option>
+                                <option value="已放弃">已放弃</option>
+                                <option value="重下单">重下单</option>
+                                <option value="重复取消">重复取消</option>
+                                <option value="已下单">已下单</option>
+                            </select>
+                        </td>
+                        <td class="feed"><textarea type="text" class="form-control feedback-input" rows="3" style="width:220px;" /></textarea></td>
+
+                        <td class="oparite"><a href="/user/certify/check/" data-id='' target="_blank">详情</a></td>
+                    </tr>
+                </table>
+
+                <table class="table table-bordered table-out" index="3">
+                    <tr>
+                        <td>用户ID</td>
+                        <td>申请时间</td>
+                        <td>手机号</td>
+                        <td>姓名</td>
+                        <td>身份证号</td>
+                        <td><select class="feedback-choiced" style="width:130px;">
+                            <option value="">认证类型</option>
+                            <option value="">无状态</option>
+                            <option value="争取中">争取中</option>
+                            <option value="待处理">待处理</option>
+                            <option value="已放弃">已放弃</option>
+                            <option value="重下单">重下单</option>
+                            <option value="重复取消">重复取消</option>
+                            <option value="已下单">已下单</option>
+                        </select></td>
+                        <td>认证反馈</td>
+                        <td>操作</td>
+                    </tr>
+
+                    <tr class="tr-out" style="display:none;">
+                        <td class="uid">5</td>
+                        <td class="applytime">2015-12-04 12:22:23</td>
+                        <td class="phone">18338751231</td>
+                        <td class="realname">刘志国</td>
+                        <td class="cardid">411425199407130016</td>
+                        <td class="feedback-type-td">
+                            <select class="feedback-type">
+                                <option value="无状态">无状态</option>
+                                <option value="争取中">争取中</option>
+                                <option value="待处理">待处理</option>
+                                <option value="已放弃">已放弃</option>
+                                <option value="重下单">重下单</option>
+                                <option value="重复取消">重复取消</option>
+                                <option value="已下单">已下单</option>
+                            </select>
+                        </td>
+                        <td class="feed"><textarea type="text" class="form-control feedback-input" rows="3" style="width:220px;" /></textarea></td>
+
+                        <td class="oparite"><a href="/user/certify/check/" data-id='' target="_blank">详情</a></td>
+                    </tr>
+
+                    <tr class="tr-remark" style="display:none;">
+                        <td>失败原因</td>
+                        <td colspan="7" class="remark">长得忒丑了</td>
+                    </tr>
+
+
+                </table>
+            </div>
+        </div>
+
     </div>
 </div>
+<script type="text/javascript">
+    $('#date1').datetimepicker({
+        language: 'zh-CN',
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0,
+    });
+    $('#date2').datetimepicker({
+        language: 'zh-CN',
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
 
-<div class="tit" id="orders_tit">
-    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-        <tr>
-            <td width="8%" align="center" class="STYLE4" onclick="ali.style.display=''; "></td>
-            <td width="89%" align="center" onclick="orders.style.display=''; ">订单信息</td>
-            <td width="3%" align="center" valign="middle" onclick="orders.style.display='none'; "><span class="STYLE4">隐藏</span></td>
-        </tr>
-    </table>
-</div>
-<div id="orders" style="width: 84%; margin: 0 auto;">
+    var tables =
+    {
+        tableindex: 1,
+        tableone: false,
+        tabletwo: false,
+        tablethree: false
+    }
+    $(document).on("click", "li[role='presentation']", function () {
+        //去掉别人的tab效果，给自己加上。并把相应的table显示出来
+        $(".table-bordered").hide();
+        $("li[role='presentation']").removeClass("active")
+        $(this).addClass("active")
+        tables.tableindex = $(this).attr("index")
+        $(".table-bordered[index='" + tables.tableindex + "']").show()
 
-    <table  class="table table-bordered">
-
-        <tr>
-            <td>订单号</td>
-            <td>订单价格</td>
-            <td>产品名</td>
-            <td>医院名</td>
-            <td>订单状态</td>
-            <td>保险</td>
-            <td>优惠券</td>
-            <td>创建时间</td>
-        </tr>
-    <#list orders as order>
-
-        <tr <#if (order.status == 1)>style="background-color: #00a0e9;" </#if>>
-            <td>${order.orderNo}</td>
-            <td>${order.price}</td>
-            <td>${order.productName}</td>
-            <td><${order.hospital}/td>
-            <td>${order.orderStatus}</td>
-            <td>${order.policyStatus}</td>
-            <td>${order.couponNum}</td>
-            <td>${order.createTime}</td>
-
-        </tr>
-
-    </#list>
-    </table>
-
-</div>
+        if (tables.tableindex == 1) {
+            getData(1)
+        }
+        else if (tables.tableindex == 2) {
+            getData(1)
+        }
+        else if (tables.tableindex == 3) {
+            getData(1)
+        }
+    })
 
 
+    //传入页数获取数据
+    function getData(page) {
+        var uid = $("#uid").val();
+        var phone = $("#phone").val()
+        var cardid = $("#cardid").val()
+        var applytimefrom = $("#applytimefrom").val()
+        var applytimeto = $("#applytimeto").val()
+        var checktimefrom = $("#checktimefrom").val()
+        var checktimeto = $("#checktimeto").val()
+        var type = tables.tableindex == 1 ? "unseeInterview" : tables.tableindex == 2 ? "passInterview" : "outInterview";
+        var feedbackType = $(".feedback-choiced").eq(tables.tableindex - 1).val();
+        $.ajax({
+            url: '/ajax',
+            type: 'post',
+            data: {
+                method: "certifyData",
+                page: page,
+                uid: uid,
+                type: type,
+                phone: phone,
+                cardid: cardid,
+                applytimefrom: applytimefrom,
+                applytimeto: applytimeto,
+                checktimefrom: checktimefrom,
+                checktimeto: checktimeto,
+                feedbackType:feedbackType
+            },
+            dataType: 'json',
+            success: function (json) {
+                console.log(json)
+                if (tables.tableindex == 1) {
+                    tables.tableone = true;
+                }
+                if (tables.tableindex == 2) {
+                    tables.tabletwo = true;
+                }
+                if (tables.tableindex == 3) {
+                    tables.tablethree = true;
+                }
+
+                //填入总条数
+                if(json == null || json.data == null || json.data.data == null){
+                    $(".tr-unsee-clone").remove();
+                    $(".tr-pass-clone").remove()
+                    $(".tr-out-clone").remove()
+                    $(".tr-remark-clone").remove()
+                    return false;
+                }
+                var count = json.data.count;
+                $(".total").html(count)
+                $(".totalpage").html(Math.ceil(count / 50))
+                nextPrevCss()
+                insertTable(json.data)
+                canClick = true;
+
+            }
+        })
+    }
+
+    function nextPrevCss() {
+        var page = parseInt($(".page").html())
+        var totalpage = parseInt($(".totalpage").html())
+        $(".next").removeClass("disabled")
+        $(".prev").removeClass("disabled")
+        if (page <= 1) {
+            $(".prev").addClass("disabled")
+        }
+        if (page >= totalpage) {
+            $(".next").addClass("disabled")
+        }
+
+    }
 
 
+    //填充表格
+    function insertTable(data) {
+        var json = data.data;
+        var feedbacks = data.feedback;
+        if (tables.tableindex == 1) {
+            $(".tr-unsee-clone").remove()
+
+            for (var i = 0; i < json.length; i++) {
+                var $tr = $(".tr-unsee").eq(0).clone(true).addClass("tr-unsee-clone");
+                $tr.find(".uid").html(json[i].uid)
+                $tr.find(".phone").html(json[i].mobile)
+                $tr.find(".applytime").html(json[i].createtime)
+                $tr.find(".realname").html(json[i].realname)
+                $tr.find(".cardid").html(json[i].cardid)
+                $tr.find(".oparite").children('a').attr("href", "/user/interview/detail/?uid=" + json[i].uid);
+                for (var j = 0; j < feedbacks.length; j++) {
+                    if (json[i].uid == feedbacks[j].uid) {
+                        $tr.find(".feedback-input").val(feedbacks[j].feedback);
+                        $tr.find("option[value='" + feedbacks[j].feedbackType + "']").attr("selected", true);
+                    }
+                }
+                $tr.show()
+                $(".table-unsee").append($tr);
+            }
+        }
+        else if (tables.tableindex == 2) {
+
+            $(".tr-pass-clone").remove()
+
+            for (var i = 0; i < json.length; i++) {
+                var $tr = $(".tr-pass").eq(0).clone(true).addClass("tr-pass-clone");
+                $tr.find(".uid").html(json[i].uid)
+                $tr.find(".phone").html(json[i].mobile)
+                $tr.find(".applytime").html(json[i].createtime)
+                $tr.find(".checktime").html(json[i].updatetime)
+                $tr.find(".realname").html(json[i].realname)
+                $tr.find(".cardid").html(json[i].cardid)
+                $tr.find(".oparite").children('a').attr("href", "/user/interview/detail/?uid=" + json[i].uid);
+                for (var j = 0; j < feedbacks.length; j++) {
+                    if (json[i].uid == feedbacks[j].uid) {
+                        $tr.find(".feedback-input").val(feedbacks[j].feedback);
+                        $tr.find("option[value='" + feedbacks[j].feedbackType + "']").attr("selected", true);
+                    }
+                }
+                $tr.show();
+                $(".table-pass").append($tr);
+            }
+        }
+        else if (tables.tableindex == 3) {
+            var $trOut = $(".tr-out").eq(0).clone(true).addClass("tr-out-clone")
+            var $trRemark = $(".tr-remark").clone(true).addClass("tr-remark-clone")
+            $(".tr-out-clone").remove()
+            $(".tr-remark-clone").remove()
+
+            for (var i = 0; i < json.length; i++) {
+                var $tr = $trOut.eq(0).clone(true);
+                $tr.find(".uid").html(json[i].uid)
+                $tr.find(".phone").html(json[i].mobile)
+                $tr.find(".applytime").html(json[i].createtime)
+                $tr.find(".checktime").html(json[i].updatetime)
+                $tr.find(".realname").html(json[i].realname)
+                $tr.find(".cardid").html(json[i].cardid)
+                $tr.find(".oparite").children('a').attr("href", "/user/interview/detail/?uid=" + json[i].uid);
+                var $trmark = $trRemark.eq(0).clone(true)
+                $trmark.find(".remark").html(json[i].remark)
+                for (var j = 0; j < feedbacks.length; j++) {
+                    if (json[i].uid == feedbacks[j].uid) {
+                        $tr.find(".feedback-input").val(feedbacks[j].feedback);
+                        $tr.find("option[value='" + feedbacks[j].feedbackType + "']").attr("selected", true);
+                    }
+                }
+                $tr.show()
+                $trmark.show()
+                $(".table-out").append($tr).append($trmark);
+            }
+        }
+    }
+
+    $(function () {
+        getData(1)
+
+    })
+
+
+    var canClick = true;
+    $(".next").click(function () {
+        if (!canClick) {
+            return false;
+        }
+        canClick = false
+        var page = parseInt($(".page").html()) + 1
+        if (page > parseInt($(".totalpage").html())) {
+            canClick = true;
+            return false;
+        }
+        $(".page").html(page)
+        getData(page)
+    })
+
+
+    $(".prev").click(function () {
+        if (!canClick) {
+            return false;
+        }
+        canClick = false
+
+        var page = parseInt($(".page").html()) - 1
+        if (page < 1) {
+            canClick = true;
+            return false;
+        }
+        $(".page").html(page)
+        getData(page)
+    })
+
+
+    $(".btn-sm").click(function () {
+        getData(1);
+        return false;
+    })
+
+    $(".loading").ajaxStart(function () {
+        $(this).show();
+    })
+    $(".loading").ajaxStop(function () {
+        $(this).hide();
+    })
+
+
+    $(".feedback-input").on("input webChange", function () {
+        $(this).css("background-color", "pink");
+    })
+    $(".feedback-input").keypress(function (event) {
+        var $obj = $(this);
+        var uid = $obj.parent().parent().find(".uid").html();
+        if (event.which == 13) {
+            $.ajax({
+                url: "/ajax",
+                data: {
+                    method: "editUserFeedback",
+                    uid: uid,
+                    feedback: $obj.val()
+                },
+                type: "post",
+                dataType: "json",
+                success: function (data) {
+                    if (data.code == 0) {
+                        $obj.css("background-color", "white");
+                        $obj.blur()
+                    } else {
+                        alert(data.msg)
+                    }
+                }
+            })
+            return false;
+        }
+    })
+
+    $(".feedback-type").change(function () {
+        var value = $(this).val();
+        var uid = $(this).parent().parent().find(".uid").html();
+
+        $.ajax({
+            url: "/ajax",
+            data: {
+                method: "editUserFeedback",
+                uid: uid,
+                feedback_type: value
+            },
+            type: "post",
+            dataType: "json",
+            success: function (data) {
+                if (data.code != 0) {
+                    alert(data.msg)
+                }
+            }
+        })
+
+    })
+
+</script>
 <#include "commons/footer.ftl" />
-
-
-
-
-
-
-
-
-
 

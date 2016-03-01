@@ -2,6 +2,7 @@ package com.mfq.admin.web.models.view;
 
 import com.mfq.admin.web.bean.*;
 import com.mfq.admin.web.bean.coupon.Coupon;
+import com.mfq.admin.web.constants.OrderStatus;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -19,9 +20,17 @@ public class FinanceOrder {
 
 	private BigDecimal orderMoney;  //订单额度
 
-	private String realname;  //
+	private String code;
+
+	private String realname;  //真实姓名
 	
     private Integer orderType;  //订单类型
+
+	private String orderStatus; //订单状态
+
+	private String policyStatus; //保单状态
+
+	private BigDecimal onlinePay; //支付金额
 
     private String tradeNo;  //支付单号
 
@@ -85,6 +94,19 @@ public class FinanceOrder {
 		this.cardNo = coupon.getCouponNum();
 		this.payStatus = payRecord.getStatus();
 		this.callbackAt = payRecord.getCallbackAt();
+
+
+		Integer ostatus = order.getStatus();
+		for(OrderStatus status : OrderStatus.values()){
+			if(status.getValue() == ostatus){
+				this.orderStatus = status.getName();
+			}
+		}
+
+		this.policyStatus = order.getPolicyStatus().toString();
+
+		this.code = order.getSecurityCode();
+		this.onlinePay = order.getOnlinePay();
 
 		this.orderMoney = payRecord.getAmount();
 		this.createdAt = payRecord.getUpdatedAt();
@@ -201,6 +223,38 @@ public class FinanceOrder {
 		return cardType;
 	}
 
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public BigDecimal getOnlinePay() {
+		return onlinePay;
+	}
+
+	public void setOnlinePay(BigDecimal onlinePay) {
+		this.onlinePay = onlinePay;
+	}
+
+	public String getOrderStatus() {
+		return orderStatus;
+	}
+
+	public void setOrderStatus(String orderStatus) {
+		this.orderStatus = orderStatus;
+	}
+
+	public String getPolicyStatus() {
+		return policyStatus;
+	}
+
+	public void setPolicyStatus(String policyStatus) {
+		this.policyStatus = policyStatus;
+	}
+
 	public void setCardType(Integer cardType) {
 		this.cardType = cardType;
 	}
@@ -256,8 +310,6 @@ public class FinanceOrder {
 	public String getpName() {
 		return pName;
 	}
-
-
 
 	public void setpName(String pName) {
 		this.pName = pName;

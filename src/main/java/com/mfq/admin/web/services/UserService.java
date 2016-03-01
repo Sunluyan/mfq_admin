@@ -781,10 +781,17 @@ public class UserService {
 
         models.add(model);
 
+
+
         }
+
         return models;
     }
 
+
+    public List<Long> queryUidsByNameOrMobile(String mobile, String uname) {
+        return mapper.queryUidsByNameOrMobile(mobile, uname);
+    }
 
     public String addInterviewInfo(Long uid ,Long id ,String desc ,String remark , String img){
         if(id == 0){

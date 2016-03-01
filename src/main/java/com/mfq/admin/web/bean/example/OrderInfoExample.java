@@ -6,6 +6,11 @@ import java.util.Date;
 import java.util.List;
 
 public class OrderInfoExample {
+
+    protected Integer start;
+
+    protected Integer size;
+
     protected String orderByClause;
 
     protected boolean distinct;
@@ -38,6 +43,22 @@ public class OrderInfoExample {
 
     public void or(Criteria criteria) {
         oredCriteria.add(criteria);
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
+    public int getStart() {
+        return start;
+    }
+
+    public void setStart(int start) {
+        this.start = start;
     }
 
     public Criteria or() {

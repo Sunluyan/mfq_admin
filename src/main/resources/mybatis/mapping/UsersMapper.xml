@@ -643,6 +643,16 @@
   </select>
 
 
+  <select id="queryUidsByNameOrMobile" resultType="Long">
+    SELECT u.uid FROM users u, users_quota quota WHERE 1=1 and u.uid = quota.uid
+    <if test="mobile!=null and mobile != ''">
+      and u.mobile LIKE CONCAT('%',#{mobile},'%')
+    </if>
+    <if test="uname!=null and uname != ''">
+      AND quota.realname LIKE CONCAT('%',#{uname},'%')
+    </if>
+  </select>
+
 
 
 </mapper>

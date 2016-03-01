@@ -4,29 +4,29 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class PayRecord {
-    private Long id;
+    Long id;
 
-    private Integer orderType;
+    Integer orderType;
 
-    private String tradeNo;
+    String tradeNo;
 
-    private String orderNo;
+    String orderNo;
 
-    private BigDecimal amount;
+    BigDecimal amount;
 
-    private BigDecimal balance;
+    BigDecimal balance;
 
-    private BigDecimal present;
+    BigDecimal present;
 
-    private Long uid;
+    Long uid;
 
-    private String tpp;
+    String tpp;
 
-    private String bankCode;
+    String bankCode;
 
-    private Integer cardType;
+    Integer cardType;
 
-    private String cardNo;
+    String cardNo;
 
     private Integer status;
 

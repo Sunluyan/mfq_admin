@@ -62,4 +62,5 @@ public interface UsersMapper {
 
     public Map<String,Object> queryInteviewUserDetail(@Param("uid") long uid);
 
+    List<Long> queryUidsByNameOrMobile(@Param("mobile") String mobile, @Param("uname") String uname);
 }

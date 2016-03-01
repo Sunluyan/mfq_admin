@@ -240,8 +240,8 @@
                 <div class="controls">
 
                     <select name="cure_hospital">
-                        <option value="1" <#if '需要'== ((item.cure_hosptial))>selected</#if>>需要</option>
-                        <option value="0" <#if '不需要'== ((item.cure_hosptial))>selected</#if>>不需要</option>
+                        <option value="1" <#if '需要'== ((item.cureHospital))>selected</#if>>需要</option>
+                        <option value="0" <#if '不需要'== ((item.cureHospital))>selected</#if>>不需要</option>
                     </select>
                 </div>
             </div>
