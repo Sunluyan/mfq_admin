@@ -7,7 +7,10 @@ import java.util.List;
 
 import com.mfq.admin.web.bean.example.ProductDetailExample;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Component;
+
 @MQMDao
+@Component
 public interface ProductDetailMapper {
     int countByExample(ProductDetailExample example);
 

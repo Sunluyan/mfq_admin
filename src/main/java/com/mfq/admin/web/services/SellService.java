@@ -73,7 +73,6 @@ public class SellService {
         }
         model.addAttribute("item", item); // 产品
         model.addAttribute("detail", detail); // 产品详情
-
         model.addAttribute("types", ProductType.values());
 
 
@@ -124,6 +123,10 @@ public class SellService {
         model.addAttribute("cityId", item.getCityId());
         model.addAttribute("type2", item.getType2());
         model.addAttribute("homeclass", hclasses);
+
+        //加入分期情况
+        List<ProFqRecord> proFqRecords = productService.findProFqRecordByPid(item.getId());
+        model.addAttribute("fqs",proFqRecords);
     }
 
     /**

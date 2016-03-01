@@ -89,6 +89,7 @@
         <mapper resource="mybatis/mapping/UserFeedbackMapper.xml"/>
         <mapper resource="mybatis/mapping/SysOperationRecordMapper.xml"/>
         <mapper resource="mybatis/mapping/InterviewInfoMapper.xml"/>
+        <mapper resource="mybatis/mapping/ProFqRecordMapper.xml"/>
 
     </mappers>
 

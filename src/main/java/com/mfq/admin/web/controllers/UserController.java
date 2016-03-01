@@ -14,8 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.mfq.admin.web.bean.*;
 import com.mfq.admin.web.cache.SysUserCache;
 import com.mfq.admin.web.constants.SysOperationType;
-import com.mfq.admin.web.services.QiniuManipulater;
-import com.mfq.admin.web.services.SysOperationService;
+import com.mfq.admin.web.services.*;
 import com.mfq.admin.web.utils.CookieUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -25,8 +24,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.mfq.admin.web.services.UserQuotaService;
-import com.mfq.admin.web.services.UserService;
 import com.mfq.admin.web.utils.JSONUtil;
 import com.mfq.admin.web.utils.POIExcelUtil;
 
@@ -44,6 +41,8 @@ public class UserController {
     UserQuotaService quotaService;
     @Resource
     SysOperationService sysOperationService;
+    @Resource
+    ProductService productService;
 
     @RequestMapping(value = "/user/list/", method = {RequestMethod.GET})
     public String userList(HttpServletRequest request,
@@ -130,9 +129,46 @@ public class UserController {
             return addInterviewRemark(request);
         } else if(method.equals("delInterview")){
             return delInterview(request);
+        } else if(method.equals("addProFqRecord")){
+            return addProFqRecord(request);
+        } else if(method.equals("delProFqRecord")){
+            return delProFqRecord(request);
         }
 
         return null;
+    }
+
+    private String delProFqRecord(HttpServletRequest request) {
+        try{
+            String idStr = request.getParameter("id");
+            Long id = Long.parseLong(idStr);
+            productService.delProFqRecord(id);
+        }catch(Exception e){
+            logger.info("删除出错" + e);
+            return JSONUtil.toJson(9983, e.getMessage(), null);
+        }
+
+        return JSONUtil.successResultJson();
+    }
+
+    private String addProFqRecord(HttpServletRequest request) {
+        try{
+            String pidStr = request.getParameter("pid");
+            String periodStr = request.getParameter("period");
+            String periodPayStr = request.getParameter("periodPay");
+
+            Integer pid = Integer.parseInt(pidStr);
+            Integer period = Integer.parseInt(periodStr);
+            Float periodPay = Float.parseFloat(periodPayStr);
+
+            productService.addProFqRecord(pid,period,periodPay);
+
+        }catch(Exception e){
+            logger.info("添加出错" + e);
+            return JSONUtil.toJson(9983, e.getMessage(), null);
+        }
+
+        return JSONUtil.successResultJson();
     }
 
     /**

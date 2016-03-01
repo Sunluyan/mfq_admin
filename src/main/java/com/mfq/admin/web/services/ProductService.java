@@ -1,17 +1,22 @@
 package com.mfq.admin.web.services;
 
+import java.beans.Transient;
 import java.util.List;
 
 import javax.annotation.Resource;
 
 import com.google.common.collect.Lists;
+import com.mfq.admin.web.bean.ProFqRecord;
+import com.mfq.admin.web.bean.ProFqRecordExample;
 import com.mfq.admin.web.bean.Product;
 import com.mfq.admin.web.bean.ProductDetail;
 import com.mfq.admin.web.bean.example.ProductDetailExample;
 import com.mfq.admin.web.bean.example.ProductExample;
+import com.mfq.admin.web.dao.ProFqRecordMapper;
 import com.mfq.admin.web.dao.ProductDetailMapper;
 import com.mfq.admin.web.dao.ProductMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -22,6 +27,8 @@ public class ProductService {
     
     @Resource
     ProductDetailMapper productDetailMapper;
+    @Resource
+    ProFqRecordMapper proFqRecordMapper;
     
     public long insertProduct(Product model){
         return mapper.insert(model);
@@ -110,5 +117,31 @@ public class ProductService {
         
         data = mapper.selectByExample(example);
         return data;
+    }
+
+    public List<ProFqRecord> findProFqRecordByPid(Long pid){
+        ProFqRecordExample example = new ProFqRecordExample();
+        example.or().andPidEqualTo(pid.intValue());
+        return proFqRecordMapper.selectByExample(example);
+    }
+
+    @Transactional
+    public void delProFqRecord(Long id) throws Exception{
+        int i = proFqRecordMapper.deleteByPrimaryKey(id.intValue());
+        if(i != 1){
+            throw new Exception("删除出错");
+        }
+    }
+
+    @Transactional
+    public void addProFqRecord(Integer pid, Integer period, Float periodPay) throws Exception{
+        ProFqRecord record = new ProFqRecord();
+        record.setPid(pid);
+        record.setPeriod(period);
+        record.setPeriodPay(periodPay);
+        int i = proFqRecordMapper.insertSelective(record);
+        if(i != 1){
+            throw new Exception("添加出错!");
+        }
     }
 }
