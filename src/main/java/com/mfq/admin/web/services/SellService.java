@@ -12,10 +12,7 @@ import com.mfq.admin.web.bean.example.HospitalExample;
 import com.mfq.admin.web.bean.example.ProductClassifyExample;
 import com.mfq.admin.web.bean.example.ProductExample;
 import com.mfq.admin.web.bean.example.ProductImgExample;
-import com.mfq.admin.web.dao.HospitalMapper;
-import com.mfq.admin.web.dao.ProductClassifyMapper;
-import com.mfq.admin.web.dao.ProductImgMapper;
-import com.mfq.admin.web.dao.ProductMapper;
+import com.mfq.admin.web.dao.*;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -212,8 +209,7 @@ public class SellService {
             String img, boolean isOnline, long totalNum, long remainNum, long saleNum, long viewNum,
             String consumeStep, String reserve, String specialNote,
             String body, String cureMeans, String cureDur, int cureHospital, String recoverDur, String merit, String cureMethod, String crowd, String tabooCrowd, String warning,
-                            String cureNum, String anesMethod, String doctorLevel, String cureCycle) {
-
+                            String cureNum, String anesMethod, String doctorLevel, String cureCycle , float fq_price) throws Exception {
 
         // 维护商品
         Product p = null;
@@ -236,6 +232,7 @@ public class SellService {
             d = setProductDetailByParam(d, id, consumeStep, reserve, specialNote,
                     body, cureMeans, cureDur, cureHospital, recoverDur, merit, cureMethod, crowd, tabooCrowd, warning, cureNum, anesMethod, doctorLevel, cureCycle);
             productService.updateOne(d);
+
         } else {
             p = new Product();
             p.setOrderNo(1);
@@ -249,7 +246,10 @@ public class SellService {
             d = setProductDetailByParam(d, p.getId(), consumeStep, reserve,
                     specialNote, body,cureMeans, cureDur, cureHospital, recoverDur, merit, cureMethod, crowd, tabooCrowd, warning, cureNum, anesMethod, doctorLevel, cureCycle);
             productService.insertDetail(d);
+
         }
+        productService.addProFqRecord(p.getId().intValue(),fq_price);
+
         return p;
     }
 

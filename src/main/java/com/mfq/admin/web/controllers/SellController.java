@@ -179,6 +179,7 @@ public class SellController extends BaseController {
             @RequestParam(value = "doctor_level", defaultValue = "") String doctorLevel,
             @RequestParam(value = "cure_cycle", defaultValue = "") String cureCycle,
             @RequestParam(value = "fq", required = true) int fq,
+            @RequestParam(value = "fq_price",required = true,defaultValue = "0") float fq_price,
             Model model) {
 
         Date start = DateUtil.convertYYYYMMDD(dateStart);
@@ -192,7 +193,6 @@ public class SellController extends BaseController {
                     File tmpFile = new File("/tmp/" + UUID.randomUUID().toString());
                     file[i].transferTo(tmpFile);
                     imgs[i] = QiniuManipulater.qiniuUploadProdImg(tmpFile);
-                    
                 }else {
                 	imgs[i] = "";
                 }
@@ -202,7 +202,7 @@ public class SellController extends BaseController {
             Product p = sellService.saveItem(fq, type2,id, name, rootId,classifyId, type, cityId,
                     hospitalId, price, marketPrice, onlinePay, hospitalPay, start, end, flag,
                     StringUtils.isNotBlank(imgs[0])?imgs[0]:null, isOnline, totalNum, totalNum, saleNum, viewNum, consumeStep, reserve,
-                    specialNote, body, cureMeans, cureDur, cureHospital, recoverDur, merit, cureMethod, crowd, tabooCrowd, warning, cureNum, anesMethod, doctorLevel, cureCycle);
+                    specialNote, body, cureMeans, cureDur, cureHospital, recoverDur, merit, cureMethod, crowd, tabooCrowd, warning, cureNum, anesMethod, doctorLevel, cureCycle,fq_price);
             
             if(!"".equals(imgs[0])){
             	sellService.saveProductImg(p.getId(), imgs);

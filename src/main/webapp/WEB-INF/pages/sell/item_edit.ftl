@@ -139,15 +139,6 @@
                 </div>
             </div>
 
-            <div class="control-group fq">
-                <label class="control-label" for="alias">分期情况</label>
-                <div class="controls">
-                    <input type="text" value="${fq.period}期" style="width:50px;">
-                    <input type="text" style="width:120px;" value="每期 ${fq.periodPay?if_exists?string.number} 元"/>
-                    <input type="button" class="btn btn-danger delete-fq" value="删除" data="${fq.id}"/>
-                </div>
-            </div>
-
             <div class="control-group">
                 <label class="control-label" for="lname">团购价格</label>
                 <div class="controls">
@@ -155,6 +146,16 @@
                     <p class="help-inline"><strong class="text-error">*</strong>价格只能为数字</p>
                 </div>
             </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="lname">分期价</label>
+                    <div class="controls">
+                        <input type="text" class="input-large" id="fq_price" name="fq_price"
+                               value="${fqs.get(0).periodPay}">
+                        <p class="help-inline"><strong class="text-error">*</strong>价格只能为数字</p>
+                    </div>
+                </div>
+
 
             <div class="control-group">
                 <label class="control-label" for="lname">市场价</label>
@@ -569,64 +570,6 @@
         $(".img-link").popover("hide")
     })
 
-
-    //添加和删除分期
-    var pid = ${item.id};
-    $(".delete-fq").click(function () {
-        var id = $(this).attr("data")
-        var $this = $(this)
-        $.ajax({
-            url: "/ajax",
-            data: {
-                method: "delProFqRecord",
-                id: id
-            },
-            dataType: "json",
-            type: "post",
-            success: function (json) {
-                if (json.code != 0) {
-                    alert("删除出错")
-                }
-                $this.parent().parent().remove();
-            }
-        })
-    });
-
-    $(".add-fq").click(function () {
-        var period = $("#fq").val()
-        var periodPay = $(".periodPay").val()
-
-        $.ajax({
-            url: "/ajax",
-            data: {
-                method: "addProFqRecord",
-                pid: pid,
-                period: period,
-                periodPay: periodPay
-            },
-            dataType: "json",
-            type: "post",
-            success: function (json) {
-                if (json.code != 0) {
-                    alert("添加出错")
-                    return false;
-                }
-
-                var $fq = $(
-                        '<div class="control-group fq"> ' +
-                            '<label class="control-label" for="alias">分期情况</label>' +
-                            '<div class="controls">' +
-                                '<input type="text" value="'+period+'期" style="width:50px;">' +
-                                '<input type="text" style="width:120px;" value="每期 '+periodPay+' 元"/>' +
-                                '<input type="button" class="btn btn-danger delete-fq" value="删除" data=""/>' +
-                            '</div>'+
-                        '</div>'
-                )
-                $(".add-fq-div").before($fq)
-                ;
-            }
-        })
-    })
 
 
 </script>

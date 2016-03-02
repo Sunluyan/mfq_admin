@@ -1,6 +1,7 @@
 package com.mfq.admin.web.services;
 
 import java.beans.Transient;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -121,27 +122,36 @@ public class ProductService {
 
     public List<ProFqRecord> findProFqRecordByPid(Long pid){
         ProFqRecordExample example = new ProFqRecordExample();
+        if(pid == null || pid == 0){
+            return new ArrayList<ProFqRecord>();
+        }
         example.or().andPidEqualTo(pid.intValue());
         return proFqRecordMapper.selectByExample(example);
     }
 
     @Transactional
-    public void delProFqRecord(Long id) throws Exception{
-        int i = proFqRecordMapper.deleteByPrimaryKey(id.intValue());
-        if(i != 1){
-            throw new Exception("删除出错");
+    public void addProFqRecord(Integer pid, Float periodPay) throws Exception{
+        ProFqRecordExample example = new ProFqRecordExample();
+        example.or().andPidEqualTo(pid);
+        List<ProFqRecord> list = proFqRecordMapper.selectByExample(example);
+        if(list.size() == 0){//如果没有的话就添加
+            ProFqRecord record = new ProFqRecord();
+            record.setPid(pid);
+            record.setPeriod(0);
+            record.setPeriodPay(periodPay);
+            int i = proFqRecordMapper.insertSelective(record);
+            if(i != 1){
+                throw new Exception("插入出错!");
+            }
+        }else{
+            ProFqRecord record = list.get(0);
+            record.setPeriodPay(periodPay);
+            int i = proFqRecordMapper.updateByPrimaryKey(record);
+            if(i != 1){
+                throw new Exception("更新出错");
+            }
         }
-    }
 
-    @Transactional
-    public void addProFqRecord(Integer pid, Integer period, Float periodPay) throws Exception{
-        ProFqRecord record = new ProFqRecord();
-        record.setPid(pid);
-        record.setPeriod(period);
-        record.setPeriodPay(periodPay);
-        int i = proFqRecordMapper.insertSelective(record);
-        if(i != 1){
-            throw new Exception("添加出错!");
-        }
+
     }
 }

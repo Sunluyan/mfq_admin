@@ -140,6 +140,7 @@ xxx&&&&xxx&&&&xx****asd&&&&sadf&&&&
 
             $.get("/ajax",{method:"addRemark",uid:uid,data:data}).done(function(data){
                 insertRemark(data)
+                $(".remark-new").val("")
             })
         })
         var json = "${user.remark}";
@@ -154,6 +155,7 @@ xxx&&&&xxx&&&&xx****asd&&&&sadf&&&&
                 pClone.show()
                 p.after(pClone)
             }
+
         }
         insertRemark(json)
     </script>

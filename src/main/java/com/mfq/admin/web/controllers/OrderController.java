@@ -358,7 +358,7 @@ public class OrderController extends BaseController {
     public String financeDetail(Model model,@RequestParam(value="order",defaultValue="")String orderNo) throws Exception{
     	if(StringUtils.isBlank(orderNo) || OrderType.ONLINE != payService.getOrderType(orderNo)) throw new Exception("订单号格式错误");
 
-		//1,查出所有对应账单
+		// 1,查出所有对应账单
 		List<FinanceBill> finances = financeService.selectByOrderNo(orderNo);
 
 

@@ -130,47 +130,11 @@ public class UserController {
             return addInterviewRemark(request);
         } else if(method.equals("delInterview")){
             return delInterview(request);
-        } else if(method.equals("addProFqRecord")){
-            return addProFqRecord(request);
-        } else if(method.equals("delProFqRecord")){
-            return delProFqRecord(request);
         }
 
         return null;
     }
 
-    private String delProFqRecord(HttpServletRequest request) {
-        try{
-            String idStr = request.getParameter("id");
-            Long id = Long.parseLong(idStr);
-            productService.delProFqRecord(id);
-        }catch(Exception e){
-            logger.info("删除出错" + e);
-            return JSONUtil.toJson(9983, e.getMessage(), null);
-        }
-
-        return JSONUtil.successResultJson();
-    }
-
-    private String addProFqRecord(HttpServletRequest request) {
-        try{
-            String pidStr = request.getParameter("pid");
-            String periodStr = request.getParameter("period");
-            String periodPayStr = request.getParameter("periodPay");
-
-            Integer pid = Integer.parseInt(pidStr);
-            Integer period = Integer.parseInt(periodStr);
-            Float periodPay = Float.parseFloat(periodPayStr);
-
-            productService.addProFqRecord(pid,period,periodPay);
-
-        }catch(Exception e){
-            logger.info("添加出错" + e);
-            return JSONUtil.toJson(9983, e.getMessage(), null);
-        }
-
-        return JSONUtil.successResultJson();
-    }
 
     /**
      * 添加用户面签资料备注
