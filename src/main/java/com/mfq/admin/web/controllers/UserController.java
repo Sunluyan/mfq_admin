@@ -49,7 +49,6 @@ public class UserController {
     public String userList(HttpServletRequest request,
                            @RequestParam(value = "mobile", defaultValue = "", required = true) String mobile,
                            @RequestParam(value = "page", defaultValue = "1", required = true) long page,
-
                            @RequestParam(value = "username", defaultValue = "") String username,
                            @RequestParam(value = "realname", defaultValue = "") String realname,
                            @RequestParam(value = "phone", defaultValue = "") String phone,
@@ -97,10 +96,8 @@ public class UserController {
         return "/user/check_certify";
     }
 
-
     /**
      * 拦截所有ajax请求，并分发到相应的method中
-     *
      * @param method
      * @return
      */
