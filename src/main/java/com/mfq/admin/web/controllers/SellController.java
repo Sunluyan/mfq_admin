@@ -221,4 +221,23 @@ public class SellController extends BaseController {
 
         return "/sell/item_edit";
     }
+
+    @RequestMapping(value = "/sell/activity/", method = RequestMethod.GET)
+    public String activity(Model model , @RequestParam(value = "page",defaultValue = "0")Integer page){
+
+        return "/sell/activity";
+    }
+
+    @RequestMapping(value = "/sell/activity/add/", method = {RequestMethod.GET,RequestMethod.POST})
+    public String addActivity(Model model , @RequestParam(value = "page",defaultValue = "0")Integer page){
+
+        return "/sell/activity_add";
+    }
+
+    @RequestMapping(value = "/sell/activity/edit/", method = {RequestMethod.GET,RequestMethod.POST})
+    public String editActivity(Model model , @RequestParam(value = "page",defaultValue = "0")Integer page){
+
+        return "/sell/activity_edit";
+    }
+
 }

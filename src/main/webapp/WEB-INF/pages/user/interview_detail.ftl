@@ -191,12 +191,14 @@
                 <textarea style="width:300px;height:100px;" class="remark">${info.remark}</textarea>
 
             </td>
-            <td><form class="uploadForm" enctype="multipart/form-data" style="margin:0 auto;" target="frameFile" ">
+            <td>
+                <form class="uploadForm" enctype="multipart/form-data" style="margin:0 auto;" target="frameFile" ">
                 <input id="file" type="file" name="file" class="file filestyle" data-buttonBefore="true" data-buttonText="选择文件" style="display: block;"/>
                 <button class="btn upload"  data="${info.id}" index="${info_index}">上传</button>
                 <img src="/static/img/loading.gif" class="loading" width="20" height="20"
                      style="margin-top: 6px;margin-left: 5px; display:none;">
-                </form></td>
+                </form>
+            </td>
             <td><button class="btn-success add-tr" style="float: right;">添加</button></td>
         </tr>
     </table>

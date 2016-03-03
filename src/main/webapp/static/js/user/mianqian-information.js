@@ -65,13 +65,8 @@ $(function () {
         if (content == null || content == "") {
             return;
         }
-        var uploadForms = $(".uploadForm");
         var formData = new FormData($(".uploadForm")[0]);
         var $this = $(this);
-        var id = $(this).attr("data");
-        var uid = $(".uid").html();
-        var desc = $this.parent().parent().parent().find(".desc").html()
-        var remark = $this.parent().parent().parent().find(".remark").val()
         $.ajax({
             url: '/user/interview/uploadimg/',
             type: 'POST',
