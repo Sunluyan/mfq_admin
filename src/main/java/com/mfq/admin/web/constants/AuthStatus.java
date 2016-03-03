@@ -1,5 +1,9 @@
 package com.mfq.admin.web.constants;
 
+import com.google.common.collect.Lists;
+
+import java.util.List;
+
 public enum AuthStatus {
 	/**
 	 * 认证状态
@@ -44,6 +48,14 @@ public enum AuthStatus {
             }
         }
         return null;
+    }
+
+    public static List<AuthStatus> AuthStatuses(){
+        List<AuthStatus> data = Lists.newArrayList();
+        for(AuthStatus status : AuthStatus.values()){
+            data.add(status);
+        }
+        return data;
     }
     
 }

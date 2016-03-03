@@ -1,7 +1,7 @@
 package com.mfq.admin.web.controllers;
 
 import java.io.File;
-import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -11,9 +11,12 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.common.collect.Maps;
 import com.mfq.admin.web.bean.*;
 import com.mfq.admin.web.cache.SysUserCache;
+import com.mfq.admin.web.constants.AuthStatus;
 import com.mfq.admin.web.constants.SysOperationType;
+import com.mfq.admin.web.security.UserHolder;
 import com.mfq.admin.web.services.*;
 import com.mfq.admin.web.services.SysOperationService;
 import com.mfq.admin.web.utils.CookieUtils;
@@ -127,9 +130,63 @@ public class UserController {
             return addInterviewRemark(request);
         } else if(method.equals("delInterview")){
             return delInterview(request);
+        } else if(method.equals("interViewChek")){
+            return interViewChek(request);
         }
 
         return null;
+    }
+
+    /**
+     * 面签审核....
+     * @param request
+     * @return
+     */
+    public String interViewChek(HttpServletRequest request){
+        String ret = "";
+        try {
+
+            long LoginUid = UserHolder.getUserId();
+            if(LoginUid <1){
+                return JSONUtil.toJson(1001,"请重新登录...",null);
+            }
+
+            String reason = StringUtils.stripToEmpty(request.getParameter("reason"));
+            long uid = Long.parseLong(request.getParameter("uid"));
+            int type = Integer.parseInt(request.getParameter("t"));
+
+            Map<String, Object> operation = Maps.newHashMap();
+            Map<String,Object> parameters = Maps.newHashMap();
+            parameters.put("reason",reason);
+            parameters.put("uid", uid);
+            parameters.put("type",type);
+            parameters.put("sysUid",LoginUid);
+
+            operation.put("parameters",parameters);
+            operation.put("msg","面签审核操作...");
+
+            String context = JSONUtil.writeToJson(operation);
+
+            //记录操作记录
+            SysOperationRecord record = sysOperationService.saveToData(uid, SysOperationType.UPDATE_INTERVIEW_CHECK, context);
+
+            if(record == null){
+                logger.error("操作记录保存失败....面签审核 {}|{}|{}|{}", LoginUid, uid, reason, type );
+            }
+
+            if(type == 1){
+                float fcredit = Float.parseFloat(reason);
+                BigDecimal credit = BigDecimal.valueOf(fcredit);
+                ret = quotaService.endowCredit(uid, LoginUid, credit);
+            }else if(type == 2){
+                ret = quotaService.refuseCredit(uid, LoginUid, reason);
+            }
+            ret = JSONUtil.successResultJson("提交成功....");
+
+        }catch (Exception e){
+            logger.error("interView check is error {}",e);
+        }
+        return ret;
     }
 
 
@@ -356,7 +413,7 @@ public class UserController {
             }
 
             if (!file.isEmpty()) {
-                File tmpFile = new File("E:/tmp/" + fileName);
+                File tmpFile = new File("/tmp/" + fileName);
                 file.transferTo(tmpFile);
                 resolveExcel(tmpFile);
             } else { // 判断是否需要更新img
@@ -438,6 +495,8 @@ public class UserController {
         if (uid == null || uid.length() <= 0) return null;
         Map<String, Object> data = service.queryInteviewUserDetail(Long.parseLong(uid));
         model.addAttribute("user", data);
+
+        model.addAttribute("authStatus", AuthStatus.AuthStatuses());
         return "/user/interview_detail";
     }
 

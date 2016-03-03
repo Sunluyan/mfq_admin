@@ -70,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, sys_id, user_id, time, type, content, username, sys_username
+    id, sys_id, user_id, `time`, `type`, content, username, sys_username
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.mfq.admin.web.bean.SysOperationRecordExample" >
     select
@@ -104,7 +104,7 @@
   </delete>
   <insert id="insert" parameterType="com.mfq.admin.web.bean.SysOperationRecord" >
     insert into sys_operation_record (id, sys_id, user_id, 
-      time, type, content, 
+      `time`, `type`, content,
       username, sys_username)
     values (#{id,jdbcType=BIGINT}, #{sysId,jdbcType=INTEGER}, #{userId,jdbcType=BIGINT}, 
       #{time,jdbcType=TIMESTAMP}, #{type,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, 
@@ -123,10 +123,10 @@
         user_id,
       </if>
       <if test="time != null" >
-        time,
+        `time`,
       </if>
       <if test="type != null" >
-        type,
+        `type`,
       </if>
       <if test="content != null" >
         content,
@@ -184,10 +184,10 @@
         user_id = #{record.userId,jdbcType=BIGINT},
       </if>
       <if test="record.time != null" >
-        time = #{record.time,jdbcType=TIMESTAMP},
+        `time` = #{record.time,jdbcType=TIMESTAMP},
       </if>
       <if test="record.type != null" >
-        type = #{record.type,jdbcType=INTEGER},
+        `type` = #{record.type,jdbcType=INTEGER},
       </if>
       <if test="record.content != null" >
         content = #{record.content,jdbcType=VARCHAR},
@@ -208,8 +208,8 @@
     set id = #{record.id,jdbcType=BIGINT},
       sys_id = #{record.sysId,jdbcType=INTEGER},
       user_id = #{record.userId,jdbcType=BIGINT},
-      time = #{record.time,jdbcType=TIMESTAMP},
-      type = #{record.type,jdbcType=INTEGER},
+      `time` = #{record.time,jdbcType=TIMESTAMP},
+      `type` = #{record.type,jdbcType=INTEGER},
       content = #{record.content,jdbcType=VARCHAR},
       username = #{record.username,jdbcType=VARCHAR},
       sys_username = #{record.sysUsername,jdbcType=VARCHAR}
@@ -227,10 +227,10 @@
         user_id = #{userId,jdbcType=BIGINT},
       </if>
       <if test="time != null" >
-        time = #{time,jdbcType=TIMESTAMP},
+        `time` = #{time,jdbcType=TIMESTAMP},
       </if>
       <if test="type != null" >
-        type = #{type,jdbcType=INTEGER},
+        `type` = #{type,jdbcType=INTEGER},
       </if>
       <if test="content != null" >
         content = #{content,jdbcType=VARCHAR},
@@ -248,8 +248,8 @@
     update sys_operation_record
     set sys_id = #{sysId,jdbcType=INTEGER},
       user_id = #{userId,jdbcType=BIGINT},
-      time = #{time,jdbcType=TIMESTAMP},
-      type = #{type,jdbcType=INTEGER},
+      `time` = #{time,jdbcType=TIMESTAMP},
+      `type` = #{type,jdbcType=INTEGER},
       content = #{content,jdbcType=VARCHAR},
       username = #{username,jdbcType=VARCHAR},
       sys_username = #{sysUsername,jdbcType=VARCHAR}

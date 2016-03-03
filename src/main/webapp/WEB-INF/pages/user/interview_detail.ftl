@@ -99,6 +99,37 @@
                 </#if>
                 </td>
             </tr>
+
+
+            <tr>
+                <td class="text-right">用户状态</td>
+                <td class="text-left">
+                    <#list authStatus as auth>
+
+                        <#if ((auth.id) == (user.auth_status))>
+                            ${auth.desc}
+                        </#if>
+                    </#list>
+                </td>
+            </tr>
+            <#if (user.auth_status) == -3>
+                <tr>
+                    <td class="text-right">拒绝原因</td>
+                    <td class="text-left">
+                        <#if user.user_type == 1>
+                            ${user.school_remark}
+                        <#else >
+                            ${user.work_remark}
+                        </#if>
+                    </td>
+                </tr>
+            </#if>
+            <tr>
+                <td class="text-right">用户额度</td>
+                <td class="text-left">
+                总额:${user.quota_all} 剩余额度:${user.quota_left}
+                </td>
+            </tr>
         </table>
     </div>
     <div class="span7" style="border:1px solid #ccc;border-radius: 7px; padding:0 10px 10px 10px;">
@@ -273,6 +304,8 @@
 
 </div>
 
+<#if user.auth_status == 3>
+
 <div class="answer container">
     <div class="child agree-1">
         <button class="agree btn  btn-info">
@@ -287,25 +320,34 @@
 
     </div>
 </div>
+
+</#if>
+<form method="post" id="frm-refuse">
 <div class="refuse-information">
     <div>拒绝原因</div>
-    <input type="text" class="reason">
-    <div>审批人</div>
-    <input type="text" value="" class="body" class="text-center">
+    <input type="text" name="reason" class="reason">
+    <input type="hidden" value="2" name="t"/>
+    <input type="hidden" value="${user.uid}" name="uid"/>
+    <input type="hidden" value="interViewChek" name="method" class="body" class="text-center">
     <br>
-    <input type="submit" class="btn tijiao-2" value="提交">
+    <input type="button" class="btn tijiao-2" value="提交">
     <input type="button" class="btn quxiao" value="取消">
 </div>
+</form>
+
+<form method="POST" id="frm-shenpi">
 
 <div class="shenpi-information">
     <div>审批额(元)</div>
-    <input type="text" class="reason">
-    <div>审批人</div>
-    <input type="text" value="" class="body" class="text-center">
+    <input type="number" name="reason" class="reason">
+    <input type="hidden" value="1" name="t"/>
+    <input type="hidden" value="${user.uid}" name="uid"/>
+    <input type="hidden" value="interViewChek" name="method" class="text-center">
     <br>
-    <input type="submit" class="btn  tijiao" value="提交">
+    <input type="button" class="btn  tijiao" value="提交">
     <input type="button" class="btn quxiao" value="取消">
 </div>
+</form>
 
 
 <#include "commons/footer.ftl" />

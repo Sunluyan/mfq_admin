@@ -22,10 +22,9 @@ html,body{
 
 .refuse-information{
 	left:50%;
-	top:70%;
+	top:25%;
 	width:50%;
-	height:65%;
-	margin-top:-37%;
+	/*margin-top:-37%;*/
 	margin-left:-26%;
 	background:lightblue;
 	border-radius:10px;
@@ -65,10 +64,9 @@ html,body{
 }
 .shenpi-information{
 	left:50%;
-	top:70%;
+	top:25%;
 	width:50%;
-	height:65%;
-	margin-top:-37%;
+	/*margin-top:-37%;*/
 	margin-left:-26%;
 	background:lightblue;
 	border-radius:10px;

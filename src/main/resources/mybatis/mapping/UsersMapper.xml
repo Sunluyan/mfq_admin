@@ -628,11 +628,11 @@
   <select id="queryInteviewUserDetail" resultType="map">
     select
 
-    quota.uid , quota.realname , u.gender , u.birthday , quota.contact , u.mobile ,  quota.id_card , quota.origin , u.location , quota.user_type ,
+    quota.uid , quota.realname , u.gender , u.birthday , quota.contact , u.mobile ,  quota.id_card , quota.origin , u.location , quota.user_type , quota.auth_status,
 
-    quota.school , quota.school_location , quota.faculty , quota.speciality, quota.student_id , quota.school_level , quota.school_location_id, quota.startschool_at,
+    quota.quota_all, quota.quota_left, quota.school , quota.school_location , quota.faculty , quota.speciality, quota.student_id , quota.school_level , quota.school_location_id, quota.startschool_at,
 
-    quota.company , quota.salary , quota.work_years , quota.position , quota.department , quota.work_remark
+    quota.school_remark, quota.company , quota.salary , quota.work_years , quota.position , quota.department , quota.work_remark
 
     from users u,users_quota quota
 

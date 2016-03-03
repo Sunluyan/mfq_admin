@@ -590,4 +590,19 @@
     LIMIT #{start},#{size}
   </select>
 
+  <update id="endowCredit">
+    UPDATE users_quota SET auth_status = #{authStatus}, quota_all = quota_all + #{credit}, quota_left = quota_left + #{credit}
+    WHERE uid = #{uid}
+  </update>
+
+  <update id="refuseCredit">
+    UPDATE users_quota SET auth_status = #{authStatus}, work_remark = #{remark} WHERE  uid = #{uid}
+  </update>
+  
+  <select id="queryUserQuota" resultMap="BaseResultMap">
+    SELECT 
+    <include refid="Base_Column_List"/>
+    FROM users_quota WHERE uid = #{uid}
+  </select>
+
 </mapper>
