@@ -278,6 +278,9 @@ public class SellController extends BaseController {
                 smallUrl = QiniuManipulater.qiniuUploadProdImg(tmpFile);
             }
 
+            if(StringUtils.isBlank(smallUrl))smallUrl=null;
+            if(StringUtils.isBlank(bigUrl))bigUrl=null;
+
             if(type.equals("1")){
                 if (!imgBig.isEmpty()) {
                     File tmpFile = new File("/tmp/" + UUID.randomUUID().toString());
