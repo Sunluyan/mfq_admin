@@ -1,37 +1,38 @@
 $(function () {
 
-    var flag = true;
+    var Agreeflag = true;
     $('.agree').click(function (event) {
-        if (flag == true) {
+        if (Agreeflag == true) {
             $('.shenpi-information').css({
                 display: 'block',
 
             });
-            flag = false;
+            Agreeflag = false;
 
         } else {
             $('.shenpi-information').css({
                 display: 'none',
 
             });
-            flag = true;
+            Agreeflag = true;
         }
     });
 
+    var refuseFlag = true;
     $('.refuse').click(function (event) {
-        if (flag == true) {
+        if (refuseFlag == true) {
             $('.refuse-information').css({
                 display: 'block',
 
             });
-            flag = false;
+            refuseFlag = false;
 
         } else {
             $('.refuse-information').css({
                 display: 'none',
 
             });
-            flag = true;
+            refuseFlag = true;
         }
     });
 
@@ -55,6 +56,9 @@ $(function () {
         $('.shenpi-information').css({
             display: 'none',
         });
+
+        Agreeflag = true;
+        refuseFlag = true;
     });
 
     var uploadIsClicked = false;
@@ -195,6 +199,47 @@ $(function () {
             }
         })
     })
+
+
+    $(".tijiao").click(function(){
+
+        fm = $("#frm-shenpi").serialize()
+        $.ajax({
+            url:"/ajax",
+            data:fm,
+            dataType:"json",
+            type:"post",
+            success:function(data){
+                if(data.code == 0){
+                    alert("成功....");
+                    location.reload();
+                }else{
+                    alert("系统错误啦. code "+data.code+", msg "+data.msg)
+                }
+            }
+        })
+
+    });
+
+    $(".tijiao-2").click(function(){
+        fm = $("#frm-refuse").serialize();
+        $.ajax({
+            url:"/ajax",
+            data:fm,
+            dataType:"json",
+            type:"post",
+            success:function(data){
+                if(data.code == 0){
+                    alert("成功...")
+                    location.reload();
+                }else{
+                    alert("系统错误啦. code "+data.code+", msg "+data.msg)
+                }
+            }
+        })
+
+    })
+
 
 
 });

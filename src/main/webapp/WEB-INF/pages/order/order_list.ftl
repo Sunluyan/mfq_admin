@@ -9,6 +9,8 @@
 }
 
 </style>
+<link href="/static/bootstrap-3.3.4/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+<script type="text/javascript" src="/static/bootstrap-3.3.4/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
 
 <div class="container" id="enlarge-body">
     <div class="container">
@@ -34,9 +36,19 @@
         </div>
 		<div class="input-group">
 			<div class="input-group-addon">生单时间：
-				<input class="form-control reset" type="text" name="ob" id="createdBegin" data-date-format="yyyy-mm-dd hh:ii:ss" value="${ob}" placeholder="开始时间" size="20">
+                <div class="input-append date" id="ob" name="ob"
+                     data-date="${ob!}" data-date-format="yyyy-mm-dd">
+                    <input class="span2" id="dateStart" name="ob" size="16" type="text"
+                           value="${ob!}">
+                    <span class="add-on"><i class="icon-th"></i></span>
+                </div>
 				至
-				<input class="form-control reset" type="text" name="oe" id="createdEnd" data-date-format="yyyy-mm-dd hh:ii:ss" value="${oe}" placeholder="截止时间" size="20">
+                <div class="input-append date" id="oe" name="oe"
+                     data-date="${oe!}" data-date-format="yyyy-mm-dd">
+                    <input class="span2" id="dateEnd" name="oe" size="16" type="text"
+                           value="${oe!}">
+                    <span class="add-on"><i class="icon-th"></i></span>
+                </div>
 			</div>
 		</div>
 		<input type="hidden" id="page" name="page" value="${page}">
@@ -150,6 +162,28 @@
 </div>
 
 <script>
+
+    $('#ob').datetimepicker({
+        language: 'zh-CN',
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0,
+    });
+    $('#oe').datetimepicker({
+        language: 'zh-CN',
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+
     function pageSubmit(pageNo){
     	document.getElementById("page").value=pageNo;
 		document.getElementById("orderfrom").submit();

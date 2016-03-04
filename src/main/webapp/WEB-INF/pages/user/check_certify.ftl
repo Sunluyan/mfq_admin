@@ -77,39 +77,7 @@
   </tr>
   <tr>
     <td height="90" colspan="2" align="center" valign="middle">
-  <script type="text/javascript"> 
-  function docheck() 
-  { 
-    if(confirm("确定通过实名审核？")){
-      var uid = $(".uid").html();
-      var remark = $(".remark").val()
-      $.get("/ajax",{method:"certifyStatus",uid:uid,remark:remark,status:2}).done(function  (data) {
-       if(data==1){
-        window.close()
-       }else if(data == 0){
-        alert("该用户已处于通过状态")
-       }else{
-        alert("删除失败！请重试")
-       }
-      })
-    }
-    }
 
-    function reject() 
-  { 
-      var uid = $(".uid").html();
-      var remark = $(".remark").val()
-      $.get("/ajax",{method:"certifyStatus",uid:uid,remark:remark,status:-2}).done(function  (data) {
-       if(data==1){
-        window.close()
-       }else if(data == 0){
-        alert("该用户已处于驳回状态")
-       }else{
-        alert("删除失败！请重试")
-       }
-    })
-    }
-    </script>
     <input name="button" type="submit" id="button" value="通过审核" onClick="docheck()" > 
     <input name="button2" type="submit" id="button2" value="不通过审核" onClick="windows.style.display='';">
   </td>
@@ -163,7 +131,7 @@ xxx&&&&xxx&&&&xx****asd&&&&sadf&&&&
 
 
 
-  <table width="99%" height="99%" border="0" cellpadding="0" cellspacing="0" id="windows" style="display:none; z-index:100; position:absolute;top:0px;" >
+  <table width="99%" height="99%" border="0" cellpadding="0" cellspacing="0" id="windows" style="margin-left:0px; margin-right:0px; width: 100%; left:0px; bottom:0px; display:none; z-index:100; position:absolute;top:0px;" >
     <tr>
       <td align="center" valign="middle">
       <table width="300" border="0" cellpadding="0" cellspacing="0">
@@ -187,5 +155,43 @@ xxx&&&&xxx&&&&xx****asd&&&&sadf&&&&
     </td>
     </tr>
 </table>
+
+
+<script type="text/javascript">
+    function docheck()
+    {
+        if(confirm("确定通过实名审核？")){
+            var uid = $(".uid").html();
+            var remark = $(".remark").val()
+            $.get("/ajax",{method:"certifyStatus",uid:uid,remark:remark,status:2}).done(function  (data) {
+                if(data==1){
+                    window.close()
+                }else if(data == 0){
+                    alert("该用户已处于通过状态")
+                }else{
+                    alert("删除失败！请重试")
+                }
+            })
+        }
+    }
+
+    function reject()
+    {
+        alert("yyyy")
+        var uid = $(".uid").html();
+        var remark = $(".remark").val()
+        $.get("/ajax",{method:"certifyStatus",uid:uid,remark:remark,status:-2}).done(function  (data) {
+            if(data==1){
+                window.close()
+            }else if(data == 0){
+                alert("该用户已处于驳回状态")
+            }else{
+                alert("删除失败！请重试")
+            }
+        })
+    }
+</script>
+
+
 
 

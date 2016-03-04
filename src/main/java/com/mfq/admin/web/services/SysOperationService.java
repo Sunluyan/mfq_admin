@@ -3,8 +3,11 @@ package com.mfq.admin.web.services;
 import com.mfq.admin.web.bean.SysOperationRecord;
 import com.mfq.admin.web.bean.SysOperationRecordExample;
 import com.mfq.admin.web.bean.SysUser;
+import com.mfq.admin.web.bean.UserQuota;
 import com.mfq.admin.web.constants.SysOperationType;
 import com.mfq.admin.web.dao.SysOperationRecordMapper;
+import com.mfq.admin.web.security.UserDetail;
+import com.mfq.admin.web.security.UserHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -28,6 +31,9 @@ public class SysOperationService {
     @Resource
     SysOperationRecordMapper mapper;
 
+    @Resource
+    UserQuotaService quotaService;
+
     public SysOperationRecord saveToData(String sysName,int sysId , Long uid ,String username, String data , Long time ,SysOperationType operationType) throws Exception {
         SysOperationRecord record = new SysOperationRecord();
 
@@ -45,6 +51,22 @@ public class SysOperationService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         record.setTimeSDF(sdf.format(record.getTime()));
         return record;
+    }
+
+    public SysOperationRecord saveToData(long uid, SysOperationType operationType, String context) throws Exception{
+
+        UserDetail sysUser = UserHolder.currentUserDetail();
+        if(sysUser == null || sysUser.getSysUser() == null){
+            return null;
+        }
+        SysUser u = sysUser.getSysUser();
+
+        UserQuota quota = quotaService.queryUserQuota(uid);
+        if(quota == null || quota.getUid() ==0){
+            return null;
+        }
+        int sysUid = u.getId().intValue();
+        return saveToData(u.getUsername(), sysUid, uid, quota.getRealname(), context, System.currentTimeMillis(), operationType);
     }
 
     public List<SysOperationRecord> selectOperationByType(SysOperationType sysOperationType){

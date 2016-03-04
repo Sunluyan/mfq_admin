@@ -11,7 +11,8 @@ public enum SysOperationType {
     UPDATE_INTERVIEW(5,"修改面签资料备注"),
     UPDATE_USER_STATUS(6,"修改用户实名状态"),
     UPDATE_ORDER_PRICE(7,"修改订单价格"),
-    UPDATE_ORDER_PRICE_REMARK(8,"修改订单价格备注");
+    UPDATE_ORDER_PRICE_REMARK(8,"修改订单价格备注"),
+    UPDATE_INTERVIEW_CHECK(9,"面签审核(放款/拒绝)");
 
     int type;
     String desc;
@@ -21,7 +22,7 @@ public enum SysOperationType {
         this.desc = desc;
     }
 
-    public static SysOperationType getDescFromType(int type){
+    public static SysOperationType fromType(int type){
         for(SysOperationType s : SysOperationType.values()){
             if(type == s.getType()){
                 return s;

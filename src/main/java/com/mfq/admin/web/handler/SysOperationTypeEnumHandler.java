@@ -13,12 +13,12 @@ public class SysOperationTypeEnumHandler extends EnumOrdinalTypeHandler<SysOpera
 
     @Override
     protected Object getEnumValue(SysOperationType parameter) {
-        return parameter.getDesc();
+        return parameter.getType();
     }
 
     @Override
     protected SysOperationType getEnumFromValue(Object value) {
-        return SysOperationType.getDescFromType((int)value);
+        return SysOperationType.fromType((int)value);
     }
 
 }

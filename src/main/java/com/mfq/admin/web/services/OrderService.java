@@ -359,13 +359,14 @@ public class OrderService {
         List<Map<String,Object>> orderstatus = Lists.newArrayList();
 
         for(OrderStatus status1 : OrderStatus.values()) {
+
             Map<String,Object> tt = Maps.newHashMap();
             tt.put("id",status1.getValue());
             tt.put("name",status1.getName());
             tt.put("desc",status1.getDesc());
             orderstatus.add(tt);
         }
-                model.addAttribute("order_status", orderstatus);
+        model.addAttribute("order_status", orderstatus);
         model.addAttribute("page",page);
 
         model.addAttribute("hid",hid);

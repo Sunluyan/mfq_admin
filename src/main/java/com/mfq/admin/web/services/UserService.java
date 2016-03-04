@@ -239,7 +239,7 @@ public class UserService {
             }
             Integer start = (page - 1) * PageSize;
             UsersQuotaExample usersQuotaExample = new UsersQuotaExample();
-            UsersQuotaExample.Criteria or = usersQuotaExample.or();
+            UsersQuotaExample.Criteria or = usersQuotaExample.createCriteria();
             if(type != null){
                 or.andAuthStatusEqualTo(typeToAuthstatus(type));
             }

@@ -9,11 +9,13 @@ import javax.annotation.Resource;
 
 import com.mfq.admin.web.bean.*;
 import com.mfq.admin.web.bean.example.UsersQuotaExample;
+import com.mfq.admin.web.constants.AuthStatus;
 import com.mfq.admin.web.constants.Status;
 import com.mfq.admin.web.dao.ProductMapper;
 import com.mfq.admin.web.dao.UserFeedbackMapper;
 import com.mfq.admin.web.dao.UsersMapper;
 import com.mfq.admin.web.dao.UsersQuotaMapper;
+import com.mfq.admin.web.utils.JSONUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -198,4 +200,36 @@ public class UserQuotaService {
 		System.out.println(pro.toString());
 	}
 
+    public String endowCredit(long uid, long loginUid, BigDecimal credit) {
+
+        long result = mapper.endowCredit(uid, credit, AuthStatus.ALREADYINTERVIEW.getId());
+
+        return JSONUtil.successResultJson(result);
+    }
+
+    public String refuseCredit(long uid, long loginUid, String remark) {
+
+        UserQuota quota = mapper.queryUserQuota(uid);
+        if(quota ==null || quota.getUid() <1){
+            return JSONUtil.toJson(1000,"用户不存在...",null);
+        }
+
+        long type = quota.getUserType();
+        if(type == 1){
+            quota.setSchoolRemark(remark);
+        }else if(type == 2){
+            quota.setWorkRemark(remark);
+        }else{
+            quota.setSchoolRemark(remark);
+            quota.setWorkRemark(remark);
+        }
+        quota.setAuthStatus(AuthStatus.PASSINTERVIEW.getId());
+
+        UsersQuotaExample example = new UsersQuotaExample();
+        example.createCriteria().andUidEqualTo(uid);
+
+        long result = mapper.updateByExampleSelective(quota, example);
+
+        return JSONUtil.successResultJson(result);
+    }
 }

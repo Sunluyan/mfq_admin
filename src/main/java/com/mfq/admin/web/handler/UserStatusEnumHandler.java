@@ -18,4 +18,5 @@ public class UserStatusEnumHandler extends EnumOrdinalTypeHandler<Status>{
     protected Status getEnumFromValue(Object value) {
         return Status.fromValue((Integer) value);
     }
+
 }

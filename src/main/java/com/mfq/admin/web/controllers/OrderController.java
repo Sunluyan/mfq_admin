@@ -69,7 +69,7 @@ public class OrderController extends BaseController {
             Model model) {
     	
         if (StringUtils.isBlank(ob)) {
-            String date = DateUtil.formatShort(DateUtil.addDay(new Date(), -365));
+            String date = DateUtil.formatShort(DateUtil.addDay(new Date(), -1));
             Date d = DateUtil.convertShort(date);
             ob = DateUtil.formatLong(d);
         }
