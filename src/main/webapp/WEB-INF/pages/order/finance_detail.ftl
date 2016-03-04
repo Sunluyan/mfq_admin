@@ -138,7 +138,7 @@
 						<td class="td01">用户类型：</td>
 						<td class="td02"><#if quota.userType==1>学生党</#if><#if quota.userType==2>上班族</#if><#if quota.userType!=1 && quota.userType!=2>未设置</#if></td>
 					</tr>
-					<tr>roo
+					<tr>
 						<td class="td01">学校：</td>
 						<td class="td02">${quota.school} <#if quota.school==""||quota.school == null>未设置</#if></td>
 					</tr>
@@ -180,25 +180,7 @@
 					</tr>
 				</#list>
 					
-					
-					<!-- <tr>
-						<td class="td04">2015.11.12</td>
-						<td class="td04">1000</td>
-						<td class="td04">微信支付</td>
-						<td class="td04">3</td>
-					</tr>
-					<tr>
-						<td class="td04">2015.10.12</td>
-						<td class="td04">1000</td>
-						<td class="td04">微信支付</td>
-						<td class="td04">2</td>
-					</tr>
-					<tr>
-						<td class="td04">2015.09.12</td>
-						<td class="td04">1000</td>
-						<td class="td04">微信支付</td>
-						<td class="td04">1</td>
-					</tr> -->
+
 				</table>
 				<br />
 				<br />

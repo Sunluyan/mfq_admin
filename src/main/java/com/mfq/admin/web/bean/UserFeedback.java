@@ -7,9 +7,11 @@ public class UserFeedback {
 
     private String feedback;
 
-    private String remark;
-
     private String feedbackType;
+
+    private String interest;
+
+    private String remark;
 
     public Long getId() {
         return id;
@@ -35,14 +37,6 @@ public class UserFeedback {
         this.feedback = feedback == null ? null : feedback.trim();
     }
 
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
-    }
-
     public String getFeedbackType() {
         return feedbackType;
     }
@@ -51,14 +45,19 @@ public class UserFeedback {
         this.feedbackType = feedbackType == null ? null : feedbackType.trim();
     }
 
-    @Override
-    public String toString() {
-        return "UserFeedback{" +
-                "id=" + id +
-                ", uid=" + uid +
-                ", feedback='" + feedback + '\'' +
-                ", remark='" + remark + '\'' +
-                ", feedbackType='" + feedbackType + '\'' +
-                '}';
+    public String getInterest() {
+        return interest;
+    }
+
+    public void setInterest(String interest) {
+        this.interest = interest == null ? null : interest.trim();
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
     }
 }

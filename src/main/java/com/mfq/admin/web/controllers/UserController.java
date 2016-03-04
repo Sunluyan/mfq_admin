@@ -262,15 +262,12 @@ public class UserController {
      */
     private String editUserFeedback(HttpServletRequest request) {
         long uid = 0;
-        String feedback = null;
-        String remark = null;
-        String feedback_type = null;
+        String feedback ,feedback_type ,interest;
         try {
             uid = Long.parseLong(request.getParameter("uid"));
             if (uid == 0) {
                 return null;
             }
-            System.out.println(request.getParameter("remark"));
             if (request.getParameter("feedback") != null) {
                 feedback = request.getParameter("feedback");
                 long count = service.updateUserFeedbackFeedback(uid, feedback);
@@ -282,6 +279,14 @@ public class UserController {
             } else if (request.getParameter("feedback_type") != null) {
                 feedback_type = request.getParameter("feedback_type");
                 long count = service.updateUserFeedbackFeedbackType(uid, feedback_type);
+                if (count != 1) {
+                    return JSONUtil.toJson(9999, "插入或更新出错", null);
+                } else {
+                    return JSONUtil.successResultJson();
+                }
+            } else if(request.getParameter("interest") != null){
+                interest = request.getParameter("interest");
+                long count = service.updateUserFeedbackInterest(uid,interest);
                 if (count != 1) {
                     return JSONUtil.toJson(9999, "插入或更新出错", null);
                 } else {

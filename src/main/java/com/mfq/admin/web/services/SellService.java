@@ -191,17 +191,7 @@ public class SellService {
     }
 
     public static void main(String[] args) {
-        ApplicationContext ac = new ClassPathXmlApplicationContext("spring/spring.xml");
-        ProductMapper productMapper = ac.getBean(ProductMapper.class);
-        long start = 0;
-        long PageSize = 50;
-        ProductExample productExample = new ProductExample();
-        productExample.or().andNameLike("%" + "针" + "%");
-        String orderby = "id desc";
-        List<Product> items = productMapper.findByPageAndExample(start, PageSize, productExample, orderby);
-        for (Product item : items) {
-            System.out.println(item);
-        }
+        Date date = DateUtil.convertLong("2016-03-04 14:04:40");
     }
 
     @Transactional

@@ -294,76 +294,6 @@ public class UserFeedbackExample {
             return (Criteria) this;
         }
 
-        public Criteria andRemarkIsNull() {
-            addCriterion("remark is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkIsNotNull() {
-            addCriterion("remark is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkEqualTo(String value) {
-            addCriterion("remark =", value, "remark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkNotEqualTo(String value) {
-            addCriterion("remark <>", value, "remark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkGreaterThan(String value) {
-            addCriterion("remark >", value, "remark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkGreaterThanOrEqualTo(String value) {
-            addCriterion("remark >=", value, "remark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkLessThan(String value) {
-            addCriterion("remark <", value, "remark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkLessThanOrEqualTo(String value) {
-            addCriterion("remark <=", value, "remark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkLike(String value) {
-            addCriterion("remark like", value, "remark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkNotLike(String value) {
-            addCriterion("remark not like", value, "remark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkIn(List<String> values) {
-            addCriterion("remark in", values, "remark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkNotIn(List<String> values) {
-            addCriterion("remark not in", values, "remark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkBetween(String value1, String value2) {
-            addCriterion("remark between", value1, value2, "remark");
-            return (Criteria) this;
-        }
-
-        public Criteria andRemarkNotBetween(String value1, String value2) {
-            addCriterion("remark not between", value1, value2, "remark");
-            return (Criteria) this;
-        }
-
         public Criteria andFeedbackTypeIsNull() {
             addCriterion("feedback_type is null");
             return (Criteria) this;
@@ -431,6 +361,76 @@ public class UserFeedbackExample {
 
         public Criteria andFeedbackTypeNotBetween(String value1, String value2) {
             addCriterion("feedback_type not between", value1, value2, "feedbackType");
+            return (Criteria) this;
+        }
+
+        public Criteria andInterestIsNull() {
+            addCriterion("interest is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInterestIsNotNull() {
+            addCriterion("interest is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInterestEqualTo(String value) {
+            addCriterion("interest =", value, "interest");
+            return (Criteria) this;
+        }
+
+        public Criteria andInterestNotEqualTo(String value) {
+            addCriterion("interest <>", value, "interest");
+            return (Criteria) this;
+        }
+
+        public Criteria andInterestGreaterThan(String value) {
+            addCriterion("interest >", value, "interest");
+            return (Criteria) this;
+        }
+
+        public Criteria andInterestGreaterThanOrEqualTo(String value) {
+            addCriterion("interest >=", value, "interest");
+            return (Criteria) this;
+        }
+
+        public Criteria andInterestLessThan(String value) {
+            addCriterion("interest <", value, "interest");
+            return (Criteria) this;
+        }
+
+        public Criteria andInterestLessThanOrEqualTo(String value) {
+            addCriterion("interest <=", value, "interest");
+            return (Criteria) this;
+        }
+
+        public Criteria andInterestLike(String value) {
+            addCriterion("interest like", value, "interest");
+            return (Criteria) this;
+        }
+
+        public Criteria andInterestNotLike(String value) {
+            addCriterion("interest not like", value, "interest");
+            return (Criteria) this;
+        }
+
+        public Criteria andInterestIn(List<String> values) {
+            addCriterion("interest in", values, "interest");
+            return (Criteria) this;
+        }
+
+        public Criteria andInterestNotIn(List<String> values) {
+            addCriterion("interest not in", values, "interest");
+            return (Criteria) this;
+        }
+
+        public Criteria andInterestBetween(String value1, String value2) {
+            addCriterion("interest between", value1, value2, "interest");
+            return (Criteria) this;
+        }
+
+        public Criteria andInterestNotBetween(String value1, String value2) {
+            addCriterion("interest not between", value1, value2, "interest");
             return (Criteria) this;
         }
     }

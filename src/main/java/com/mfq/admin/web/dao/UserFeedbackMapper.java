@@ -7,8 +7,8 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
-@Component
 @MQMDao
+@Component
 public interface UserFeedbackMapper {
     int countByExample(UserFeedbackExample example);
 
@@ -20,17 +20,21 @@ public interface UserFeedbackMapper {
 
     int insertSelective(UserFeedback record);
 
-    List<UserFeedback> selectByExample(UserFeedbackExample example);
+    List<UserFeedback> selectByExampleWithBLOBs(UserFeedbackExample example);
 
-    List<UserFeedback> selectByExampleLimit(@Param("example")UserFeedbackExample example,@Param("start")int start,@Param("size")int size);
+    List<UserFeedback> selectByExample(UserFeedbackExample example);
 
     UserFeedback selectByPrimaryKey(Long id);
 
     int updateByExampleSelective(@Param("record") UserFeedback record, @Param("example") UserFeedbackExample example);
 
+    int updateByExampleWithBLOBs(@Param("record") UserFeedback record, @Param("example") UserFeedbackExample example);
+
     int updateByExample(@Param("record") UserFeedback record, @Param("example") UserFeedbackExample example);
 
     int updateByPrimaryKeySelective(UserFeedback record);
+
+    int updateByPrimaryKeyWithBLOBs(UserFeedback record);
 
     int updateByPrimaryKey(UserFeedback record);
 }

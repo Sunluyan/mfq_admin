@@ -128,12 +128,14 @@ public class UserService {
             map.put("createtime",DateUtil.formatLong(userQuota.getCreatedAt()));
             map.put("updatetime",DateUtil.formatLong(userQuota.getUpdatedAt()));
             map.put("mobile",user.getMobile());
+
             map.put("realname",userQuota.getRealname());
-            map.put("cardid",userQuota.getIdCard());
+            map.put("user_type",userQuota.getUserType());
             map.put("auth_status",userQuota.getAuthStatus());
             map.put("school_remark",userQuota.getSchoolRemark());
             List<Map<String,Object>> data = new ArrayList<>();
             data.add(map);
+
             //查询feedback
             UserFeedbackExample userFeedbackExample = new UserFeedbackExample();
             userFeedbackExample.or().andUidEqualTo(user.getUid());
@@ -292,8 +294,8 @@ public class UserService {
                         map.put("mobile",user.getMobile());
                     }
                 }
-                map.put("realname",userQuota.getRealname());
-                map.put("cardid",userQuota.getIdCard());
+                map.put("realname",StringUtils.isBlank(userQuota.getRealname())?"未设置":userQuota.getRealname());
+                map.put("user_type",userQuota.getUserType() == 0?"未设置":userQuota.getUserType() == 1?"学生":"上班族");
                 map.put("auth_status",userQuota.getAuthStatus());
                 map.put("school_remark",userQuota.getSchoolRemark());
                 data.add(map);
@@ -612,6 +614,23 @@ public class UserService {
         }
     }
 
+    @Transactional
+    public long updateUserFeedbackInterest(long uid, String interest) {
+        UserFeedbackExample example = new UserFeedbackExample();
+        example.or().andUidEqualTo(uid);
+        List<UserFeedback> list = userFeedbackMapper.selectByExample(example);
+        if(CollectionUtils.isEmpty(list)){
+            UserFeedback userFeedback = new UserFeedback();
+            userFeedback.setUid(uid);
+            userFeedback.setInterest(interest);
+            return userFeedbackMapper.insertSelective(userFeedback);
+        }else{
+            UserFeedback userFeedback = list.get(0);
+            userFeedback.setInterest(interest);
+            return userFeedbackMapper.updateByPrimaryKey(userFeedback);
+        }
+    }
+
 
 
 
@@ -821,5 +840,7 @@ public class UserService {
         interviewInfoMapper.deleteByPrimaryKey(id);
         return JSONUtil.successResultJson();
     }
+
+
 }
 

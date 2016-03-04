@@ -67,7 +67,9 @@
 
 
 </style>
+<link href="//cdn.bootcss.com/bootstrap-submenu/2.0.3/css/bootstrap-submenu.min.css" rel="stylesheet">
 <link href="/static/bootstrap-3.3.4/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+<script src="//cdn.bootcss.com/bootstrap-submenu/2.0.3/js/bootstrap-submenu.min.js"></script>
 <script type="text/javascript" src="/static/bootstrap-3.3.4/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
 <div class="container" id="enlarge-body">
     <div class="container">
@@ -114,6 +116,232 @@
                 <img src="/static/img/loading.gif" class="loading" width="20" height="20"
                      style="margin-top: 6px;margin-left: 5px; display:none;">
             </ul>
+            <ul class="nav nav-pills">
+                <li class="dropdown">
+                    <a tabindex="0" data-toggle="dropdown" data-submenu="" aria-expanded="false">
+                        选择项目<span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-submenu">
+                            <a tabindex="0" data-toggle="dropdown">鼻部</a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a tabindex="0">全部</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">隆鼻</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">鼻尖整形</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">长鼻</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">自体脂肪隆鼻</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">玻尿酸注射隆鼻</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">假体隆鼻</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">综合隆鼻</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="dropdown-submenu">
+                            <a tabindex="0"data-toggle="dropdown">眉眼</a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a tabindex="0">全部</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">开眼角</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">双眼皮</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">眼袋</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">去眼袋</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">激光去眼袋</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">内切去眼袋</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">外切去眼袋</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">去黑眼圈</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">卧蚕</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">韩式半永久纹眉</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">美瞳线</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">种植眉毛</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">切眉</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="dropdown-submenu">
+                            <a tabindex="0"data-toggle="dropdown">面部</a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a tabindex="0">全部</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">假体植入垫下巴</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">长下巴矫正</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">胶原蛋白丰额头</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">注射丰额头</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">手术丰额头</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">自体脂肪丰额头</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">假体植入丰额头</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">针剂</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a tabindex="0"data-toggle="dropdown">私密</a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a tabindex="0">全部</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">PRP自体血清美肤</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">点阵像素激光美肤</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">玻尿酸丰唇</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">自体脂肪丰唇</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">胶原蛋白注射丰唇</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">手术丰唇</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a tabindex="0"data-toggle="dropdown">针剂</a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a tabindex="0">全部</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">注射祛皱</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">美白针</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">玻尿酸注射</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a tabindex="0"data-toggle="dropdown">胸部</a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a tabindex="0">全部</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">假体丰胸</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">自体脂肪丰胸</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a tabindex="0"data-toggle="dropdown">脱毛</a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a tabindex="0">全部</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">冰点脱毛</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">激光脱毛</a>
+                                </li>
+                            </ul>
+                        </li>
+
+
+                        <li class="dropdown-submenu">
+                            <a tabindex="0">美体</a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a tabindex="0">全部</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">瘦小腿</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">瘦大腿(注射或吸脂)</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a tabindex="0">牙齿</a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a tabindex="0">全部</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">牙齿矫正</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">牙齿美白</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">口腔修复</a>
+                                </li>
+                                <li>
+                                    <a tabindex="0">种植牙</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
             <div>
                 <legend>面签用户列表（共<span class="totalpage">1</span>页，当前第<span class="page">1</span>页，共<span
                         class="total">0</span>条）
@@ -129,7 +357,8 @@
                         <td>申请时间</td>
                         <td>手机号</td>
                         <td>姓名</td>
-                        <td>身份证号</td>
+                        <td>用户类别</td>
+                        <td>兴趣项目</td>
                         <td><select class="feedback-choiced" style="width:130px;">
                             <option value="">认证类型</option>
                             <option value="">无状态</option>
@@ -149,7 +378,236 @@
                         <td class="applytime">2015-12-04 12:22:23</td>
                         <td class="phone">18338751231</td>
                         <td class="realname">刘志国</td>
-                        <td class="cardid">411425199407130016</td>
+                        <td class="cardid">411425199982736473</td>
+                        <td class="interest">
+                            <input type="text" class="interest input">
+                            <ul class="nav nav-pills">
+                                <li class="dropdown">
+                                    <a tabindex="0" data-toggle="dropdown" data-submenu="" aria-expanded="false">
+                                        选择项目<span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li class="dropdown-submenu">
+                                            <a tabindex="0" data-toggle="dropdown">鼻部</a>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a tabindex="0">全部</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">隆鼻</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">鼻尖整形</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">长鼻</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">自体脂肪隆鼻</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">玻尿酸注射隆鼻</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">假体隆鼻</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">综合隆鼻</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+
+                                        <li class="dropdown-submenu">
+                                            <a tabindex="0"data-toggle="dropdown">眉眼</a>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a tabindex="0">全部</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">开眼角</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">双眼皮</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">眼袋</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">去眼袋</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">激光去眼袋</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">内切去眼袋</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">外切去眼袋</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">去黑眼圈</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">卧蚕</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">韩式半永久纹眉</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">美瞳线</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">种植眉毛</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">切眉</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+
+                                        <li class="dropdown-submenu">
+                                            <a tabindex="0"data-toggle="dropdown">面部</a>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a tabindex="0">全部</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">假体植入垫下巴</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">长下巴矫正</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">胶原蛋白丰额头</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">注射丰额头</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">手术丰额头</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">自体脂肪丰额头</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">假体植入丰额头</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">针剂</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="dropdown-submenu">
+                                            <a tabindex="0"data-toggle="dropdown">私密</a>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a tabindex="0">全部</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">PRP自体血清美肤</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">点阵像素激光美肤</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">玻尿酸丰唇</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">自体脂肪丰唇</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">胶原蛋白注射丰唇</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">手术丰唇</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="dropdown-submenu">
+                                            <a tabindex="0"data-toggle="dropdown">针剂</a>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a tabindex="0">全部</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">注射祛皱</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">美白针</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">玻尿酸注射</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="dropdown-submenu">
+                                            <a tabindex="0"data-toggle="dropdown">胸部</a>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a tabindex="0">全部</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">假体丰胸</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">自体脂肪丰胸</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="dropdown-submenu">
+                                            <a tabindex="0"data-toggle="dropdown">脱毛</a>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a tabindex="0">全部</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">冰点脱毛</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">激光脱毛</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+
+
+                                        <li class="dropdown-submenu">
+                                            <a tabindex="0">美体</a>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a tabindex="0">全部</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">瘦小腿</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">瘦大腿(注射或吸脂)</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="dropdown-submenu">
+                                            <a tabindex="0">牙齿</a>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a tabindex="0">全部</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">牙齿矫正</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">牙齿美白</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">口腔修复</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">种植牙</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </td>
                         <td class="feedback-type-td">
                             <select class="feedback-type" style="width:100px;">
                                 <option value="无状态">无状态</option>
@@ -161,7 +619,8 @@
                                 <option value="已下单">已下单</option>
                             </select>
                         </td>
-                        <td class="feed"><textarea type="text" class="form-control feedback-input" rows="3" style="width:220px;" /></textarea></td>
+                        <td class="feed"><textarea type="text" class="form-control feedback-input" rows="3"
+                                                   style="width:220px;"/></textarea></td>
 
                         <td class="oparite"><a href="/user/certify/check/" target="_blank" data-id=''>详情</a></td>
                     </tr>
@@ -174,7 +633,8 @@
                         <td>通过时间</td>
                         <td>手机号</td>
                         <td>姓名</td>
-                        <td>身份证号</td>
+                        <td>用户类别</td>
+                        <td>兴趣项目</td>
                         <td><select class="feedback-choiced" style="width:130px;">
                             <option value="">认证类型</option>
                             <option value="">无状态</option>
@@ -196,6 +656,235 @@
                         <td class="phone">18338751231</td>
                         <td class="realname">刘志国</td>
                         <td class="cardid">411425199407130016</td>
+                        <td class="interest">
+                            <input type="text" class="interest input">
+                            <ul class="nav nav-pills">
+                                <li class="dropdown">
+                                    <a tabindex="0" data-toggle="dropdown" data-submenu="" aria-expanded="false">
+                                        选择项目<span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li class="dropdown-submenu">
+                                            <a tabindex="0" data-toggle="dropdown">鼻部</a>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a tabindex="0">全部</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">隆鼻</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">鼻尖整形</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">长鼻</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">自体脂肪隆鼻</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">玻尿酸注射隆鼻</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">假体隆鼻</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">综合隆鼻</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+
+                                        <li class="dropdown-submenu">
+                                            <a tabindex="0"data-toggle="dropdown">眉眼</a>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a tabindex="0">全部</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">开眼角</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">双眼皮</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">眼袋</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">去眼袋</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">激光去眼袋</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">内切去眼袋</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">外切去眼袋</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">去黑眼圈</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">卧蚕</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">韩式半永久纹眉</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">美瞳线</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">种植眉毛</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">切眉</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+
+                                        <li class="dropdown-submenu">
+                                            <a tabindex="0"data-toggle="dropdown">面部</a>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a tabindex="0">全部</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">假体植入垫下巴</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">长下巴矫正</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">胶原蛋白丰额头</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">注射丰额头</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">手术丰额头</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">自体脂肪丰额头</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">假体植入丰额头</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">针剂</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="dropdown-submenu">
+                                            <a tabindex="0"data-toggle="dropdown">私密</a>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a tabindex="0">全部</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">PRP自体血清美肤</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">点阵像素激光美肤</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">玻尿酸丰唇</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">自体脂肪丰唇</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">胶原蛋白注射丰唇</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">手术丰唇</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="dropdown-submenu">
+                                            <a tabindex="0"data-toggle="dropdown">针剂</a>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a tabindex="0">全部</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">注射祛皱</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">美白针</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">玻尿酸注射</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="dropdown-submenu">
+                                            <a tabindex="0"data-toggle="dropdown">胸部</a>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a tabindex="0">全部</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">假体丰胸</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">自体脂肪丰胸</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="dropdown-submenu">
+                                            <a tabindex="0"data-toggle="dropdown">脱毛</a>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a tabindex="0">全部</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">冰点脱毛</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">激光脱毛</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+
+
+                                        <li class="dropdown-submenu">
+                                            <a tabindex="0">美体</a>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a tabindex="0">全部</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">瘦小腿</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">瘦大腿(注射或吸脂)</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="dropdown-submenu">
+                                            <a tabindex="0">牙齿</a>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a tabindex="0">全部</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">牙齿矫正</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">牙齿美白</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">口腔修复</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">种植牙</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </td>
                         <td class="feedback-type-td">
                             <select class="feedback-type">
                                 <option value="无状态">无状态</option>
@@ -207,7 +896,8 @@
                                 <option value="已下单">已下单</option>
                             </select>
                         </td>
-                        <td class="feed"><textarea type="text" class="form-control feedback-input" rows="3" style="width:220px;" /></textarea></td>
+                        <td class="feed"><textarea type="text" class="form-control feedback-input" rows="3"
+                                                   style="width:220px;"/></textarea></td>
 
                         <td class="oparite"><a href="/user/certify/check/" data-id='' target="_blank">详情</a></td>
                     </tr>
@@ -219,7 +909,8 @@
                         <td>申请时间</td>
                         <td>手机号</td>
                         <td>姓名</td>
-                        <td>身份证号</td>
+                        <td>用户类别</td>
+                        <td>兴趣项目</td>
                         <td><select class="feedback-choiced" style="width:130px;">
                             <option value="">认证类型</option>
                             <option value="">无状态</option>
@@ -240,6 +931,235 @@
                         <td class="phone">18338751231</td>
                         <td class="realname">刘志国</td>
                         <td class="cardid">411425199407130016</td>
+                        <td class="interest">
+                            <input type="text" class="interest input">
+                            <ul class="nav nav-pills">
+                                <li class="dropdown">
+                                    <a tabindex="0" data-toggle="dropdown" data-submenu="" aria-expanded="false">
+                                        选择项目<span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li class="dropdown-submenu">
+                                            <a tabindex="0" data-toggle="dropdown">鼻部</a>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a tabindex="0">全部</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">隆鼻</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">鼻尖整形</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">长鼻</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">自体脂肪隆鼻</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">玻尿酸注射隆鼻</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">假体隆鼻</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">综合隆鼻</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+
+                                        <li class="dropdown-submenu">
+                                            <a tabindex="0"data-toggle="dropdown">眉眼</a>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a tabindex="0">全部</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">开眼角</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">双眼皮</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">眼袋</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">去眼袋</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">激光去眼袋</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">内切去眼袋</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">外切去眼袋</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">去黑眼圈</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">卧蚕</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">韩式半永久纹眉</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">美瞳线</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">种植眉毛</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">切眉</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+
+                                        <li class="dropdown-submenu">
+                                            <a tabindex="0"data-toggle="dropdown">面部</a>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a tabindex="0">全部</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">假体植入垫下巴</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">长下巴矫正</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">胶原蛋白丰额头</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">注射丰额头</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">手术丰额头</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">自体脂肪丰额头</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">假体植入丰额头</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">针剂</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="dropdown-submenu">
+                                            <a tabindex="0"data-toggle="dropdown">私密</a>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a tabindex="0">全部</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">PRP自体血清美肤</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">点阵像素激光美肤</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">玻尿酸丰唇</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">自体脂肪丰唇</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">胶原蛋白注射丰唇</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">手术丰唇</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="dropdown-submenu">
+                                            <a tabindex="0"data-toggle="dropdown">针剂</a>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a tabindex="0">全部</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">注射祛皱</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">美白针</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">玻尿酸注射</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="dropdown-submenu">
+                                            <a tabindex="0"data-toggle="dropdown">胸部</a>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a tabindex="0">全部</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">假体丰胸</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">自体脂肪丰胸</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="dropdown-submenu">
+                                            <a tabindex="0"data-toggle="dropdown">脱毛</a>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a tabindex="0">全部</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">冰点脱毛</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">激光脱毛</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+
+
+                                        <li class="dropdown-submenu">
+                                            <a tabindex="0">美体</a>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a tabindex="0">全部</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">瘦小腿</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">瘦大腿(注射或吸脂)</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="dropdown-submenu">
+                                            <a tabindex="0">牙齿</a>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a tabindex="0">全部</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">牙齿矫正</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">牙齿美白</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">口腔修复</a>
+                                                </li>
+                                                <li>
+                                                    <a tabindex="0">种植牙</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </td>
                         <td class="feedback-type-td">
                             <select class="feedback-type">
                                 <option value="无状态">无状态</option>
@@ -251,7 +1171,8 @@
                                 <option value="已下单">已下单</option>
                             </select>
                         </td>
-                        <td class="feed"><textarea type="text" class="form-control feedback-input" rows="3" style="width:220px;" /></textarea></td>
+                        <td class="feed"><textarea type="text" class="form-control feedback-input" rows="3"
+                                                   style="width:220px;"/></textarea></td>
 
                         <td class="oparite"><a href="/user/certify/check/" data-id='' target="_blank">详情</a></td>
                     </tr>
@@ -265,6 +1186,7 @@
                 </table>
             </div>
         </div>
+
 
     </div>
 </div>
@@ -342,7 +1264,7 @@
                 applytimeto: applytimeto,
                 checktimefrom: checktimefrom,
                 checktimeto: checktimeto,
-                feedbackType:feedbackType
+                feedbackType: feedbackType
             },
             dataType: 'json',
             success: function (json) {
@@ -358,7 +1280,7 @@
                 }
 
                 //填入总条数
-                if(json == null || json.data == null || json.data.data == null){
+                if (json == null || json.data == null || json.data.data == null) {
                     $(".tr-unsee-clone").remove();
                     $(".tr-pass-clone").remove()
                     $(".tr-out-clone").remove()
@@ -395,6 +1317,7 @@
     function insertTable(data) {
         var json = data.data;
         var feedbacks = data.feedback;
+
         if (tables.tableindex == 1) {
             $(".tr-unsee-clone").remove()
 
@@ -404,12 +1327,13 @@
                 $tr.find(".phone").html(json[i].mobile)
                 $tr.find(".applytime").html(json[i].createtime)
                 $tr.find(".realname").html(json[i].realname)
-                $tr.find(".cardid").html(json[i].cardid)
+                $tr.find(".cardid").html(json[i].user_type)
                 $tr.find(".oparite").children('a').attr("href", "/user/interview/detail/?uid=" + json[i].uid);
                 for (var j = 0; j < feedbacks.length; j++) {
                     if (json[i].uid == feedbacks[j].uid) {
                         $tr.find(".feedback-input").val(feedbacks[j].feedback);
                         $tr.find("option[value='" + feedbacks[j].feedbackType + "']").attr("selected", true);
+                        $tr.find(".interest").val(feedbacks[j].interest)
                     }
                 }
                 $tr.show()
@@ -427,12 +1351,13 @@
                 $tr.find(".applytime").html(json[i].createtime)
                 $tr.find(".checktime").html(json[i].updatetime)
                 $tr.find(".realname").html(json[i].realname)
-                $tr.find(".cardid").html(json[i].cardid)
+                $tr.find(".cardid").html(json[i].user_type)
                 $tr.find(".oparite").children('a').attr("href", "/user/interview/detail/?uid=" + json[i].uid);
                 for (var j = 0; j < feedbacks.length; j++) {
                     if (json[i].uid == feedbacks[j].uid) {
                         $tr.find(".feedback-input").val(feedbacks[j].feedback);
                         $tr.find("option[value='" + feedbacks[j].feedbackType + "']").attr("selected", true);
+                        $tr.find(".interest").val(feedbacks[j].interest)
                     }
                 }
                 $tr.show();
@@ -452,7 +1377,7 @@
                 $tr.find(".applytime").html(json[i].createtime)
                 $tr.find(".checktime").html(json[i].updatetime)
                 $tr.find(".realname").html(json[i].realname)
-                $tr.find(".cardid").html(json[i].cardid)
+                $tr.find(".cardid").html(json[i].user_type)
                 $tr.find(".oparite").children('a').attr("href", "/user/interview/detail/?uid=" + json[i].uid);
                 var $trmark = $trRemark.eq(0).clone(true)
                 $trmark.find(".remark").html(json[i].remark)
@@ -460,6 +1385,7 @@
                     if (json[i].uid == feedbacks[j].uid) {
                         $tr.find(".feedback-input").val(feedbacks[j].feedback);
                         $tr.find("option[value='" + feedbacks[j].feedbackType + "']").attr("selected", true);
+                        $tr.find(".interest").val(feedbacks[j].interest)
                     }
                 }
                 $tr.show()
@@ -471,7 +1397,6 @@
 
     $(function () {
         getData(1)
-
     })
 
 
@@ -568,8 +1493,61 @@
                 }
             }
         })
-
     })
+
+    $(".interest").keypress(function (event) {
+        var $obj = $(this);
+        var uid = $obj.parent().parent().find(".uid").html();
+        if (event.which == 13) {
+            $.ajax({
+                url: "/ajax",
+                data: {
+                    method: "editUserFeedback",
+                    uid: uid,
+                    interest: $obj.val()
+                },
+                type: "post",
+                dataType: "json",
+                success: function (data) {
+                    if (data.code == 0) {
+
+                    } else {
+                        alert(data.msg)
+                    }
+                }
+            })
+            return false;
+        }
+    })
+
+   $(".dropdown-submenu  a").click(function(){
+       var two = $(this).html();
+       var one = $(this).parent().parent().prev().html()
+       var str = one+"-"+two;
+       var interest = $(this).parents(".nav-pills").prev();
+       var uid = interest.parent().parent().find(".uid").html();
+
+       console.log(uid)
+       interest.val(str);
+
+       $.ajax({
+           url: "/ajax",
+           data: {
+               method: "editUserFeedback",
+               uid: uid,
+               interest: str
+           },
+           type: "post",
+           dataType: "json",
+           success: function (data) {
+               if (data.code == 0) {
+
+               } else {
+                   alert(data.msg)
+               }
+           }
+       })
+   })
 
 </script>
 <#include "commons/footer.ftl" />

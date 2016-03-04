@@ -279,7 +279,6 @@ public class SellController extends BaseController {
             }
 
             if(StringUtils.isBlank(smallUrl))smallUrl=null;
-            if(StringUtils.isBlank(bigUrl))bigUrl=null;
 
             if(type.equals("1")){
                 if (!imgBig.isEmpty()) {
@@ -287,11 +286,12 @@ public class SellController extends BaseController {
                     imgBig.transferTo(tmpFile);
                     bigUrl = QiniuManipulater.qiniuUploadProdImg(tmpFile);
                 }
+                if(StringUtils.isBlank(bigUrl))bigUrl=null;
 
                 if( id == null || id.equals("0")){//添加
-                    sellService.saveOnline(name,DateUtil.convertYYYYMMDDHHMMSS(begin),DateUtil.convertYYYYMMDDHHMMSS(end),smallUrl,bigUrl,pids);
+                    sellService.saveOnline(name,DateUtil.convertLong(begin),DateUtil.convertLong(end),smallUrl,bigUrl,pids);
                 }else{//修改
-                    sellService.updateOnline(Integer.parseInt(id),name,DateUtil.convertYYYYMMDDHHMMSS(begin),DateUtil.convertYYYYMMDDHHMMSS(end),smallUrl,bigUrl,pids);
+                    sellService.updateOnline(Integer.parseInt(id),name,DateUtil.convertLong(begin),DateUtil.convertLong(end),smallUrl,bigUrl,pids);
                 }
 
             }
@@ -299,10 +299,10 @@ public class SellController extends BaseController {
             else if(type.equals("2")){
 
                 if( id == null || id.equals("0")){//添加
-                    sellService.saveOffline(name,DateUtil.convertYYYYMMDDHHMMSS(begin),DateUtil.convertYYYYMMDDHHMMSS(end),smallUrl,link,place,time);
+                    sellService.saveOffline(name,DateUtil.convertLong(begin),DateUtil.convertLong(end),smallUrl,link,place,time);
 
                 }else{//修改
-                    sellService.updateOffline(Integer.parseInt(id),name,DateUtil.convertYYYYMMDDHHMMSS(begin),DateUtil.convertYYYYMMDDHHMMSS(end),smallUrl,link,place,time);
+                    sellService.updateOffline(Integer.parseInt(id),name,DateUtil.convertLong(begin),DateUtil.convertLong(end),smallUrl,link,place,time);
                 }
 
             }

@@ -27,24 +27,22 @@ public class Activity {
 
     private String imgBig;
 
+    private Integer end;
+
     private String pids;
 
-    public Activity() {
-        super();
-    }
-    //线上的构造器
-    public Activity(Integer id ,String activityName, String imgSmall, String imgBig, String pids, Date beginAt, Date endAt, Integer type) {
+    public Activity(Integer id, String activityName, String imgSmall ,String imgBig, String pids , Date beginAt , Date endAt ,Integer type) {
         this.id = id;
         this.activityName = activityName;
         this.imgSmall = imgSmall;
-        this.imgBig = imgBig;
-        this.pids = pids;
+        this.type = type;
         this.beginAt = beginAt;
         this.endAt = endAt;
-        this.type = type;
+        this.imgBig = imgBig;
+        this.pids = pids;
     }
 
-    public Activity(Integer id, String activityName, String imgSmall, String link, Integer type, Date beginAt, Date endAt, String activityTime, String activityPlace) {
+    public Activity(Integer id, String activityName, String imgSmall,  String link, Integer type ,Date beginAt , Date endAt,String activityTime, String activityPlace) {
         this.id = id;
         this.activityName = activityName;
         this.imgSmall = imgSmall;
@@ -54,6 +52,10 @@ public class Activity {
         this.endAt = endAt;
         this.activityTime = activityTime;
         this.activityPlace = activityPlace;
+    }
+
+    public Activity() {
+        super();
     }
 
     public Integer getId() {
@@ -150,6 +152,14 @@ public class Activity {
 
     public void setImgBig(String imgBig) {
         this.imgBig = imgBig == null ? null : imgBig.trim();
+    }
+
+    public Integer getEnd() {
+        return end;
+    }
+
+    public void setEnd(Integer end) {
+        this.end = end;
     }
 
     public String getPids() {
