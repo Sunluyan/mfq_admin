@@ -189,7 +189,6 @@ public class UserController {
         return ret;
     }
 
-
     /**
      * 添加用户面签资料备注
      *
@@ -229,7 +228,6 @@ public class UserController {
             return JSONUtil.toJson(9983, e.getMessage(), null);
         }
     }
-
 
     /**
      * 添加用户备注,用户备注以&&&&分开每个,****分开每条
@@ -539,18 +537,3 @@ public class UserController {
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

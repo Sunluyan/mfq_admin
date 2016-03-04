@@ -65,12 +65,16 @@ public class PassportService {
 
        // SysPassport passport = null;
         SysUser sysUser = sysUserMapper.selectByPrimaryKey(uid);
+        if(sysUser == null){
+            return null;
+        }
         if(sysUser.getStatus().getValue() != Status.DELETED.getValue()){
            // SysPassportExample example = new SysPassportExample();
            // example.or().andUidEqualTo(uid).andTicketEqualTo(ticket).andExpiredAtLessThan(new Date());
             //System.out.println("--------------"+mapper.selectByExample(example));
             //passport = mapper.selectByExample(example).get(0);
         }
+
         logger.info("validate from db passport={}", passport);
         if (passport == null) {
             passport = new SysPassport();
