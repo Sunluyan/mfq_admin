@@ -3,12 +3,14 @@ package com.mfq.admin.web.controllers;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.mfq.admin.web.bean.Activity;
 import com.mfq.admin.web.bean.Product;
 import com.mfq.admin.web.services.ProductClassifyService;
 import org.apache.commons.lang.StringUtils;
@@ -223,21 +225,112 @@ public class SellController extends BaseController {
     }
 
     @RequestMapping(value = "/sell/activity/", method = RequestMethod.GET)
-    public String activity(Model model , @RequestParam(value = "page",defaultValue = "0")Integer page){
-
+    public String activity(Model model ,
+                           @RequestParam(value = "page",defaultValue = "0")Integer page,
+                           @RequestParam(value = "name",defaultValue = "")String name,
+                           @RequestParam(value = "isOnline",defaultValue = "0")Integer isOnline
+                           ){
+        List<Activity> activities= sellService.selectActivity(page,name,isOnline);
+        model.addAttribute("items",activities);
         return "/sell/activity";
     }
 
     @RequestMapping(value = "/sell/activity/add/", method = {RequestMethod.GET,RequestMethod.POST})
-    public String addActivity(Model model , @RequestParam(value = "page",defaultValue = "0")Integer page){
+    public String addActivity(Model model , @RequestParam(value = "id",defaultValue = "0")Integer id){
+        if(id != 0){
+            Activity activity = sellService.selectActivityById(id);
+            model.addAttribute("at",activity);
+        }
 
         return "/sell/activity_add";
+
     }
 
-    @RequestMapping(value = "/sell/activity/edit/", method = {RequestMethod.GET,RequestMethod.POST})
-    public String editActivity(Model model , @RequestParam(value = "page",defaultValue = "0")Integer page){
+    @RequestMapping(value = "/sell/activity/edit/", method = RequestMethod.POST)
+    public String editActivity(Model model ,
+           @RequestParam(value = "imgSmall",required = false)MultipartFile imgSmall,
+           @RequestParam(value = "imgBig",required = false)MultipartFile imgBig,
+           @RequestParam(value = "type",defaultValue = "0",required = false)String type,
+           @RequestParam(value = "id",defaultValue = "0",required = false)String id,
+           @RequestParam(value = "name",required = false)String name,
+           @RequestParam(value = "link",required = false)String link,
+           @RequestParam(value = "begin",required = false)String begin,
+           @RequestParam(value = "end",required = false)String end,
+           @RequestParam(value = "pids",required = false)String pids,
+           @RequestParam(value = "time",required = false)String time,
+           @RequestParam(value = "place",required = false)String place
+    ){
+        try{
+            if(imgSmall == null || name == null || begin == null || end == null || type == null){
+                logger.error("参数缺失");
+                throw new Exception("参数缺失");
+            }
 
-        return "/sell/activity_edit";
+            if(type.equals("online"))type = "1";
+            if(type.equals("offline"))type = "2";
+
+            String smallUrl = "";
+            String bigUrl = "";
+            //如果是线上
+            if (!imgSmall.isEmpty()) {
+                File tmpFile = new File("/tmp/" + UUID.randomUUID().toString());
+                imgSmall.transferTo(tmpFile);
+                smallUrl = QiniuManipulater.qiniuUploadProdImg(tmpFile);
+            }
+
+            if(type.equals("1")){
+                if (!imgBig.isEmpty()) {
+                    File tmpFile = new File("/tmp/" + UUID.randomUUID().toString());
+                    imgBig.transferTo(tmpFile);
+                    bigUrl = QiniuManipulater.qiniuUploadProdImg(tmpFile);
+                }
+
+                if( id == null || id.equals("0")){//添加
+                    sellService.saveOnline(name,DateUtil.convertYYYYMMDDHHMMSS(begin),DateUtil.convertYYYYMMDDHHMMSS(end),smallUrl,bigUrl,pids);
+                }else{//修改
+                    sellService.updateOnline(Integer.parseInt(id),name,DateUtil.convertYYYYMMDDHHMMSS(begin),DateUtil.convertYYYYMMDDHHMMSS(end),smallUrl,bigUrl,pids);
+                }
+
+            }
+            //如果是线下
+            else if(type.equals("2")){
+
+                if( id == null || id.equals("0")){//添加
+                    sellService.saveOffline(name,DateUtil.convertYYYYMMDDHHMMSS(begin),DateUtil.convertYYYYMMDDHHMMSS(end),smallUrl,link,place,time);
+
+                }else{//修改
+                    sellService.updateOffline(Integer.parseInt(id),name,DateUtil.convertYYYYMMDDHHMMSS(begin),DateUtil.convertYYYYMMDDHHMMSS(end),smallUrl,link,place,time);
+                }
+
+            }
+
+        }catch(Exception e){
+            logger.error(e.toString());
+
+        }
+
+        return "redirect:/sell/activity";
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }
+
+
+
+
+
+

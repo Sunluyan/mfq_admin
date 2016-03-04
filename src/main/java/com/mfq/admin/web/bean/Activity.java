@@ -29,6 +29,33 @@ public class Activity {
 
     private String pids;
 
+    public Activity() {
+        super();
+    }
+    //线上的构造器
+    public Activity(Integer id ,String activityName, String imgSmall, String imgBig, String pids, Date beginAt, Date endAt, Integer type) {
+        this.id = id;
+        this.activityName = activityName;
+        this.imgSmall = imgSmall;
+        this.imgBig = imgBig;
+        this.pids = pids;
+        this.beginAt = beginAt;
+        this.endAt = endAt;
+        this.type = type;
+    }
+
+    public Activity(Integer id, String activityName, String imgSmall, String link, Integer type, Date beginAt, Date endAt, String activityTime, String activityPlace) {
+        this.id = id;
+        this.activityName = activityName;
+        this.imgSmall = imgSmall;
+        this.link = link;
+        this.type = type;
+        this.beginAt = beginAt;
+        this.endAt = endAt;
+        this.activityTime = activityTime;
+        this.activityPlace = activityPlace;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -106,7 +133,7 @@ public class Activity {
     }
 
     public void setActivityTime(String activityTime) {
-        this.activityTime = activityTime;
+        this.activityTime = activityTime == null ? null : activityTime.trim();
     }
 
     public String getActivityPlace() {

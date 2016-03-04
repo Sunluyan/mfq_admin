@@ -123,7 +123,7 @@ public class ProductService {
     public List<ProFqRecord> findProFqRecordByPid(Long pid){
         ProFqRecordExample example = new ProFqRecordExample();
         if(pid == null || pid == 0){
-            return new ArrayList<ProFqRecord>();
+            return new ArrayList<>();
         }
         example.or().andPidEqualTo(pid.intValue());
         return proFqRecordMapper.selectByExample(example);
@@ -131,6 +131,9 @@ public class ProductService {
 
     @Transactional
     public void addProFqRecord(Integer pid, Float periodPay) throws Exception{
+        if(periodPay == null || periodPay.equals(0) || periodPay == 0){
+            return;
+        }
         ProFqRecordExample example = new ProFqRecordExample();
         example.or().andPidEqualTo(pid);
         List<ProFqRecord> list = proFqRecordMapper.selectByExample(example);

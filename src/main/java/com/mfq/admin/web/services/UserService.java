@@ -217,7 +217,7 @@ public class UserService {
                 map.put("createtime",DateUtil.formatLong(userQuota.getCreatedAt()));
                 map.put("updatetime",DateUtil.formatLong(userQuota.getUpdatedAt()));
                 for (User user : users) {
-                    if(user.getUid() == userQuota.getUid()){
+                    if(user.getUid() - userQuota.getUid() == 0){
                         map.put("mobile",user.getMobile());
                     }
                 }

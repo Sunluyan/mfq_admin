@@ -43,6 +43,8 @@ public class SellService {
     HomeClassifyService homeClassifyService;
     @Resource
     ProductImgMapper productImgMapper;
+    @Resource
+    ActivityMapper activityMapper;
 
 
     private static final Logger logger = LoggerFactory
@@ -359,6 +361,53 @@ public class SellService {
 		}
 		long result = productService.deleteProduct(id);
 		return result;
-		
 	}
+
+
+    public void saveOnline(String name,Date begin,Date end , String smallImg,
+                           String bigImg,String pids) throws Exception{
+
+        Activity activity = new Activity(null,name,smallImg,bigImg,pids,begin,end,1);
+        activityMapper.insertSelective(activity);
+    }
+    public void updateOnline(Integer id ,String name,Date begin,Date end , String smallImg,
+                             String bigImg,String pids){
+
+        Activity activity = new Activity(id,name,smallImg,bigImg,pids,begin,end,1);
+        activityMapper.updateByPrimaryKeySelective(activity);
+    }
+
+
+    public void saveOffline(String name,Date begin,Date end , String smallImg,
+                            String link,String place ,String time){
+
+        Activity activity = new Activity(null,name,smallImg,link,2,begin,end,time,place);
+        activityMapper.insertSelective(activity);
+    }
+    public void updateOffline(Integer id ,String name,Date begin,Date end , String smallImg,
+                              String link,String place ,String time){
+
+        Activity activity = new Activity(id,name,smallImg,link,2,begin,end,time,place);
+        activityMapper.updateByPrimaryKeySelective(activity);
+    }
+
+
+    public List<Activity> selectActivity(Integer page,String name,Integer isOnline){
+        ActivityExample example = new ActivityExample();
+        ActivityExample.Criteria criteria = example.createCriteria();
+        if(StringUtils.isNotBlank(name)){
+            criteria.andActivityNameLike(name);
+        }
+        if(isOnline != 0){
+            criteria.andTypeEqualTo(isOnline);
+        }
+
+        List<Activity> list = activityMapper.selectByExample(example);
+        return list;
+    }
+
+
+    public Activity selectActivityById(Integer id) {
+        return activityMapper.selectByPrimaryKey(id);
+    }
 }

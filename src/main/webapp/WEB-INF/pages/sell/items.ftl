@@ -121,8 +121,8 @@
 
                         <td> ${item.price}</td>
                         <td><#if true == ((item.online))>上线</#if><#if false == ((item.online))>下线</#if></td>
-                        <td> ${item.dateStart?string("yyyy-MM-dd hh:mm:ss")}
-                            － ${item.dateEnd?string("yyyy-MM-dd hh:mm:ss")}</td>
+                        <td> ${item.dateStart?string("yyyy-MM-dd HH:mm:ss")}
+                            － ${item.dateEnd?string("yyyy-MM-dd HH:mm:ss")}</td>
 
                         <td><a href="/sell/item/edit/?id=${item.id}">修改</a></td>
                         <td><a href="/sell/item/delete/?id=${item.id}">删除</a></td>
