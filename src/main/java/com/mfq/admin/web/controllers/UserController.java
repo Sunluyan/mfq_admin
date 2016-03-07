@@ -145,7 +145,6 @@ public class UserController {
     public String interViewChek(HttpServletRequest request){
         String ret = "";
         try {
-
             long LoginUid = UserHolder.getUserId();
             if(LoginUid <1){
                 return JSONUtil.toJson(1001,"请重新登录...",null);

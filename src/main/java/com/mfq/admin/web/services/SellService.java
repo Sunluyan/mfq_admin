@@ -355,29 +355,29 @@ public class SellService {
 
 
     public void saveOnline(String name,Date begin,Date end , String smallImg,
-                           String bigImg,String pids) throws Exception{
+                           String bigImg,String pids,Integer isEnd) throws Exception{
 
-        Activity activity = new Activity(null,name,smallImg,bigImg,pids,begin,end,1);
+        Activity activity = new Activity(null,name,smallImg,bigImg,pids,begin,end,1,isEnd);
         activityMapper.insertSelective(activity);
     }
     public void updateOnline(Integer id ,String name,Date begin,Date end , String smallImg,
-                             String bigImg,String pids){
+                             String bigImg,String pids,Integer isEnd){
 
-        Activity activity = new Activity(id,name,smallImg,bigImg,pids,begin,end,1);
+        Activity activity = new Activity(id,name,smallImg,bigImg,pids,begin,end,1,isEnd);
         activityMapper.updateByPrimaryKeySelective(activity);
     }
 
 
     public void saveOffline(String name,Date begin,Date end , String smallImg,
-                            String link,String place ,String time){
+                            String link,String place ,String time,Integer isEnd){
 
-        Activity activity = new Activity(null,name,smallImg,link,2,begin,end,time,place);
+        Activity activity = new Activity(null,name,smallImg,link,2,begin,end,time,place,isEnd);
         activityMapper.insertSelective(activity);
     }
     public void updateOffline(Integer id ,String name,Date begin,Date end , String smallImg,
-                              String link,String place ,String time){
+                              String link,String place ,String time,Integer isEnd){
 
-        Activity activity = new Activity(id,name,smallImg,link,2,begin,end,time,place);
+        Activity activity = new Activity(id,name,smallImg,link,2,begin,end,time,place,isEnd);
         activityMapper.updateByPrimaryKeySelective(activity);
     }
 

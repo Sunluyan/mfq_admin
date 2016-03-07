@@ -258,7 +258,8 @@ public class SellController extends BaseController {
            @RequestParam(value = "end",required = false)String end,
            @RequestParam(value = "pids",required = false)String pids,
            @RequestParam(value = "time",required = false)String time,
-           @RequestParam(value = "place",required = false)String place
+           @RequestParam(value = "place",required = false)String place,
+           @RequestParam(value = "isEnd",required = false)String isEnd
     ){
         try{
             if(imgSmall == null || name == null || begin == null || end == null || type == null){
@@ -289,9 +290,9 @@ public class SellController extends BaseController {
                 if(StringUtils.isBlank(bigUrl))bigUrl=null;
 
                 if( id == null || id.equals("0")){//添加
-                    sellService.saveOnline(name,DateUtil.convertLong(begin),DateUtil.convertLong(end),smallUrl,bigUrl,pids);
+                    sellService.saveOnline(name,DateUtil.convertLong(begin),DateUtil.convertLong(end),smallUrl,bigUrl,pids,Integer.parseInt(isEnd));
                 }else{//修改
-                    sellService.updateOnline(Integer.parseInt(id),name,DateUtil.convertLong(begin),DateUtil.convertLong(end),smallUrl,bigUrl,pids);
+                    sellService.updateOnline(Integer.parseInt(id),name,DateUtil.convertLong(begin),DateUtil.convertLong(end),smallUrl,bigUrl,pids,Integer.parseInt(isEnd));
                 }
 
             }
@@ -299,20 +300,19 @@ public class SellController extends BaseController {
             else if(type.equals("2")){
 
                 if( id == null || id.equals("0")){//添加
-                    sellService.saveOffline(name,DateUtil.convertLong(begin),DateUtil.convertLong(end),smallUrl,link,place,time);
+                    sellService.saveOffline(name,DateUtil.convertLong(begin),DateUtil.convertLong(end),smallUrl,link,place,time,Integer.parseInt(isEnd));
 
                 }else{//修改
-                    sellService.updateOffline(Integer.parseInt(id),name,DateUtil.convertLong(begin),DateUtil.convertLong(end),smallUrl,link,place,time);
+                    sellService.updateOffline(Integer.parseInt(id),name,DateUtil.convertLong(begin),DateUtil.convertLong(end),smallUrl,link,place,time,Integer.parseInt(isEnd));
                 }
 
             }
 
         }catch(Exception e){
             logger.error(e.toString());
-
         }
 
-        return "redirect:/sell/activity";
+        return "redirect:/sell/activity/";
     }
 
 

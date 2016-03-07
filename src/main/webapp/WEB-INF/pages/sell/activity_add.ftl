@@ -43,6 +43,16 @@
                 </div>
             </div>
 
+            <div class="control-group">
+                <label class="control-label" for="nothing">是否结束</label>
+                <div class="controls">
+                    <select class="isEnd" name="isEnd" style="width:80px;">
+                        <option value="0" <#if at.end == 0>selected</#if>>未结束</option>
+                        <option value="1" <#if at.end == 1>selected</#if>>已结束</option>
+                    </select>
+                </div>
+            </div>
+
 
             <div class="control-group">
                 <label class="control-label">活动有效日期</label>
@@ -88,7 +98,7 @@
                 <div class="control-group">
                     <label class="control-label" for="alias">选择产品</label>
                     <div class="controls">
-                        <input type="text" name="pids" placeholder="输入产品id,以逗号分开">
+                        <input type="text" name="pids" placeholder="输入产品id,以逗号分开" value="${at.pids}">
                     </div>
                 </div>
 

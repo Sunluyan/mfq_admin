@@ -561,7 +561,7 @@ public class UserService {
     public String updateUserFeedbackRemark(long uid,String data,String sysName,Long time){
         UserFeedbackExample example = new UserFeedbackExample();
         example.or().andUidEqualTo(uid);
-        List<UserFeedback> list = userFeedbackMapper.selectByExample(example);
+        List<UserFeedback> list = userFeedbackMapper.selectByExampleWithBLOBs(example);
         if(CollectionUtils.isEmpty(list)){
             UserFeedback userFeedback = new UserFeedback();
             userFeedback.setUid(uid);
@@ -572,11 +572,11 @@ public class UserService {
             return newRemark;
         }else{
             UserFeedback userFeedback = list.get(0);
-            String oldRemark = StringUtils.stripToEmpty(userFeedback.getRemark());
+            String oldRemark = userFeedback.getRemark();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String newRemark = data+"&&&&"+sysName+"&&&&"+sdf.format(new Date(time))+"****";
             userFeedback.setRemark(oldRemark+newRemark);
-            userFeedbackMapper.updateByPrimaryKey(userFeedback);
+            userFeedbackMapper.updateByPrimaryKeySelective(userFeedback);
             return newRemark;
         }
     }
@@ -594,7 +594,7 @@ public class UserService {
         }else{
             UserFeedback userFeedback = list.get(0);
             userFeedback.setFeedback(feedback);
-            return userFeedbackMapper.updateByPrimaryKey(userFeedback);
+            return userFeedbackMapper.updateByPrimaryKeySelective(userFeedback);
         }
     }
 
@@ -611,7 +611,7 @@ public class UserService {
         }else{
             UserFeedback userFeedback = list.get(0);
             userFeedback.setFeedbackType(feedback_type);
-            return userFeedbackMapper.updateByPrimaryKey(userFeedback);
+            return userFeedbackMapper.updateByPrimaryKeySelective(userFeedback);
         }
     }
 

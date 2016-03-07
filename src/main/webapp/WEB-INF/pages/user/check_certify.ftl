@@ -99,6 +99,7 @@ xxx&&&&xxx&&&&xx****asd&&&&sadf&&&&
             </div>
         </td>
     </tr>
+    <input type="hidden" class="motherfucker" value="${user.remark}"/>
     <script>
         $(".add-remark").click(function(){
             var newValue = $(".remark-new").val();
@@ -111,7 +112,7 @@ xxx&&&&xxx&&&&xx****asd&&&&sadf&&&&
                 $(".remark-new").val("")
             })
         })
-        var json = "${user.remark}";
+        var json = $(".motherfucker").val();
         var index = 1;
         function insertRemark(json){
             for(var i = 0;i<json.split("****").length-1;i++){

@@ -31,7 +31,7 @@ public class Activity {
 
     private String pids;
 
-    public Activity(Integer id, String activityName, String imgSmall ,String imgBig, String pids , Date beginAt , Date endAt ,Integer type) {
+    public Activity(Integer id, String activityName, String imgSmall ,String imgBig, String pids , Date beginAt , Date endAt ,Integer type,Integer end) {
         this.id = id;
         this.activityName = activityName;
         this.imgSmall = imgSmall;
@@ -40,9 +40,10 @@ public class Activity {
         this.endAt = endAt;
         this.imgBig = imgBig;
         this.pids = pids;
+        this.end = end;
     }
 
-    public Activity(Integer id, String activityName, String imgSmall,  String link, Integer type ,Date beginAt , Date endAt,String activityTime, String activityPlace) {
+    public Activity(Integer id, String activityName, String imgSmall,  String link, Integer type ,Date beginAt , Date endAt,String activityTime, String activityPlace , Integer end) {
         this.id = id;
         this.activityName = activityName;
         this.imgSmall = imgSmall;
@@ -52,6 +53,7 @@ public class Activity {
         this.endAt = endAt;
         this.activityTime = activityTime;
         this.activityPlace = activityPlace;
+        this.end = end;
     }
 
     public Activity() {

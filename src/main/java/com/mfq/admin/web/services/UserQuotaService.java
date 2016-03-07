@@ -151,7 +151,7 @@ public class UserQuotaService {
             UserQuota userQuota = mapper.selectByExample(quotaExample).get(0);
             UserFeedbackExample example = new UserFeedbackExample();
             example.or().andUidEqualTo(uid);
-            List<UserFeedback> userFeedbacks = userFeedbackMapper.selectByExample(example);
+            List<UserFeedback> userFeedbacks = userFeedbackMapper.selectByExampleWithBLOBs(example);
             UserFeedback userFeedback = new UserFeedback();
             if(!CollectionUtils.isEmpty(userFeedbacks)){
                 userFeedback = userFeedbacks.get(0);
