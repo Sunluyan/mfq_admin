@@ -34,28 +34,7 @@
         </form>
         <script>
 
-            $(function () {
-                var $page = $(".page")
 
-                var maxPage = Math.ceil(${itemcount} / 50)
-                )
-                ;
-
-                if (maxPage <= $page.val()) {
-                    $(".next").hide()
-                }
-                $(".prev").click(function () {
-                    $page.val(parseInt($page.val()) - 1);
-                    $(".form-inline").submit();
-                })
-                $(".next").click(function () {
-                    $page.val(parseInt($page.val()) + 1);
-                    if (parseInt($page.val()) > maxPage) {
-                        return false;
-                    }
-                    $(".form-inline").submit();
-                })
-            })
         </script>
 
 
@@ -94,7 +73,7 @@
                         <td >${item.id}</td>
                         <td>${item.activityName}</td>
                         <td><#if item.type == 1>线上</#if><#if item.type == 2>线下</#if></td>
-                        <td><a href="${item.link}" target="_blank">${item.link}</a> </td>
+                        <td><a href="${item.link}" target="_blank">${item.link?substring(0,30)+"......"}</a> </td>
                         <td>${item.beginAt?string("yyyy-MM-dd")} - ${item.endAt?string("yyyy-MM-dd")}</td>
                         <td>
                             <a class="delete">删除</a>
