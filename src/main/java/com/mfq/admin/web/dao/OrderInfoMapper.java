@@ -4,6 +4,8 @@ import com.google.common.collect.Ordering;
 import com.mfq.admin.web.annotation.MQMDao;
 import com.mfq.admin.web.bean.OrderInfo;
 import com.mfq.admin.web.bean.example.OrderInfoExample;
+
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -80,4 +82,6 @@ public interface OrderInfoMapper {
 
     public List<OrderInfo> findByPageOfLiu(@Param("example") OrderInfoExample example,@Param("start") long start ,
                                            @Param("pagesize")long pagesize );
+
+    long updateOrderPrice(@Param("orderNo") String orderNo, @Param("price") BigDecimal addPrice, @Param("remark") String s);
 }

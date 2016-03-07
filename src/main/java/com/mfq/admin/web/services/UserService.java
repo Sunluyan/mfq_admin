@@ -471,12 +471,13 @@ public class UserService {
         //加入用户的认证反馈备注
         UserFeedbackExample example = new UserFeedbackExample();
         example.or().andUidEqualTo(uid);
-        List<UserFeedback> userFeedbacks = userFeedbackMapper.selectByExample(example);
+        List<UserFeedback> userFeedbacks = userFeedbackMapper.selectByExampleWithBLOBs(example);
         UserFeedback userFeedback = new UserFeedback();
         if(!CollectionUtils.isEmpty(userFeedbacks)){
             userFeedback = userFeedbacks.get(0);
         }
-        data.put("remark",userFeedback.getRemark());
+        String remark = userFeedback.getRemark();
+        data.put("remark",remark);
 
         //加入用户的面签资料
         InterviewInfoExample interviewInfoExample = new InterviewInfoExample();
@@ -571,7 +572,7 @@ public class UserService {
             return newRemark;
         }else{
             UserFeedback userFeedback = list.get(0);
-            String oldRemark = userFeedback.getRemark();
+            String oldRemark = StringUtils.stripToEmpty(userFeedback.getRemark());
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String newRemark = data+"&&&&"+sysName+"&&&&"+sdf.format(new Date(time))+"****";
             userFeedback.setRemark(oldRemark+newRemark);

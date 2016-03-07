@@ -262,7 +262,7 @@
   <update id="updateByPrimaryKey" parameterType="com.mfq.admin.web.bean.UserFeedback" >
     update user_feedback
     set uid = #{uid,jdbcType=BIGINT},
-      feedback = #{feedback,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
       feedback_type = #{feedbackType,jdbcType=VARCHAR},
       interest = #{interest,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}

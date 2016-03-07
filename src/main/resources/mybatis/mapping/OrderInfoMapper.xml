@@ -635,5 +635,9 @@
 
   </select>
 
+  <update id="updateOrderPrice">
+    UPDATE order_info SET price = #{price} , status = 0 WHERE order_no = #{orderNo}
+  </update>
+
 
 </mapper>

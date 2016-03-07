@@ -15,12 +15,12 @@
         </encoder>
     </appender>
 
-    <root level="info">
+    <root level="DEBUG">
         <appender-ref ref="file" />
         <appender-ref ref="console" />
     </root>
 
-    <logger name="com.mfq.admin.web" level="INFO" additivity="false">
+    <logger name="com.mfq.admin.web" level="DEBUG" additivity="false">
         <appender-ref ref="file" />
         <appender-ref ref="console" />
 

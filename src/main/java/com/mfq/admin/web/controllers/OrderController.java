@@ -9,8 +9,12 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import com.alibaba.fastjson.JSON;
+import com.google.common.collect.Maps;
 import com.mfq.admin.web.bean.*;
 import com.mfq.admin.web.constants.OrderType;
+import com.mfq.admin.web.constants.SysOperationType;
+import com.mfq.admin.web.services.*;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -22,11 +26,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mfq.admin.web.constants.OrderStatus;
 import com.mfq.admin.web.security.UserHolder;
-import com.mfq.admin.web.services.FinanceBillService;
-import com.mfq.admin.web.services.OrderService;
-import com.mfq.admin.web.services.PayRecordService;
-import com.mfq.admin.web.services.UserQuotaService;
-import com.mfq.admin.web.services.UserService;
 import com.mfq.admin.web.utils.DateUtil;
 import com.mfq.admin.web.utils.JSONUtil;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -47,8 +46,9 @@ public class OrderController extends BaseController {
     FinanceBillService financeService;
     @Resource
     PayRecordService payService;
-    
-    /**
+
+
+	/**
      * 订单管理
      * 
      * @param page
@@ -111,14 +111,61 @@ public class OrderController extends BaseController {
             Model model) {
 
         try {
+
+
+
+
             OrderInfo order = orderService.findById(id);
             orderView(model, order);
-            
+
+			int hasright = 0;
+
+			if (UserHolder.currentUserDetail().getSysUser().getRoleId() == 1) { // 医院财务
+				if(OrderStatus.PAY_OK.getValue() == order.getStatus()){ // 且订单是支付成功的状态
+					hasright = 1;
+				}else if(OrderStatus.BOOK_OK.getValue() == order.getStatus()){
+					hasright = 2;
+				}
+			}
+			model.addAttribute("status", order.getStatus());
+			model.addAttribute("orderStatus",OrderStatus.values());
+            model.addAttribute("hasright",hasright);
         } catch (Exception e) {
             logger.error("Exception_ORDER_VIEW", e);
         }
         return "order/order_view";
     }
+
+
+	/**
+	 * 客服修改订单
+	 *
+	 * @return
+	 */
+	@RequestMapping(value = "/order/update/", method = RequestMethod.POST)
+	public @ResponseBody String orderUpdate(
+			@RequestParam(value = "order_no", required = true) String orderNo,
+			@RequestParam(value = "add_price", required = true) float addPrice) {
+		String ret = "";
+		try {
+
+
+			long sysUidRoleId = UserHolder.getUserRoleId();
+			if(sysUidRoleId != 1){
+				return JSONUtil.toJson(2356,"无权限修改用户价格.",null);
+			}
+
+			OrderInfo info = orderService.updateOrderPriceByService(orderNo, addPrice, sysUidRoleId);
+			if(info != null && info.getId() < 1){
+				ret = JSONUtil.toJson(2343,"修改订单价格出错!!!",info);
+			}else {
+				ret = JSONUtil.successResultJson(info);
+			}
+		} catch (Exception e) {
+			logger.error("Exception_ORDER_UPDATE", e);
+		}
+		return ret;
+	}
     
     
     @RequestMapping(value = "/order/view/", method = RequestMethod.POST)
@@ -168,6 +215,7 @@ public class OrderController extends BaseController {
 		String result= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(userQuota.getCreatedAt());
 		model.addAttribute("createdAt", result);
 		model.addAttribute("order", order);
+
 		model.addAttribute("statusname",
 		        OrderStatus.fromValue(order.getStatus()).getName());
 	}

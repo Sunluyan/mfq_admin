@@ -15,6 +15,7 @@ import com.mfq.admin.web.models.view.FinanceOrder;
 import com.mfq.admin.web.models.view.FinancePay;
 import com.mfq.admin.web.models.view.FinanceUser;
 import com.mfq.admin.web.security.UserHolder;
+import com.mfq.admin.web.utils.JSONUtil;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
 
@@ -57,6 +59,9 @@ public class OrderService {
     CouponMapper couponMapper;
     @Resource
     OrderFreedomService freedomService;
+
+    @Resource
+    SysOperationService sysOperationService;
 
     Integer PageSize = 30;
 
@@ -335,7 +340,8 @@ public class OrderService {
             criteria.andSecurityCodeLike("%"+code+"%");
         }
 
-        criteria.andPayTypeNotEqualTo(OrderStatus.BOOK_OK.getValue());
+        criteria.andStatusNotEqualTo(OrderStatus.BOOK_OK.getValue());
+        criteria.andStatusNotEqualTo(OrderStatus.CANCEL_OK.getValue());
 
         example.setOrderByClause("created_at desc");
 
@@ -396,7 +402,7 @@ public class OrderService {
             PayRecord payRecord = payRecordService.queryPayRecordByOrderNo(info.getOrderNo());
 
             if(user==null || quota==null ||payRecord == null){
-                logger.info("finance order is null {}|{}", info.getUid(), info.getOrderNo());
+                logger.info("finance order is null {}|{}|{}", info.getUid(), info.getOrderNo(),info.getId());
                 continue;
             }
 
@@ -784,6 +790,53 @@ public class OrderService {
 
         return data;
 
+    }
+
+    @Transactional
+    public OrderInfo updateOrderPriceByService(String orderNo, float addPrice, long sysUid) throws Exception {
+        OrderInfo info = mapper.findByOrderNo(orderNo);
+        if(info==null){
+            return null;
+        }
+
+        int type = 0;
+
+        BigDecimal price = BigDecimal.valueOf(addPrice);
+        if(info.getStatus() == OrderStatus.BOOK_OK.getValue()){
+            type = 1;
+        }else if(info.getStatus() == OrderStatus.PAY_OK.getValue()){
+            price = info.getPrice().add(price);
+            type =2;
+        }
+
+
+        //记录操作记录
+
+        Map<String, Object> operation = Maps.newHashMap();
+        Map<String,Object> parameters = Maps.newHashMap();
+        parameters.put("orderNo",orderNo);
+        parameters.put("uid", info.getUid());
+        parameters.put("type",type);
+        parameters.put("sysUid",UserHolder.getUserId());
+        parameters.put("order",info);
+
+        operation.put("parameters",parameters);
+        operation.put("msg","修改订单价格...");
+
+        String context = JSONUtil.writeToJson(operation);
+
+        //记录操作记录
+        SysOperationRecord record = sysOperationService.saveToData(info.getUid(), SysOperationType.UPDATE_ORDER_PRICE, context);
+
+
+        long result = mapper.updateOrderPrice(orderNo, price, "");
+        if(result > 0){
+            info = mapper.findByOrderNo(orderNo);
+        }else {
+            info = null;
+        }
+
+        return info;
     }
 }
 

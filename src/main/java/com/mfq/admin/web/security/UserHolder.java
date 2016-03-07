@@ -3,6 +3,7 @@
  */
 package com.mfq.admin.web.security;
 
+import com.mfq.admin.web.bean.SysUser;
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -42,6 +43,13 @@ public class UserHolder {
 
     public static UserDetail currentUserDetail() {
         return userDetailLocal.get();
+    }
+
+    public static long getUserRoleId(){
+        UserDetail userDetail = currentUserDetail();
+        SysUser user = userDetail != null ?userDetail.getSysUser():null;
+        if(user==null)return 0;
+        return user.getRoleId();
     }
 
     public static long getUserId() {
