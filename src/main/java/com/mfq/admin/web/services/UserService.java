@@ -298,6 +298,7 @@ public class UserService {
                 map.put("user_type",userQuota.getUserType() == 0?"未设置":userQuota.getUserType() == 1?"学生":"上班族");
                 map.put("auth_status",userQuota.getAuthStatus());
                 map.put("school_remark",userQuota.getSchoolRemark());
+                map.put("cardid",userQuota.getIdCard());
                 data.add(map);
             }
 
