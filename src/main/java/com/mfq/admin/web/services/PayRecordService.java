@@ -103,6 +103,8 @@ public class PayRecordService {
         } else {
             oexample.or().andPidEqualTo(0l);
         }
+        oexample.setStart(0);
+        oexample.setSize(100);
         List<OrderInfo> orders = orderInfoMapper.selectByExample(oexample);
         List<String> orderNos = Lists.newArrayList();
         for (OrderInfo no : orders) {

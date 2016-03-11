@@ -2,6 +2,7 @@ package com.mfq.admin.web.controllers;
 
 import java.io.File;
 import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.mfq.admin.web.bean.HomeBanner;
 import com.mfq.admin.web.services.*;
+import com.mfq.admin.web.utils.DateUtil;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,14 +42,31 @@ public class HomeBannerController {
 	@Resource
 	OrderService orderService;
 
-	@RequestMapping(value="/home/",method = RequestMethod.GET)
-	public String home(HttpServletRequest request,Model model) throws Exception {
-        model.addAttribute("a",userService.getYesterdayNewDevice());
-        model.addAttribute("b",userService.getYesterdayNewUserCount());
-        model.addAttribute("c",userService.getYesterdayNewOrder());
-        model.addAttribute("d",userService.getYesterdayNewOrderOfPay());
-        model.addAttribute("e",userService.getCountHospital());
-        model.addAttribute("f",userService.getCountProduct());
+	@RequestMapping(value="/home/",method = {RequestMethod.GET,RequestMethod.POST})
+	public String home(@RequestParam(value = "begin", defaultValue = "")String begin, @RequestParam(value = "end", defaultValue = "")String end, Model model) throws Exception {
+
+		if(StringUtils.isNotBlank(begin) && StringUtils.isNotBlank(end)){
+
+			Date beginTime = DateUtil.convertYYYYMMDD(begin);
+			Date endTime = DateUtil.convertYYYYMMDD(end);
+
+			model.addAttribute("a",userService.getYesterdayNewDevice(beginTime, endTime));
+			model.addAttribute("b",userService.getYesterdayNewUserCount(beginTime, endTime));
+			model.addAttribute("c",userService.getYesterdayNewOrder(beginTime, endTime));
+			model.addAttribute("d",userService.getYesterdayNewOrderOfPay(beginTime, endTime));
+			model.addAttribute("e",userService.getCountHospital());
+		}else {
+			model.addAttribute("a", userService.getYesterdayNewDevice());
+			model.addAttribute("b", userService.getYesterdayNewUserCount());
+			model.addAttribute("c", userService.getYesterdayNewOrder());
+			model.addAttribute("d", userService.getYesterdayNewOrderOfPay());
+
+		}
+		model.addAttribute("e", userService.getCountHospital());
+		model.addAttribute("f", userService.getCountProduct());
+
+		model.addAttribute("begin", begin);
+		model.addAttribute("end", end);
         return "/app/home";
 	}
     

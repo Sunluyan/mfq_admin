@@ -37,7 +37,6 @@
 		<div class="input-group">
 			<div class="input-group-addon">备用电话：${contact}</div>
 	    </div>
-
 		<div class="input-group">
 			<div class="input-group-addon">安&nbsp;&nbsp;全&nbsp;&nbsp;码：${order.securityCode}</div>
 	    </div>
@@ -71,7 +70,7 @@
 
 
 
-<#if u_price == 1 || u_price == 2>
+<#if hasright == 1 || hasright == 2>
 <div class="container">
 	<div class="input-group">
 		<div class="input-group-addon">

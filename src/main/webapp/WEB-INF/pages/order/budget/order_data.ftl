@@ -22,7 +22,7 @@
                 <select name="status">
                     <option value="0">所有</option>
                     <#list order_status as s>
-                        <option value="${s}" <#if (status == (s.value))>selected</#if>>${s.name}</option>
+                        <option value="${s.value}" <#if (status == (s.value))>selected</#if>>${s.name}</option>
                     </#list>
                 </select>
             </div>
@@ -78,7 +78,8 @@
                 <table class="table table-bordered table-unsee" index="1">
                     <tr>
                         <td>订单号</td>
-                        <td>用户ID</td>
+                        <td>产品名</td>
+                        <td>UID</td>
                         <td>姓名</td>
                         <td>手机号</td>
                         <td>医院</td>
@@ -88,26 +89,32 @@
 						<td>保险</td>
                         <td>下单时间</td>
                         <td>订单状态</td>
-                        <td>操作</td>
+                        <td>订单类型</td>
+
                     </tr>
 
                     <#list orders as order>
 
                         <tr class="tr-unsee">
-                            <td>${order.orderNo}</td>
+                            <td><a href="/order/finance/detail/?order=${order.orderNo}"> ${order.orderNo} </a></td>
+                            <td>${order.pName}</td>
                             <td>${order.uid}</td>
                             <td>${order.realname}</td>
-                            <td>${order.mobile}</td>
+                            <td><a href="/user/finance/?uid=${order.uid}"> ${order.mobile}</a></td>
                             <td>${order.hospitalName}</td>
                             <td>${order.code}</td>
                             <td>${order.orderMoney}</td>
                             <td>${order.onlinePay}</td>
-                            <td>保险</td>
+                            <td>${order.policyStatus}</td>
                             <td>${order.createdAt?string("yyyy-MM-dd")!}</td>
                             <td>${order.orderStatus}</td>
-                            <td class="oparite">
-                                <#--<a href="/user/certify/check/" target="_blank" data-id=''>详情</a>-->
-                            </td>
+                            <td>
+                            <#if order.orderType = 0>
+                            全款
+                                <#elseif order.orderType =2>
+                               分期
+                            </#if></td>
+
                         </tr>
 
                     </#list>

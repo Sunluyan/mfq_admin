@@ -628,7 +628,7 @@
   <select id="queryInteviewUserDetail" resultType="map">
     select
 
-    quota.uid , quota.realname , u.gender , u.birthday , quota.contact , u.mobile ,  quota.id_card , quota.origin , u.location , quota.user_type , quota.auth_status,
+    quota.uid , quota.realname , u.gender , u.birthday , quota.contact , u.mobile ,  quota.id_card , quota.origin , u.location , quota.user_type , quota.auth_status, quota.balance,
 
     quota.quota_all, quota.quota_left, quota.school , quota.school_location , quota.faculty , quota.speciality, quota.student_id , quota.school_level , quota.school_location_id, quota.startschool_at,
 

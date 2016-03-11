@@ -72,7 +72,12 @@
                             <td>${pay.username}</td>
                             <td>${pay.mobile}</td>
                             <td>${pay.amount}</td>
-                            <td>${pay.status}</td>
+                            <td>
+                                <#if pay.status = 1>
+                                未支付
+                                    <#elseif pay.status = 2>
+                                支付完成
+                                </#if>
                             <td>
                             ${pay.callbackAt?string("yyyy-MM-dd")!}
                             </td>

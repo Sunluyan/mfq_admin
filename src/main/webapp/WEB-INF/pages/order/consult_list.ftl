@@ -23,6 +23,15 @@
 			<div class="input-group-addon">安&nbsp;&nbsp;全&nbsp;&nbsp;码：<input type="text" class="form-control" name="securityCode" value="${securityCode}" size="20"></div>
 	    </div>
         <div class="input-group">
+            <div class="input-group-addon">订单状态：
+                <select name="status">
+                    <option value="100">全部</option>
+                    <option value="1" <#if status == 1>selected</#if>>已支付,未消费</option>
+                    <option value="2" <#if status == 2>selected</#if>>订单已完成</option>
+                </select>
+            </div>
+        </div>
+        <div class="input-group">
 			<td colspan="4" style="text-align: center;"><input type="submit" class="btn btn-info btn-sm" value="查询">
 		</div>
 		<input type="hidden" id="page" name="page" value="${page}">
@@ -40,6 +49,7 @@
                         <td>产品名称</td>
                         <td>订单总额</td>
                         <td>订单状态</td>
+						<td>安全码</td>
                         <td>在线支付</td>
                         <td>订单类型</td>
                         <td>用户</td>
@@ -64,6 +74,7 @@
                         		</#if>
                         	</#list>
                         </td>
+						<td>${order.securityCode}</td>
                         <td>${order.onlinePay}</td>
                         <td>
                         	<#if order.payType == 1>

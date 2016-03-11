@@ -524,7 +524,7 @@
   <select id="findByPageByHospital" resultType="com.mfq.admin.web.bean.OrderInfo">
     select
     <include refid="selectsql" />
-    from order_info LEFT join product on order_info.pid = product.id
+    from order_info INNER join product on order_info.pid = product.id
 
     and product.hospital_id = #{hospitalId}
 
@@ -540,6 +540,7 @@
     <if test="status != null and status != 100">
       and order_info.status=#{status}
     </if>
+     and order_info.status NOT IN (0,3)
     order by id desc limit #{start}, #{pagesize}
   </select>
 

@@ -509,6 +509,22 @@ public class UserService {
         return count;
     }
 
+    public long getYesterdayNewUserCount(Date yesterdayTime, Date todayTime) throws Exception {
+        UsersExample example = new UsersExample();
+        Date yesterday = DateUtil.getYesterday();
+        Date today = DateUtil.getToday();
+
+        if(yesterdayTime !=null){
+            yesterday = yesterdayTime;
+        }
+        if( todayTime != null){
+            today = todayTime;
+        }
+        example.or().andCreatedAtBetween(yesterday,today);
+        long count = (long)mapper.countByExample(example);
+        return count;
+    }
+
     public long getYesterdayNewUserCount() throws Exception {
         UsersExample example = new UsersExample();
         Date yesterday = DateUtil.getYesterday();
@@ -527,9 +543,40 @@ public class UserService {
         return (long)deviceMapper.countByExample(example);
     }
 
+    public long getYesterdayNewDevice(Date yesterdayTime, Date todayTime) throws ParseException {
+        DeviceExample example = new DeviceExample();
+        Date yesterday = DateUtil.getYesterday();
+        Date today = DateUtil.getToday();
+
+        if(yesterdayTime != null){
+            yesterday = yesterdayTime;
+        }
+        if(todayTime != null){
+            today = todayTime;
+        }
+        example.or().andFirstLoginTimeBetween(yesterday,today);
+
+        return (long)deviceMapper.countByExample(example);
+    }
+
     public long getYesterdayNewOrder() throws ParseException {
         Date yesterday = DateUtil.getYesterday();
         Date today = DateUtil.getToday();
+        OrderInfoExample example = new OrderInfoExample();
+        example.or().andCreatedAtBetween(yesterday,today);
+
+        return (long)orderInfoMapper.countByExample(example);
+    }
+
+    public long getYesterdayNewOrder(Date yesterdayTime, Date todayTime) throws ParseException {
+        Date yesterday = DateUtil.getYesterday();
+        Date today = DateUtil.getToday();
+        if(yesterdayTime != null){
+            yesterday = yesterdayTime;
+        }
+        if(todayTime != null){
+            today = todayTime;
+        }
         OrderInfoExample example = new OrderInfoExample();
         example.or().andCreatedAtBetween(yesterday,today);
 
@@ -540,6 +587,21 @@ public class UserService {
     public long getYesterdayNewOrderOfPay() throws ParseException{
         Date yesterday = DateUtil.getYesterday();
         Date today = DateUtil.getToday();
+        OrderInfoExample example = new OrderInfoExample();
+        example.or().andCreatedAtBetween(yesterday,today).andStatusEqualTo(OrderStatus.PAY_OK.getValue());
+        return (long)orderInfoMapper.countByExample(example);
+    }
+
+
+    public long getYesterdayNewOrderOfPay(Date yesterdayTime, Date todayTime) throws ParseException{
+        Date yesterday = DateUtil.getYesterday();
+        Date today = DateUtil.getToday();
+        if(yesterdayTime != null){
+            yesterday = yesterdayTime;
+        }
+        if(todayTime != null){
+            today = todayTime;
+        }
         OrderInfoExample example = new OrderInfoExample();
         example.or().andCreatedAtBetween(yesterday,today).andStatusEqualTo(OrderStatus.PAY_OK.getValue());
         return (long)orderInfoMapper.countByExample(example);
@@ -660,8 +722,6 @@ public class UserService {
         List<OrderInfo> orderInfos = orderInfoMapper.selectByExample(example);
 
 
-//        OrderFreedomExample freedomExample = new OrderFreedomExample();
-//        freedomExample.createCriteria().andUidEqualTo(uid);
         List<OrderFreedom> freedoms = freedomService.selectByUid(uid);
 
 
@@ -843,5 +903,41 @@ public class UserService {
     }
 
 
+    public void queryUserDetailAndOrderPay(Model model,long uid) throws Exception {
+        Map<String, Object> userDetail = mapper.queryUserDetail(uid);
+        Map<String, Object> quota = mapper.queryInteviewUserDetail(uid);
+
+        //订单
+        OrderInfoExample o_example = new OrderInfoExample();
+        OrderInfoExample.Criteria o_criteria = o_example.createCriteria();
+
+        o_criteria.andUidEqualTo(uid);
+        o_criteria.andStatusNotEqualTo(OrderStatus.BOOK_OK.getValue());
+        o_example.setOrderByClause("created_at desc");
+        o_example.setSize(100000000);
+        o_example.setStart(0);
+        List<OrderInfo> orders = orderInfoMapper.selectByExample(o_example);
+
+
+        //充值
+        PayRecordExample pay_example = new PayRecordExample();
+        PayRecordExample.Criteria pay_criteria = pay_example.createCriteria();
+
+        pay_criteria.andUidEqualTo(uid);
+        pay_criteria.andOrderNoNotLike("mn%");
+
+        pay_example.setOrderByClause("updated_at desc");
+        List<PayRecord> pays = payRecordService.mapper.selectByExample(pay_example);
+
+
+        model.addAttribute("user",userDetail);
+        model.addAttribute("quota", quota);
+        model.addAttribute("orders", orderService.createFinanceOrders(orders));
+        model.addAttribute("pays",orderService.createFinancePayByPays(pays));
+
+
+
+
+    }
 }
 

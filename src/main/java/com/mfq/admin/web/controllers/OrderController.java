@@ -1,5 +1,6 @@
 package com.mfq.admin.web.controllers;
 
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -12,8 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Maps;
 import com.mfq.admin.web.bean.*;
-import com.mfq.admin.web.constants.OrderType;
-import com.mfq.admin.web.constants.SysOperationType;
+import com.mfq.admin.web.constants.*;
 import com.mfq.admin.web.services.*;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.context.ApplicationContext;
@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.mfq.admin.web.constants.OrderStatus;
 import com.mfq.admin.web.security.UserHolder;
 import com.mfq.admin.web.utils.DateUtil;
 import com.mfq.admin.web.utils.JSONUtil;
@@ -46,6 +45,8 @@ public class OrderController extends BaseController {
     FinanceBillService financeService;
     @Resource
     PayRecordService payService;
+	@Resource
+	ProductService productService;
 
 
 	/**
@@ -67,19 +68,26 @@ public class OrderController extends BaseController {
             @RequestParam(value = "ob", required = false) String ob,
             @RequestParam(value = "oe", required = false) String oe,
             Model model) {
-    	
-        if (StringUtils.isBlank(ob)) {
-            String date = DateUtil.formatShort(DateUtil.addDay(new Date(), -1));
-            Date d = DateUtil.convertShort(date);
-            ob = DateUtil.formatLong(d);
-        }
+    	try {
 
-        if (StringUtils.isBlank(oe)) {
-            oe = DateUtil.formatLong(new Date());
-        }
+			if (StringUtils.isBlank(ob)) {
+				String date = DateUtil.formatShort(DateUtil.addDay(new Date(), -1));
+				Date d = DateUtil.convertShort(date);
+				ob = DateUtil.formatLong(d);
+			}
 
-        orderService.findByPage(orderNo, mobile, securityCode, status, page, ob,
-                oe, model);
+			if (StringUtils.isBlank(oe)) {
+				oe = DateUtil.formatLong(new Date());
+			}
+
+			orderService.findByPage(orderNo, mobile, securityCode, status, page, ob,
+					oe, model);
+
+		}catch (Exception e){
+			logger.error("order list is {}",e);
+			model.addAttribute("msg", e);
+		}
+
 
         return "order/order_list";
     }
@@ -90,10 +98,22 @@ public class OrderController extends BaseController {
             @RequestParam(value = "orderNo", required = false) String orderNo,
             @RequestParam(value = "mobile", defaultValue = "") String mobile,
             @RequestParam(value = "securityCode", defaultValue = "") String securityCode,
+			@RequestParam(value = "status", defaultValue = "100") int status,
             Model model) {
+		try {
 
-        orderService.findByPage(orderNo, mobile, securityCode,
-                OrderStatus.NONE.getValue(), page, null, null, model);
+			OrderStatus orderStatus = OrderStatus.fromValue(status);
+			if(status == 0){
+				orderStatus = OrderStatus.NONE;
+			}
+			orderService.findByPage(orderNo, mobile, securityCode,
+					orderStatus.getValue(), page, null, null, model);
+
+			model.addAttribute("status",status);
+		}catch (Exception e){
+			logger.error("order consult is error {}",e);
+			model.addAttribute("msg", e);
+		}
 
         return "order/consult_list";
     }
@@ -112,24 +132,37 @@ public class OrderController extends BaseController {
 
         try {
 
-
-
-
             OrderInfo order = orderService.findById(id);
             orderView(model, order);
 
 			int hasright = 0;
 
-			if (UserHolder.currentUserDetail().getSysUser().getRoleId() == 1) { // 医院财务
+			SysUser loginUser=UserHolder.currentUserDetail().getSysUser();
+
+			Product product = productService.findById(order.getPid());
+			if(product == null){return "order/order_view";}
+			if((loginUser.getHospitalId() != product.getHospitalId())&& loginUser.getRoleId() != 1){
+				model.addAttribute("msg","医院不对应");
+				return "order/order_view";
+			}
+//			if (loginUser.getRoleId() == 6) { // 管理员 或 医院财务
+//				if(OrderStatus.PAY_OK.getValue() == order.getStatus()){ // 且订单是支付成功的状态
+//					hasright = 1;
+//				}
+//			}
+
+			int up_price = 0;
+			if(loginUser.getRoleId() == 1) {
 				if(OrderStatus.PAY_OK.getValue() == order.getStatus()){ // 且订单是支付成功的状态
+					up_price = 1;
 					hasright = 1;
-				}else if(OrderStatus.BOOK_OK.getValue() == order.getStatus()){
-					hasright = 2;
+				}else if (OrderStatus.BOOK_OK.getValue() == order.getStatus()){
+					up_price = 2;
 				}
 			}
-			model.addAttribute("status", order.getStatus());
 			model.addAttribute("orderStatus",OrderStatus.values());
             model.addAttribute("hasright",hasright);
+			model.addAttribute("u_price",up_price);
         } catch (Exception e) {
             logger.error("Exception_ORDER_VIEW", e);
         }
@@ -207,9 +240,15 @@ public class OrderController extends BaseController {
 		        hasright = 1;
 		    }
 		}
-		
+		String mobile = user.getMobile();
+		StringBuilder mobileStr = new StringBuilder("");
+		if(mobile.length()>10){
+			mobileStr.append(mobile.substring(0,3));
+			mobileStr.append("******");
+			mobileStr.append(mobile.substring(mobile.length()-4,mobile.length()));
+		}
 		model.addAttribute("hasright", hasright);
-		model.addAttribute("mobile", user.getMobile());
+		model.addAttribute("mobile", mobileStr.toString());
 		model.addAttribute("contact", userQuota.getContact());
 		model.addAttribute("realname", userQuota.getRealname());
 		String result= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(userQuota.getCreatedAt());
@@ -301,7 +340,6 @@ public class OrderController extends BaseController {
 			model.addAttribute("mobile",mobile);
 			model.addAttribute("status",status);
 			model.addAttribute("uname",uname);
-			System.out.print("......");
 		}catch (Exception e){
 			model.addAttribute("msg","系统错误...");
 			logger.error("order data is error {}", e);
@@ -346,12 +384,12 @@ public class OrderController extends BaseController {
 						 @RequestParam(value = "pname", defaultValue="")String pname,
 						 @RequestParam(value = "type", defaultValue="0")int type){
 		try {
-			orderService.queryFinanceOrders(model, ob, oe, page, hid, pname, type, "", "", 0, "","");
-			return "order/order_budget";
+			orderService.queryFinance2(model, ob, oe, page, hid, pname, type);
+			return "order/order_budget2";
 		}catch (Exception e){
 			logger.error("order budget is error {}",e);
 		}
-		return "order/order_budget";
+		return "order/order_budget2";
 	}
 
     @RequestMapping(value = "/order/edit/", method = RequestMethod.GET)
@@ -406,9 +444,19 @@ public class OrderController extends BaseController {
     public String financeDetail(Model model,@RequestParam(value="order",defaultValue="")String orderNo) throws Exception{
     	if(StringUtils.isBlank(orderNo) || OrderType.ONLINE != payService.getOrderType(orderNo)) throw new Exception("订单号格式错误");
 
+		OrderInfo order = orderService.findByOrderNo(orderNo);
+		if(order == null || order.getId() <1){
+			return "";
+		} else if(order.getPayType() != PayType.FINANCING.getId()){
+			return "redirect:/order/detail/?order="+orderNo;
+		}
+
 		// 1,查出所有对应账单
 		List<FinanceBill> finances = financeService.selectByOrderNo(orderNo);
-
+		if (finances.size() < 1){
+			model.addAttribute("msg","没有查询到对应账单!!!");
+			return "/order/finance_detail";
+		}
 
     	long uid = finances.get(0).getUid();
     	UserQuota quota = userQuotaService.queryUserQuota(uid);
@@ -416,14 +464,57 @@ public class OrderController extends BaseController {
     	OrderInfo orderinfo = orderService.findByOrderNo(orderNo);
 
     	List<PayRecord> payRecords = payService.selectByOrderNo(orderinfo.getOrderNo());
-    	model.addAttribute("finance",finances);
+
+		for(PayRecord record :payRecords){
+			String tpp = record.getTpp();
+			String tppStr = PayAPIType.fromCode(tpp).getPay();
+			record.setTpp(tppStr);
+		}
+
+		//计算额度
+		BigDecimal re_money = BigDecimal.valueOf(0);
+		for(FinanceBill bill:finances){
+
+		}
+
+		model.addAttribute("finance",finances);
     	model.addAttribute("quota",quota);
     	model.addAttribute("user",user);
     	model.addAttribute("orderinfo",orderinfo);
     	model.addAttribute("payRecords",payRecords);
+		model.addAttribute("order", order);
+
 		//还有一个流水对应的还款期数 应该是通过这个这条流水对应的金额与每条账单之比
     	return "/order/finance_detail";
     }
+
+
+	@RequestMapping("/order/detail/")
+	public String orderDetail(Model model, @RequestParam(value="order",defaultValue="")String orderNo){
+		try {
+			OrderInfo order = orderService.findByOrderNo(orderNo);
+			if(order == null || order.getId() <1){
+				return "";
+			} else if(order.getPayType() == PayType.FINANCING.getId()){
+				return "redirect:/order/finance/detail/?orderNo="+orderNo;
+			}
+
+
+			orderView(model, order);
+
+			int hasright = 0;
+
+			model.addAttribute("status", order.getStatus());
+			model.addAttribute("orderStatus",OrderStatus.values());
+			model.addAttribute("hasright",hasright);
+
+
+		}catch (Exception e){
+			logger.error("order detail is error {}",e);
+		}
+		return "/order/detail";
+	}
+
     /**
      * Integer page,Integer size,long uid,String realname,
 			String phone,String idcard,String applytimefrom,String applytimeto,Integer type

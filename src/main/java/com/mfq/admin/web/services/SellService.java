@@ -81,6 +81,7 @@ public class SellService {
 
         ProductImgExample productImgExample = new ProductImgExample();
         productImgExample.createCriteria().andPidEqualTo(id);
+        productImgExample.setOrderByClause(" `index` ");
         List<ProductImg> imgs = productImgMapper.selectByExample(productImgExample);
 
         model.addAttribute("item_img", imgs);
@@ -322,26 +323,67 @@ public class SellService {
 		if(id < 1){
 			return 0;
 		}
-		if(imgs.length > 0){
-			if(!"".equals(imgs[0])){
-				productImgMapper.deleteByPrimaryKey(id);
-			}
-		}
-		
-		for(String img: imgs){
-			ProductImg pimg=new ProductImg();
-			pimg.setPid(id);
-			pimg.setImg(img);
-            pimg.setDesc("");
-            pimg.setIndex(0);
-            pimg.setFlag(0);
-			if("".equals(img))
-				continue;			
-			long i = productImgMapper.insert(pimg);
-			if(i>0){
-				System.out.println("insert img "+i);
-			}
-		}
+
+        ProductImgExample example = new ProductImgExample();
+        ProductImgExample.Criteria criteria = example.createCriteria();
+        criteria.andPidEqualTo(id);
+        example.setOrderByClause(" `index`,`id` ");
+        List<ProductImg> pimgs = productImgMapper.selectByExample(example);
+
+        if(pimgs.size() > 0){
+
+            for(int i=0;i<imgs.length;i++){
+
+                ProductImg img = new ProductImg();
+
+                if(pimgs.size()>i){
+                   img = pimgs.get(i);
+                }
+
+                img.setPid(id);
+                img.setImg(imgs[i]);
+                img.setDesc("");
+                img.setIndex(i);
+                img.setFlag(0);
+
+                if(pimgs.size()>i){
+
+                    ProductImgExample exp = new ProductImgExample();
+                    ProductImgExample.Criteria c = exp.createCriteria().andIdEqualTo(img.getId());
+                    if(!"".equals(img.getImg())) {
+                        productImgMapper.updateByExampleSelective(img, exp);
+                    }
+
+                }else {
+
+
+                    long result = productImgMapper.insert(img);
+                    if (result > 0) {
+                        System.out.println("insert img " + i);
+                    }
+                }
+            }
+
+
+        }else {
+
+            for (int i=0;i<imgs.length;i++) {
+                ProductImg pimg = new ProductImg();
+                pimg.setPid(id);
+                pimg.setImg(imgs[i]);
+                pimg.setDesc("");
+                pimg.setIndex(i);
+                pimg.setFlag(0);
+
+                long result = productImgMapper.insert(pimg);
+                if (result > 0) {
+                    System.out.println("insert img " + i);
+                }
+            }
+        }
+
+
+
 		return 1;
 	}
 

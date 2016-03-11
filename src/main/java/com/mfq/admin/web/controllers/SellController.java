@@ -147,11 +147,12 @@ public class SellController extends BaseController {
     public String saveItem(
             @RequestParam(value = "id", required = false) Long id,
             @RequestParam(value = "name", required = true) String name,
-            @RequestParam(value = "files") MultipartFile[] file,
+            @RequestParam(value = "proImg") MultipartFile file,
+            @RequestParam(value = "files") MultipartFile[] files,
             @RequestParam(value = "classify", required = true) int rootId,
             @RequestParam(value = "classify2", required = true) int classifyId,
             @RequestParam(value = "type", required = true) int type,
-            @RequestParam(value = "type2", required = true) String type2,
+            @RequestParam(value = "type2" , defaultValue = "") String type2,
             @RequestParam(value = "city_id", required = true) int cityId,
             @RequestParam(value = "hospital", required = true) int hospitalId,
             @RequestParam(value = "price", required = true) BigDecimal price,
@@ -189,24 +190,32 @@ public class SellController extends BaseController {
 
         String body = "";
         try {
-            String [] imgs  = {"", "", "", ""};
-            for(int i=0;i<file.length;i++){
-            	if (!file[i].isEmpty()) {
-                    File tmpFile = new File("/tmp/" + UUID.randomUUID().toString());
-                    file[i].transferTo(tmpFile);
-                    imgs[i] = QiniuManipulater.qiniuUploadProdImg(tmpFile);
-                }else {
-                	imgs[i] = "";
-                }
+            String fileImg = "";
+            if(!file.isEmpty()){
+                File tmpFile = new File("/tmp/" + UUID.randomUUID().toString());
+                file.transferTo(tmpFile);
+                fileImg = QiniuManipulater.qiniuUploadProdImg(tmpFile);
             }
+
 
             BigDecimal hospitalPay = price.subtract(onlinePay);
             Product p = sellService.saveItem(fq, type2,id, name, rootId,classifyId, type, cityId,
                     hospitalId, price, marketPrice, onlinePay, hospitalPay, start, end, flag,
-                    StringUtils.isNotBlank(imgs[0])?imgs[0]:null, isOnline, totalNum, totalNum, saleNum, viewNum, consumeStep, reserve,
+                    StringUtils.isNotBlank(fileImg)?fileImg:null, isOnline, totalNum, totalNum, saleNum, viewNum, consumeStep, reserve,
                     specialNote, body, cureMeans, cureDur, cureHospital, recoverDur, merit, cureMethod, crowd, tabooCrowd, warning, cureNum, anesMethod, doctorLevel, cureCycle,fq_price);
-            
-            if(!"".equals(imgs[0])){
+
+            String [] imgs  = {"", "", ""};
+            for(int i=0;i<files.length;i++){
+                if (!files[i].isEmpty()) {
+                    File tmpFile = new File("/tmp/" + UUID.randomUUID().toString());
+                    files[i].transferTo(tmpFile);
+                    imgs[i] = QiniuManipulater.qiniuUploadProdImg(tmpFile);
+                }else {
+                    imgs[i] = "";
+                }
+            }
+
+            if(imgs.length > 1){
             	sellService.saveProductImg(p.getId(), imgs);
             }
             

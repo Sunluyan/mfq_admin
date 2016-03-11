@@ -137,6 +137,8 @@ public class UserController {
         return null;
     }
 
+
+
     /**
      * 面签审核....
      * @param request
@@ -535,6 +537,24 @@ public class UserController {
         }
         logger.info(url);
         return url;
+    }
+
+
+    @RequestMapping("/user/finance/")
+    public String userDetails(Model model, HttpServletRequest request){
+
+        try {
+            long uid = Long.parseLong(request.getParameter("uid"));
+
+            service.queryUserDetailAndOrderPay(model, uid);
+
+
+        }catch (Exception e){
+            logger.error(" user finance is error   {}",e);
+        }
+
+        return "/user/detail";
+
     }
 
 

@@ -56,19 +56,48 @@ h2{
 }
 
 </style>
+
+<link href="/static/bootstrap-3.3.4/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+
+<script type="text/javascript" src="/static/bootstrap-3.3.4/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+
 <div class="container" id="enlarge-body">
 
     <div>
         <h3>现在是<span class="time-now"></span></h3>
         <hr>
 
+        <form action="/home/" method="post">
+        <div class="controls">
+            <div class="input-append date" id="date1" name="begin"
+                 data-date="${begin!}" data-date-format="yyyy-mm-dd">
+                <input class="span2" id="dateStart" name="begin" size="16" type="text"
+                       value="${begin!}">
+                <span class="add-on"><i class="icon-th"></i></span>
+            </div>
+            －
+            <div class="input-append date" id="date2" name="end"
+                 data-date="${end!}" data-date-format="yyyy-mm-dd">
+                <input class="span2" id="dateEnd" name="end" size="16" type="text"
+                       value="${end!}">
+                <span class="add-on"><i class="icon-th"></i></span>
+            </div>
+
+            <input type="submit" class="btn btn-primary" value="查询"/>
+        </div>
+
+
+
+
+        </form>
+
     <div class="left">
         <div class="left-child">
-            <h4>昨日新增用户:</h4>
+            <h4>昨日新增用户(设备激活):</h4>
             <strong class="new-user">${a}</strong>
         </div>
         <div class="left-child">
-            <h4>昨日新增激活用户：</h4>
+            <h4>昨日新增激活用户(注册)：</h4>
             <strong class="new-user">${b}</strong>
         </div>
         <div class="left-child">
@@ -101,6 +130,28 @@ h2{
 </div>
 
 <script type="text/javascript" language="javascript">
+
+    $('#date1').datetimepicker({
+        language: 'zh-CN',
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0,
+    });
+    $('#date2').datetimepicker({
+        language: 'zh-CN',
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+
     function show_cur_times(){
         var date_time = new Date();
         var week;

@@ -76,6 +76,9 @@
 	
 	
 	<div class="container">
+		<#if msg != "">
+		    <h3>${msg}</h3>
+		</#if>
 		<h3 class="page-header text-left">
 			基本信息
 		</h3>
@@ -151,6 +154,27 @@
 						<td class="td02"><#if quota.schoolRemark==null>无</#if><#if quota.schoolRemark!=null>${quota.schoolRemark}</#if></td>
 					</tr>
 				</table>
+
+
+            <h3 class="page-header text-left">
+                订单信息
+            </h3>
+            <table class="current table-striped">
+                <tr>
+                    <td class="td01">订单号:</td>
+                    <td class="td02">${order.orderNo}</td>
+                </tr>
+                <tr>
+                    <td class="td01">订单金额:</td>
+                    <td class="td02">${order.price}</td>
+                </tr>
+                <tr>
+                    <td class="td01">下单时间:</td>
+                    <td class="td02">${order.createdAt?string('yyyy-MM-dd HH:mm:ss')}</td>
+                </tr>
+
+            </table>
+
 
 				<h3 class="page-header text-left">
 				还款记录

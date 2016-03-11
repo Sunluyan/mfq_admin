@@ -2,6 +2,7 @@ package com.mfq.admin.web.services;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.util.concurrent.ExecutionError;
 import com.mfq.admin.web.bean.*;
 import com.mfq.admin.web.bean.coupon.Coupon;
 import com.mfq.admin.web.bean.example.OrderInfoExample;
@@ -66,7 +67,7 @@ public class OrderService {
     Integer PageSize = 30;
 
     public void findByPage(String orderNo, String mobile, String securityCode,
-                           int status, long page, String ob, String oe, Model model) {
+                           int status, long page, String ob, String oe, Model model) throws Exception {
 
         logger.info("order_choose_params:{}|{}|{}|{}|{}|{}|{}", orderNo, mobile,
                 securityCode, status, page, ob, oe);
@@ -94,6 +95,9 @@ public class OrderService {
                 status, ob, oe, start, PageSize);
         // 订单列表
         SysUser LoginUser = sysUserService.querySysUser(UserHolder.getUserId());
+        if(LoginUser == null || LoginUser.getId() < 1){
+            throw new Exception("请登录...");
+        }
         List<OrderInfo> orders = null;
         if (LoginUser.getHospitalId() > 0) {
             orders = mapper.findByPageByHospital(orderNo, uid,
@@ -300,7 +304,7 @@ public class OrderService {
 
         List<Long> uids = Lists.newArrayList();
         if(StringUtils.isNotBlank(mobile) || StringUtils.isNotBlank(uname)) {
-            userService.queryUidsByNameOrMobile(mobile, uname);
+            uids = userService.queryUidsByNameOrMobile(mobile, uname);
         }
 
 
@@ -392,7 +396,7 @@ public class OrderService {
      * @return
      * @throws Exception
      */
-    private List<FinanceOrder> createFinanceOrders(List<OrderInfo> lists) throws Exception {
+    public List<FinanceOrder> createFinanceOrders(List<OrderInfo> lists) throws Exception {
 
         List<FinanceOrder> data = Lists.newArrayList();
 
@@ -766,7 +770,7 @@ public class OrderService {
 
     }
 
-    private List<FinancePay> createFinancePayByPays(List<PayRecord> pays) {
+    public List<FinancePay> createFinancePayByPays(List<PayRecord> pays) {
         List<FinancePay> data = Lists.newArrayList();
 
         for(PayRecord p : pays){

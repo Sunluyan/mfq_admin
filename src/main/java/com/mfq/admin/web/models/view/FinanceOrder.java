@@ -3,6 +3,7 @@ package com.mfq.admin.web.models.view;
 import com.mfq.admin.web.bean.*;
 import com.mfq.admin.web.bean.coupon.Coupon;
 import com.mfq.admin.web.constants.OrderStatus;
+import com.mfq.admin.web.constants.PolicyStatus;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -66,7 +67,7 @@ public class FinanceOrder {
     private Date createdAt;  //订单创建时间
 
     private Date serviceStartTime;  //服务时间
-    
+
     private long hid; //医院id
     
     private String hospitalName; //医院名称
@@ -80,7 +81,7 @@ public class FinanceOrder {
 	public FinanceOrder(User user, UserQuota quota, OrderInfo order, Hospital hospital, Product product,PayRecord payRecord, Coupon coupon){
 		this.id = payRecord.getId();
 		this.orderNo = payRecord.getOrderNo();
-		this.orderType = 0;   //// TODO: 16/1/16
+		this.orderType = order.getPayType();
 		this.tradeNo = payRecord.getTradeNo();
 		this.useAmount = payRecord.getAmount();
 		this.useBalance = payRecord.getBalance();
@@ -95,6 +96,13 @@ public class FinanceOrder {
 		this.payStatus = payRecord.getStatus();
 		this.callbackAt = payRecord.getCallbackAt();
 
+		Integer policyStatus = order.getPolicyStatus();
+		for(PolicyStatus pS : PolicyStatus.values()){
+			if(pS.getId() == policyStatus){
+				this.policyStatus = pS.getDesc();
+			}
+		}
+
 
 		Integer ostatus = order.getStatus();
 		for(OrderStatus status : OrderStatus.values()){
@@ -102,8 +110,6 @@ public class FinanceOrder {
 				this.orderStatus = status.getName();
 			}
 		}
-
-		this.policyStatus = order.getPolicyStatus().toString();
 
 		this.code = order.getSecurityCode();
 		this.onlinePay = order.getOnlinePay();
