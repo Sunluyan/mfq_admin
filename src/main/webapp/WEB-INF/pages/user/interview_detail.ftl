@@ -322,6 +322,24 @@
 </div>
 
 </#if>
+
+<#if user.auth_status == 4>
+
+<div class="answer container">
+    <div class="child agree-1">
+        <button class="agree btn  btn-info">
+            再次批准
+        </button>
+    </div>
+
+    <div class="child agree-1">
+        <button class="clear btn  btn-info">
+            额度清零
+        </button>
+    </div>
+</div>
+
+</#if>
 <form method="post" id="frm-refuse">
 <div class="refuse-information">
     <div>拒绝原因</div>
