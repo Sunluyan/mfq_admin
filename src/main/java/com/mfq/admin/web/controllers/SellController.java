@@ -191,35 +191,32 @@ public class SellController extends BaseController {
         try {
             //上传图片
             String[] imgs = new String[4];
-            for(int i=0;i<file.length;i++){
-            	if (!file[i].isEmpty()) {
+            for (int i = 0; i < file.length; i++) {
+                if (!file[i].isEmpty()) {
                     File tmpFile = new File("/tmp/" + UUID.randomUUID().toString());
                     file[i].transferTo(tmpFile);
                     imgs[i] = QiniuManipulater.qiniuUploadProdImg(tmpFile);
-                }else {
-                	imgs[i] = "";
+                } else {
+                    imgs[i] = "";
                 }
             }
 
             //用最精细的类别
-            if(classifyId != 0){
+            if (classifyId != 0) {
                 rootId = classifyId;
             }
 
 
-            if(id != 0 && id != null){
+            if (id != 0 && id != null) {
                 //修改
-                productService.editPro(id,name,rootId,hospitalId,cityId,flag,imgs[0],fq,price,marketPrice,start,
-                        end,totalNum,type,type2,isOnline);
+                productService.editPro(id, name, rootId, hospitalId, cityId, flag, imgs[0], fq, price, marketPrice, start,
+                        end, totalNum, type, type2, isOnline);
 
-            }else{
+            } else {
                 //添加
-                productService.addPro(name,rootId,hospitalId,cityId,flag,imgs[0],fq,price,marketPrice,start,
-                        end,totalNum,type,type2,isOnline);
+                productService.addPro(name, rootId, hospitalId, cityId, flag, imgs[0], fq, price, marketPrice, start,
+                        end, totalNum, type, type2, isOnline);
             }
-
-
-
 
 
             return "redirect:/sell/items/";
