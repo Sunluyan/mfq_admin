@@ -45,23 +45,28 @@ public class HomeBannerController {
 	@RequestMapping(value="/home/",method = {RequestMethod.GET,RequestMethod.POST})
 	public String home(@RequestParam(value = "begin", defaultValue = "")String begin, @RequestParam(value = "end", defaultValue = "")String end, Model model) throws Exception {
 
-		if(StringUtils.isNotBlank(begin) && StringUtils.isNotBlank(end)){
 
-			Date beginTime = DateUtil.convertYYYYMMDD(begin);
-			Date endTime = DateUtil.convertYYYYMMDD(end);
 
-			model.addAttribute("a",userService.getYesterdayNewDevice(beginTime, endTime));
-			model.addAttribute("b",userService.getYesterdayNewUserCount(beginTime, endTime));
-			model.addAttribute("c",userService.getYesterdayNewOrder(beginTime, endTime));
-			model.addAttribute("d",userService.getYesterdayNewOrderOfPay(beginTime, endTime));
-			model.addAttribute("e",userService.getCountHospital());
-		}else {
-			model.addAttribute("a", userService.getYesterdayNewDevice());
-			model.addAttribute("b", userService.getYesterdayNewUserCount());
-			model.addAttribute("c", userService.getYesterdayNewOrder());
-			model.addAttribute("d", userService.getYesterdayNewOrderOfPay());
+		Date beginTime = DateUtil.convertYYYYMMDD(begin);
+		Date endTime = DateUtil.convertYYYYMMDD(end);
 
-		}
+		userService.statistics(beginTime, endTime, model);
+
+//
+//		if(StringUtils.isNotBlank(begin) && StringUtils.isNotBlank(end)){
+//
+//
+//			model.addAttribute("a",userService.getYesterdayNewDevice(beginTime, endTime));
+//			model.addAttribute("b",userService.getYesterdayNewUserCount(beginTime, endTime));
+//			model.addAttribute("c",userService.getYesterdayNewOrder(beginTime, endTime));
+//			model.addAttribute("d",userService.getYesterdayNewOrderOfPay(beginTime, endTime));
+//		}else {
+//			model.addAttribute("a", userService.getYesterdayNewDevice());
+//			model.addAttribute("b", userService.getYesterdayNewUserCount());
+//			model.addAttribute("c", userService.getYesterdayNewOrder());
+//			model.addAttribute("d", userService.getYesterdayNewOrderOfPay());
+//
+//		}
 		model.addAttribute("e", userService.getCountHospital());
 		model.addAttribute("f", userService.getCountProduct());
 

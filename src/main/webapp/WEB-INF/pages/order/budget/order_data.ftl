@@ -22,7 +22,7 @@
                 <select name="status">
                     <option value="0">所有</option>
                     <#list order_status as s>
-                        <option value="${s.value}" <#if (status == (s.value))>selected</#if>>${s.name}</option>
+                        <option value="${s.id}" <#if (status == (s.id))>selected</#if>>${s.name}</option>
                     </#list>
                 </select>
             </div>

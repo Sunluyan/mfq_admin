@@ -1,5 +1,6 @@
 package com.mfq.admin.web.services;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -589,7 +590,13 @@ public class UserService {
         Date yesterday = DateUtil.getYesterday();
         Date today = DateUtil.getToday();
         OrderInfoExample example = new OrderInfoExample();
-        example.or().andCreatedAtBetween(yesterday,today).andStatusEqualTo(OrderStatus.PAY_OK.getValue());
+
+
+        List<Integer> status = Lists.newArrayList();
+        status.add(OrderStatus.PAY_OK.getValue());
+        status.add(OrderStatus.ORDER_OK.getValue());
+
+        example.or().andCreatedAtBetween(yesterday,today).andStatusIn(status);
         return (long)orderInfoMapper.countByExample(example);
     }
 
@@ -604,8 +611,79 @@ public class UserService {
             today = todayTime;
         }
         OrderInfoExample example = new OrderInfoExample();
-        example.or().andCreatedAtBetween(yesterday,today).andStatusEqualTo(OrderStatus.PAY_OK.getValue());
+
+        List<Integer> status = Lists.newArrayList();
+        status.add(OrderStatus.PAY_OK.getValue());
+        status.add(OrderStatus.ORDER_OK.getValue());
+
+        example.or().andCreatedAtBetween(yesterday,today).andStatusIn(status);
         return (long)orderInfoMapper.countByExample(example);
+    }
+
+    public List<OrderInfo> getOrdersByDay(Date beginTime, Date endTime) throws ParseException {
+
+        Date yesterday = DateUtil.getYesterday();
+        Date today = DateUtil.getToday();
+        if(beginTime != null){
+            yesterday = beginTime;
+        }
+        if(endTime != null){
+            today = endTime;
+        }
+        OrderInfoExample example = new OrderInfoExample();
+        List<Integer> status = Lists.newArrayList();
+        status.add(OrderStatus.PAY_OK.getValue());
+        status.add(OrderStatus.ORDER_OK.getValue());
+        example.or().andCreatedAtBetween(yesterday,today).andStatusIn(status);
+        example.setSize(1000000);
+        example.setStart(0);
+        return orderInfoMapper.selectByExample(example);
+    }
+
+
+    public List<OrderInfo> getOrdersByDay() throws ParseException {
+
+        Date yesterday = DateUtil.getYesterday();
+        Date today = DateUtil.getToday();
+        OrderInfoExample example = new OrderInfoExample();
+
+        List<Integer> status = Lists.newArrayList();
+        status.add(OrderStatus.PAY_OK.getValue());
+        status.add(OrderStatus.ORDER_OK.getValue());
+
+        example.or().andCreatedAtBetween(yesterday,today).andStatusIn(status);
+        example.setSize(100000000);
+        example.setStart(0);
+        return orderInfoMapper.selectByExample(example);
+    }
+
+    public void statistics(Date begin, Date end, Model model) throws Exception{
+
+        List<OrderInfo> orders = Lists.newArrayList();
+
+        if(begin!=null&&end!=null){
+            model.addAttribute("a",getYesterdayNewDevice(begin, end));
+            model.addAttribute("b",getYesterdayNewUserCount(begin, end));
+            model.addAttribute("c",getYesterdayNewOrder(begin, end));
+            model.addAttribute("d",getYesterdayNewOrderOfPay(begin, end));
+
+            orders = getOrdersByDay(begin, end);
+        }else {
+            model.addAttribute("a", getYesterdayNewDevice());
+            model.addAttribute("b", getYesterdayNewUserCount());
+            model.addAttribute("c", getYesterdayNewOrder());
+            model.addAttribute("d", getYesterdayNewOrderOfPay());
+
+            orders = getOrdersByDay();
+        }
+
+        BigDecimal totlePrice = BigDecimal.valueOf(0);
+
+        for(OrderInfo o:orders){
+            totlePrice = totlePrice.add(o.getPrice());
+        }
+        model.addAttribute("total",totlePrice);
+
     }
 
     public long getCountHospital(){

@@ -39,7 +39,7 @@
 	    </div>
 
 		<div class="input-group">
-			<div class="input-group-addon">安&nbsp;&nbsp;全&nbsp;&nbsp;码：${order.securityCode}</div>
+			<div class="input-group-addon">验&nbsp;&nbsp;证&nbsp;&nbsp;码：${order.securityCode}</div>
 	    </div>
 	    <div class="input-group">    
 			<div class="input-group-addon">订单状态：

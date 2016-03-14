@@ -108,6 +108,11 @@ h2{
             <h4>昨日成交量:</h4>
             <strong class="new-user">${d}</strong>
         </div>
+
+        <div class="left-child">
+            <h4>昨日成交总额:</h4>
+            <strong class="new-user">${total}</strong>
+        </div>
     </div>
 
     <div class="right">
