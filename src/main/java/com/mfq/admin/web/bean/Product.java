@@ -58,12 +58,16 @@ public class Product {
 
     private Date updatedAt;
 
+//    public Product(){
+//        this.orderNo= 1;
+//        this.saleNum = 0l;
+//        this.viewNum = 0l;
+//        this.createdAt = new Date();
+//        this.updatedAt = new Date();
+//    }
+
     public Product(){
-        this.orderNo= 1;
-        this.saleNum = 0l;
-        this.viewNum = 0l;
-        this.createdAt = new Date();
-        this.updatedAt = new Date();
+        super();
     }
 
     public Long getId() {
@@ -304,5 +308,47 @@ public class Product {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
+    }
+
+    /**
+     * 添加产品时
+     * @param id
+     * @param name
+     * @param tid
+     * @param hospitalId
+     * @param cityId
+     * @param flag
+     * @param img
+     * @param type
+     * @param type2
+     * @param isFq
+     * @param price
+     * @param marketPrice
+     * @param dateStart
+     * @param dateEnd
+     * @param totalNum
+     * @param online
+     * @param createdAt
+     * @param updatedAt
+     */
+    public Product(Long id, String name, Integer tid, Long hospitalId, Integer cityId, Integer flag, String img,  ProductType type, String type2, Boolean isFq, BigDecimal price, BigDecimal marketPrice,  Date dateStart, Date dateEnd,  Long totalNum , Boolean online, Date createdAt, Date updatedAt) {
+        this.id = id;
+        this.name = name;
+        this.tid = tid;
+        this.hospitalId = hospitalId;
+        this.cityId = cityId;
+        this.flag = flag;
+        this.img = img;
+        this.type = type;
+        this.type2 = type2;
+        this.isFq = isFq;
+        this.price = price;
+        this.marketPrice = marketPrice;
+        this.dateStart = dateStart;
+        this.dateEnd = dateEnd;
+        this.totalNum = totalNum;
+        this.online = online;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 }
