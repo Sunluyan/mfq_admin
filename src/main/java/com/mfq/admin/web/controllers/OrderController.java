@@ -366,8 +366,6 @@ public class OrderController extends BaseController {
 							@RequestParam(value = "uname", defaultValue = "")String uname){
 		String ret = "";
 		try {
-
-
 			return "order/order_budget";
 		}catch (Exception e){
 			logger.error("order budget is error {}",e);
