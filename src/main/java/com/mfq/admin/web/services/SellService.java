@@ -12,6 +12,7 @@ import com.mfq.admin.web.bean.example.HospitalExample;
 import com.mfq.admin.web.bean.example.ProductClassifyExample;
 import com.mfq.admin.web.bean.example.ProductExample;
 import com.mfq.admin.web.bean.example.ProductImgExample;
+import com.mfq.admin.web.constants.ProductImageType;
 import com.mfq.admin.web.dao.*;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -45,6 +46,8 @@ public class SellService {
     ProductImgMapper productImgMapper;
     @Resource
     ActivityMapper activityMapper;
+    @Resource
+    ProductImageService productImageService;
 
 
     private static final Logger logger = LoggerFactory
@@ -347,7 +350,6 @@ public class SellService {
                 img.setFlag(0);
 
                 if(pimgs.size()>i){
-
                     ProductImgExample exp = new ProductImgExample();
                     ProductImgExample.Criteria c = exp.createCriteria().andIdEqualTo(img.getId());
                     if(!"".equals(img.getImg())) {
@@ -439,7 +441,34 @@ public class SellService {
     }
 
 
-    public Activity selectActivityById(Integer id) {
+    public Activity selectActivityById(Integer id)  {
         return activityMapper.selectByPrimaryKey(id);
     }
+
+
+    public void saveProImages(Long pid,String[] proImages,String before,String after,String beautiful,
+                              String surgery,String[] detail) throws Exception{
+        saveProductImg(pid,proImages);
+
+        productImageService.saveOrInsert(pid,before, ProductImageType.BEFORE);
+        productImageService.saveOrInsert(pid,after, ProductImageType.AFTER);
+        productImageService.saveOrInsert(pid,beautiful, ProductImageType.BEAUTIFUL);
+        productImageService.saveOrInsert(pid,surgery, ProductImageType.SURGERY);
+        productImageService.saveDetails(pid,detail);
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

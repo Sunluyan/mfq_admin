@@ -16,6 +16,7 @@ import com.mfq.admin.web.bean.example.ProductExample;
 import com.mfq.admin.web.constants.ProductType;
 import com.mfq.admin.web.dao.ProFqRecordMapper;
 import com.mfq.admin.web.dao.ProductDetailMapper;
+import com.mfq.admin.web.dao.ProductDetailNewMapper;
 import com.mfq.admin.web.dao.ProductMapper;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -33,6 +34,8 @@ public class ProductService {
     ProductDetailMapper productDetailMapper;
     @Resource
     ProFqRecordMapper proFqRecordMapper;
+    @Resource
+    ProductDetailNewMapper productDetailNewMapper;
     
     public long insertProduct(Product model){
         return mapper.insert(model);
@@ -205,28 +208,17 @@ public class ProductService {
      * 添加产品详情
      Integer id, Integer pid, String description, String preferential, String attention,
      Integer flag, String ask
-
      */
-    public Product addProDetail(Integer pid ,String desc,String preferential,String attention,
+    public Product addProDetail(Long pid ,String desc,String preferential,String attention,
                                 String[] questions,String[] answers) throws Exception{
 
-        String ask = "";
-        if(questions.length != answers.length){
-            throw new Exception("问答的长度不同");
+        String ask = twoListParseToJson(questions,answers,"question","answer");
+        ProductDetailNew productDetailNew = new ProductDetailNew(null,pid.intValue(),desc,preferential,attention,
+                0,ask);
+        int count = productDetailNewMapper.insertSelective(productDetailNew);
+        if(count != 1){
+            throw new Exception("添加产品详情出错");
         }
-        List<Object> list = new ArrayList<>();
-        for (int i = 0;i<questions.length;i++) {
-            Map<String,Object> map= new HashMap<>();
-            map.put("question",questions[i]);
-            map.put("answer",answers[i]);
-            list.add(map);
-        }
-        JSONArray jsonArray = new JSONArray(list);
-        ask = jsonArray.toString();
-        System.out.println(ask);
-
-        ProductDetailNew productDetailNew = new ProductDetailNew(null,pid,desc,preferential,attention,
-                null,ask);
         return null;
     }
 
@@ -234,7 +226,17 @@ public class ProductService {
     /**
      * 修改产品详情
      */
-    public Product editProDetail(Product product){
+    public Product editProDetail(Long pid ,String desc,String preferential,String attention,
+                                 String[] questions,String[] answers) throws Exception{
+        String ask = twoListParseToJson(questions,answers,"question","answer");
+        ProductDetailNew productDetailNew = new ProductDetailNew(null,pid.intValue(),desc,preferential,attention,
+                0,ask);
+        ProductDetailNewExample example = new ProductDetailNewExample();
+        example.or().andPidEqualTo(pid.intValue());
+        int count = productDetailNewMapper.updateByExampleSelective(productDetailNew,example);
+        if(count != 1){
+            throw new Exception("添加产品详情出错");
+        }
 
         return null;
     }
@@ -244,7 +246,22 @@ public class ProductService {
         ProductService productService = ac.getBean(ProductService.class);
         String[] questions = {"问题1","问题2","问题3"};
         String[] answer = {"回答1","回答2","回答3"};
-        productService.addProDetail(null,null,null,null,questions,answer);
+    }
+
+    public static String twoListParseToJson(String[] one,String[] two,String oneName,String twoName) throws Exception{
+        String ask = "";
+        if(one.length != two.length){
+            throw new Exception("长度不同");
+        }
+        List<Object> list = new ArrayList<>();
+        for (int i = 0;i<one.length;i++) {
+            Map<String,Object> map= new HashMap<>();
+            map.put(oneName,one[i]);
+            map.put(twoName,two[i]);
+            list.add(map);
+        }
+        JSONArray jsonArray = new JSONArray(list);
+        return jsonArray.toString();
     }
 
 }

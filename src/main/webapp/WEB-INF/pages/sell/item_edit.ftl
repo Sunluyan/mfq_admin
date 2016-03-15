@@ -70,6 +70,11 @@
                     <a rel="popover" data-content="<img src=''/>" href=""
                        target="_blank" class="text-error img-link"></a></span></br>
                     </button>
+
+                    <input type="file" id="file1" name="beautiful" value=""><span class="help-inline">
+                    <a rel="popover" data-content="<img src=''/>" href=""
+                       target="_blank" class="text-error img-link"></a></span></br>
+                    </button>
                 </div>
             </div>
 
@@ -110,23 +115,17 @@
                     <input type="hidden" value="${rootId}" name="rootId" id="rid"/>
                     <input type="hidden" value="${classId}" name="classifyId" id="cid"/>
                     <select id='classify' name="classify">
-                    <#--<#list classify as cs>
-                        <option value="${cs.id}" <#if ((cs.id))== ((classId))>selected</#if> >${cs.name}</option>
-                    </#list> -->
                     </select>
 
                     <select id='classify2' name="classify2">
                         <option value="0">全部</option>
-                    <#--<#list classify as cs>
-                        <option value="${cs.id}" <#if ((cs.id))== ((classId))>selected</#if> >${cs.name}</option>
-                    </#list>  -->
+                    </select>
+                    <select name="type2">
+                        <option value="激光">激光</option>
+                        <option value="针剂">针剂</option>
+                        <option value="手术">手术</option>
                     </select>
 
-                    <#--<select name="type2">-->
-                        <#--<option value="激光">激光</option>-->
-                        <#--<option value="针剂">针剂</option>-->
-                        <#--<option value="手术">手术</option>-->
-                    <#--</select>-->
                 </div>
             </div>
 

@@ -46,10 +46,11 @@
                     <tr>
                         <td>订单ID</td>
                         <td>订单号</td>
+						<td>成单日期</td>
                         <td>产品名称</td>
                         <td>订单总额</td>
                         <td>订单状态</td>
-						<td>安全码</td>
+						<td>验证码</td>
                         <td>在线支付</td>
                         <td>订单类型</td>
                         <td>用户</td>
@@ -59,6 +60,7 @@
                     <tr>
                         <td>${order.id}</td>
                         <td>${order.orderNo}</td>
+						<td>${order.createdAt?string("yyyy-MM-dd HH:mm:ss")}</td>
                         <td>
                         	<#list pmap?keys as key>
                         		<#if key == order.pid>

@@ -541,7 +541,7 @@
       and order_info.status=#{status}
     </if>
      and order_info.status NOT IN (0,3)
-    order by id desc limit #{start}, #{pagesize}
+    order by order_info.created_at desc limit #{start}, #{pagesize}
   </select>
 
   <update id="updateOrderStatusSafe">

@@ -91,6 +91,8 @@
         <mapper resource="mybatis/mapping/InterviewInfoMapper.xml"/>
         <mapper resource="mybatis/mapping/ProFqRecordMapper.xml"/>
         <mapper resource="mybatis/mapping/ActivityMapper.xml"/>
+        <mapper resource="mybatis/mapping/ProductImageMapper.xml"/>
+        <mapper resource="mybatis/mapping/ProductDetailNewMapper.xml"/>
 
     </mappers>
 

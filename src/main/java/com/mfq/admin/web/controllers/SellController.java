@@ -155,12 +155,13 @@ public class SellController extends BaseController {
     public String saveItem(
             @RequestParam(value = "id", required = false) Long id,
             @RequestParam(value = "name", required = true) String name,
-            @RequestParam(value = "files") MultipartFile[] file,
-            @RequestParam(value = "before") MultipartFile before,
-            @RequestParam(value = "after") MultipartFile after,
-            @RequestParam(value = "surgery") MultipartFile surgery,
-            @RequestParam(value = "detail-images") MultipartFile[] detailImages,
-            @RequestParam(value = "detail") String desc,
+            @RequestParam(value = "files",required = true) MultipartFile[] file,
+            @RequestParam(value = "before",required = true) MultipartFile before,
+            @RequestParam(value = "after",required = true) MultipartFile after,
+            @RequestParam(value = "beautiful",required = true) MultipartFile beautiful,//美丽日记中的其他内容
+            @RequestParam(value = "surgery",required = true) MultipartFile surgery,
+            @RequestParam(value = "detail-images",required = true) MultipartFile[] detailImages,
+            @RequestParam(value = "desc") String desc,
 
             @RequestParam(value = "classify", required = true) int rootId,
             @RequestParam(value = "classify2", required = true) int classifyId,
@@ -177,10 +178,10 @@ public class SellController extends BaseController {
             @RequestParam(value = "dateEnd", required = true) String dateEnd,
             @RequestParam(value = "fq", required = true) Boolean fq,
             @RequestParam(value = "flag", defaultValue = "0") int flag,//首页推荐
-            @RequestParam(value = "question", defaultValue = "") String[] question,//首页推荐
-            @RequestParam(value = "answer", defaultValue = "") String[] answer,//首页推荐
+            @RequestParam(value = "question", defaultValue = "") String[] question,
+            @RequestParam(value = "answer", defaultValue = "") String[] answer,
 
-            @RequestParam(value = "warnings", defaultValue = "") String warning,
+            @RequestParam(value = "warnings", defaultValue = "") String warnings,
             @RequestParam(value = "preferential", defaultValue = "") String preferential,
             Model model) {
 
@@ -200,8 +201,46 @@ public class SellController extends BaseController {
                     imgs[i] = "";
                 }
             }
+            String[] details = new String[detailImages.length];
+            for (int i = 0; i < details.length; i++) {
+                if(!detailImages[i].isEmpty()){
+                    File tmpFile = new File("/tmp/" + UUID.randomUUID().toString());
+                    detailImages[i].transferTo(tmpFile);
+                    details[i] = QiniuManipulater.qiniuUploadProdImg(tmpFile);
+                } else {
+                    details[i] = "";
+                }
+            }
+            String beforeUrl = "";
+            if(!before.isEmpty()){
+                File tmpFile = new File("/tmp/" + UUID.randomUUID().toString());
+                before.transferTo(tmpFile);
+                beforeUrl = QiniuManipulater.qiniuUploadProdImg(tmpFile);
+            }
+            String afterUrl = "";
+            if(!after.isEmpty()){
+                File tmpFile = new File("/tmp/" + UUID.randomUUID().toString());
+                after.transferTo(tmpFile);
+                afterUrl = QiniuManipulater.qiniuUploadProdImg(tmpFile);
+            }
+            String surgeryUrl = "";
+            if(!surgery.isEmpty()){
+                File tmpFile = new File("/tmp/" + UUID.randomUUID().toString());
+                surgery.transferTo(tmpFile);
+                surgeryUrl = QiniuManipulater.qiniuUploadProdImg(tmpFile);
+            }
+            String beautifulUrl = "";
+            if(!afterUrl.isEmpty()){
+                File tmpFile = new File("/tmp/" + UUID.randomUUID().toString());
+                beautiful.transferTo(tmpFile);
+                beautifulUrl = QiniuManipulater.qiniuUploadProdImg(tmpFile);
+            }
+            sellService.saveProImages(id,imgs,beforeUrl,afterUrl,beautifulUrl,surgeryUrl,details);
+            //上传完图片之后
 
-            //用最精细的类别
+
+
+            //用二级分类
             if (classifyId != 0) {
                 rootId = classifyId;
             }
@@ -211,11 +250,14 @@ public class SellController extends BaseController {
                 //修改
                 productService.editPro(id, name, rootId, hospitalId, cityId, flag, imgs[0], fq, price, marketPrice, start,
                         end, totalNum, type, type2, isOnline);
+                productService.editProDetail(id,desc,preferential,warnings,question,answer);
 
             } else {
                 //添加
                 productService.addPro(name, rootId, hospitalId, cityId, flag, imgs[0], fq, price, marketPrice, start,
                         end, totalNum, type, type2, isOnline);
+                productService.addProDetail(id,desc,preferential,warnings,question,answer);
+
             }
 
 

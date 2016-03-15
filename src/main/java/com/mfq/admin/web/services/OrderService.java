@@ -103,8 +103,6 @@ public class OrderService {
             orders = mapper.findByPageByHospital(orderNo, uid,
                     securityCode, status, ob, oe, start, LoginUser.getHospitalId(), PageSize);
         } else {
-
-
             orders = mapper.findByPage(orderNo, uid,
                     securityCode, status, ob, oe, start, PageSize);
 
