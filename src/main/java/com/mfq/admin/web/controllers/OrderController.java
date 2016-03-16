@@ -99,15 +99,27 @@ public class OrderController extends BaseController {
             @RequestParam(value = "mobile", defaultValue = "") String mobile,
             @RequestParam(value = "securityCode", defaultValue = "") String securityCode,
 			@RequestParam(value = "status", defaultValue = "100") int status,
+			@RequestParam(value = "ob", required = false) String ob,
+			@RequestParam(value = "oe", required = false) String oe,
             Model model) {
 		try {
+
+			if (StringUtils.isBlank(ob)) {
+				String date = DateUtil.formatShort(DateUtil.addDay(new Date(), -1));
+				Date d = DateUtil.convertShort(date);
+				ob = DateUtil.formatLong(d);
+			}
+
+			if (StringUtils.isBlank(oe)) {
+				oe = DateUtil.formatLong(new Date());
+			}
 
 			OrderStatus orderStatus = OrderStatus.fromValue(status);
 			if(status == 0){
 				orderStatus = OrderStatus.NONE;
 			}
 			orderService.findByPage(orderNo, mobile, securityCode,
-					orderStatus.getValue(), page, null, null, model);
+					orderStatus.getValue(), page, ob, oe, model);
 
 			model.addAttribute("status",status);
 		}catch (Exception e){
