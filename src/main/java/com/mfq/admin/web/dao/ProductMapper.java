@@ -18,7 +18,7 @@ public interface ProductMapper {
 
     int insert(Product record);
 
-    int insertSelective(Product record);
+    long insertSelective(Product record);
 
     List<Product> selectByExample(ProductExample example);
 
@@ -40,6 +40,8 @@ public interface ProductMapper {
                                        @Param("orderby")String orderby);
 
     long findByPageAndExampleCount(@Param("example")ProductExample example);
+
+    long lastId();
 
 
 }

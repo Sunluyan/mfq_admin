@@ -174,17 +174,14 @@ public class ProductService {
      BigDecimal price, BigDecimal marketPrice,  Date dateStart, Date dateEnd,
      Long totalNum , Boolean online, Date createdAt, Date updatedAt
      */
-    public Integer addPro(String name, Integer tid, Long hosId, Integer cityId, Integer flag,
+    public Long addPro(String name, Integer tid, Long hosId, Integer cityId, Integer flag,
                           String img, Boolean isFq, BigDecimal price, BigDecimal marketPrice,
                           Date start, Date end,Long totalNum,int type,String type2,
                           Boolean isOnline) throws Exception{
         Product product = new Product(null,name,tid,hosId,cityId,flag,img, ProductType.fromId(type),type2,isFq,price,marketPrice,
                 start,end,totalNum,isOnline,new Date(),new Date());
-        Integer count = mapper.insertSelective(product);
-        if(count != 1){
-            throw new Exception("添加产品失败");
-        }
-        return count;
+        mapper.insertSelective(product);
+        return mapper.lastId();
     }
 
     /**
@@ -197,6 +194,7 @@ public class ProductService {
         Product product = new Product(id,name,tid,hosId,cityId,flag,img, ProductType.fromId(type),type2,isFq,price,marketPrice,
                 start,end,totalNum,isOnline,null,new Date());
         Integer count = mapper.updateByPrimaryKeySelective(product);
+
         if(count != 1){
             throw new Exception("修改产品失败");
         }
@@ -235,7 +233,7 @@ public class ProductService {
         example.or().andPidEqualTo(pid.intValue());
         int count = productDetailNewMapper.updateByExampleSelective(productDetailNew,example);
         if(count != 1){
-            throw new Exception("添加产品详情出错");
+            throw new Exception("修改产品详情出错");
         }
 
         return null;

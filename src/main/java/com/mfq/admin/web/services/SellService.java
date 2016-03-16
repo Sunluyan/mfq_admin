@@ -48,6 +48,8 @@ public class SellService {
     ActivityMapper activityMapper;
     @Resource
     ProductImageService productImageService;
+    @Resource
+    ProductDetailNewMapper productDetailNewMapper;
 
 
     private static final Logger logger = LoggerFactory
@@ -57,10 +59,11 @@ public class SellService {
 
     public void buildEditModel(Long id, Model model) {
         Product item = null;
-        ProductDetail detail = null;
+        ProductDetailNew detail = null;
+
         if (id == null || id == 0) {
             item = new Product();
-            detail = new ProductDetail();
+            detail = new ProductDetailNew();
             item.setTotalNum(0l);
             item.setViewNum(0l);
             item.setSaleNum(0l);
@@ -70,8 +73,13 @@ public class SellService {
             item.setDateStart(new Date()); // 默认开始日期
             item.setDateEnd(DateUtil.addYear(new Date(), 1)); // 默认结束日期－有效期一年
         } else {
+
             item = productService.findById(id);
-            detail = productService.findDetailByPid(id);
+            ProductDetailNewExample example = new ProductDetailNewExample();
+            example.or().andPidEqualTo(id.intValue());
+            detail = productDetailNewMapper.selectByExampleWithBLOBs(example).get(0);
+
+
         }
         model.addAttribute("item", item); // 产品
         model.addAttribute("detail", detail); // 产品详情
@@ -87,7 +95,8 @@ public class SellService {
         productImgExample.setOrderByClause(" `index` ");
         List<ProductImg> imgs = productImgMapper.selectByExample(productImgExample);
 
-        model.addAttribute("item_img", imgs);
+        model.addAttribute("item_img", imgs);//产品主要图片
+        productImageService.getImages(model,id);
 
         ProductClassifyExample productClassifyExample = new ProductClassifyExample();
         List<ProductClassify> classify = productClassifyMapper.selectByExample(productClassifyExample);
@@ -322,7 +331,8 @@ public class SellService {
         return d;
     }
 
-	public long saveProductImg(long id, String[] imgs) {
+    @Transactional
+	public long saveProductImg(long id, String[] imgs) throws Exception{
 		if(id < 1){
 			return 0;
 		}
@@ -446,6 +456,7 @@ public class SellService {
     }
 
 
+    @Transactional
     public void saveProImages(Long pid,String[] proImages,String before,String after,String beautiful,
                               String surgery,String[] detail) throws Exception{
         saveProductImg(pid,proImages);

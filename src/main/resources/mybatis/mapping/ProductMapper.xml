@@ -585,4 +585,12 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </select>
+
+  <select id="lastId" resultType="long">
+    select
+    <include refid="Base_Column_List" />
+    from product
+    order by `id` desc
+    limit 0,1
+  </select>
 </mapper>

@@ -235,8 +235,6 @@ public class SellController extends BaseController {
                 beautiful.transferTo(tmpFile);
                 beautifulUrl = QiniuManipulater.qiniuUploadProdImg(tmpFile);
             }
-            sellService.saveProImages(id,imgs,beforeUrl,afterUrl,beautifulUrl,surgeryUrl,details);
-            //上传完图片之后
 
 
 
@@ -246,7 +244,7 @@ public class SellController extends BaseController {
             }
 
 
-            if (id != 0 && id != null) {
+            if (id != null && id!=0) {
                 //修改
                 productService.editPro(id, name, rootId, hospitalId, cityId, flag, imgs[0], fq, price, marketPrice, start,
                         end, totalNum, type, type2, isOnline);
@@ -254,12 +252,15 @@ public class SellController extends BaseController {
 
             } else {
                 //添加
-                productService.addPro(name, rootId, hospitalId, cityId, flag, imgs[0], fq, price, marketPrice, start,
+                id = productService.addPro(name, rootId, hospitalId, cityId, flag, imgs[0], fq, price, marketPrice, start,
                         end, totalNum, type, type2, isOnline);
                 productService.addProDetail(id,desc,preferential,warnings,question,answer);
-
             }
 
+            productService.addProFqRecord(id.intValue(),fq_price);
+
+            //上传图片
+            sellService.saveProImages(id,imgs,beforeUrl,afterUrl,beautifulUrl,surgeryUrl,details);
 
             return "redirect:/sell/items/";
         } catch (Exception e) {

@@ -34,25 +34,21 @@
             <div class="control-group">
                 <label class="control-label" for="cname">产品图片</label>
                 <div class="controls">
-                    <input type="file" id="file1" name="proImg" value="${item.img!}"><span class="help-inline">
-
-                    <a rel="popover" data-content="<img src='${item.img!}'/>" href="${item.img!}"
-                       target="_blank" class="text-error img-link">${item.img!}</a></span></br>
-
                     <input type="file" name="files" value="${item_img[0].img!}"><span class="help-inline">
-
                     <a rel="popover" data-content="<img src='${item_img[0].img!}'/>" href="${item_img[0].img!}"
                        target="_blank" class="text-error img-link">${item_img[0].img!}</a></span></br>
 
                     <input type="file" name="files" value="${item_img[1].img!}"><span class="help-inline">
-
                     <a rel="popover" data-content="<img src='${item_img[1].img!}'/>" href="${item_img[1].img!}"
                        target="_blank" class="text-error img-link">${item_img[1].img!}</a></span></br>
 
                     <input type="file" name="files" value="${item_img[2].img!}"><span class="help-inline">
-
                     <a rel="popover" data-content="<img src='${item_img[2].img!}'/>" href="${item_img[2].img!}"
                        target="_blank" class="text-error img-link">${item_img[2].img!}</a></span></br>
+
+                    <input type="file" name="files" value="${item_img[3].img!}"><span class="help-inline">
+                    <a rel="popover" data-content="<img src='${item_img[3].img!}'/>" href="${item_img[3].img!}"
+                       target="_blank" class="text-error img-link">${item_img[3].img!}</a></span></br>
 
                     </button>
                 </div>
@@ -61,19 +57,19 @@
             <div class="control-group">
                 <label class="control-label" for="cname">美丽日记整容前后</label>
                 <div class="controls">
-                    <input type="file" id="file1" name="before" value=""><span class="help-inline">
-                    <a rel="popover" data-content="<img src=''/>" href=""
-                       target="_blank" class="text-error img-link"></a></span></br>
+                    <input type="file" id="file1" name="before" value="${before}"><span class="help-inline">
+                    <a rel="popover" data-content="<img src='${before}'/>" href="${before}"
+                       target="_blank" class="text-error img-link">${before}</a></span></br>
                     </button>
 
-                    <input type="file" id="file1" name="after" value=""><span class="help-inline">
-                    <a rel="popover" data-content="<img src=''/>" href=""
-                       target="_blank" class="text-error img-link"></a></span></br>
+                    <input type="file" id="file1" name="after" value="${after}"><span class="help-inline">
+                    <a rel="popover" data-content="<img src='${after}'/>" href="${after}"
+                       target="_blank" class="text-error img-link">${after}</a></span></br>
                     </button>
 
-                    <input type="file" id="file1" name="beautiful" value=""><span class="help-inline">
-                    <a rel="popover" data-content="<img src=''/>" href=""
-                       target="_blank" class="text-error img-link"></a></span></br>
+                    <input type="file" id="file1" name="beautiful" value="${beautiful}"><span class="help-inline">
+                    <a rel="popover" data-content="<img src='${beautiful}'/>" href="${beautiful}"
+                       target="_blank" class="text-error img-link">${beautiful}</a></span></br>
                     </button>
                 </div>
             </div>
@@ -81,20 +77,31 @@
             <div class="control-group">
                 <label class="control-label" for="cname">手术纪实</label>
                 <div class="controls">
-                    <input type="file" id="file1" name="surgery" value=""><span class="help-inline">
-                    <a rel="popover" data-content="<img src=''/>" href=""
-                       target="_blank" class="text-error img-link"></a></span></br>
+                    <input type="file" id="file1" name="surgery" value="${surgery}"><span class="help-inline">
+                    <a rel="popover" data-content="<img src='${surgery}'/>" href="${surgery}"
+                       target="_blank" class="text-error img-link">${surgery}</a></span></br>
                 </div>
             </div>
 
             <div class="control-group">
                 <label class="control-label" for="cname">产品详情图片</label>
                 <div class="controls">
-                    <div class="detail-image">
-                        <input type="file" id="file1" name="files" value=""><span class="help-inline">
-                        <a rel="popover" data-content="<img src=''/>" href="" target="_blank" class="text-error img-link"></a></span>
-                        </br>
-                    </div>
+                        <#list details as detail>
+                            <div class="detail-image">
+                                <input type="file" id="file1" name="detail-images" value="${detail}"><span class="help-inline">
+                                <a rel="popover" data-content="<img src='${detail}'/>" href="${detail}" target="_blank" class="text-error img-link">${detail}</a></span>
+                                </br>
+                            </div>
+                        </#list>
+                            <#if details == null || details.size() == 0>
+                                <div class="detail-image">
+                                    <input type="file" id="file1" name="detail-images" value=""><span class="help-inline">
+                                <a rel="popover" data-content="<img src=''/>" href="" target="_blank" class="text-error img-link"></a></span>
+                                    </br>
+                                </div>
+                            </#if>
+
+
                     <button class="btn add-detail-image">添加</button>
 
                 </div>
@@ -104,7 +111,7 @@
             <div class="control-group">
                 <label class="control-label" for="cname">产品简介</label>
                 <div class="controls">
-                    <input type="text" name="desc">
+                    <input type="text" name="desc" value="${detail.description}">
                 </div>
             </div>
 
@@ -267,10 +274,10 @@
                             </div>
                             <div id="collapseOne" class="accordion-body collapse">
                                 <div class="accordion-inner">
-                                    <div class="question-answer">
+                                    <div class="question-answer" >
                                         <textarea class="question"name="question" style="width:300px;"></textarea>
                                         <textarea class="answer" name="answer"style="width:300px;"></textarea>
-                                        <button class="btn btn-danger">删除</button>
+                                        <button class="btn btn-danger delete-answer">删除</button>
                                         <br>
                                         <br>
                                     </div>
@@ -291,14 +298,14 @@
             <div class="control-group">
                 <label class="control-label" for="lname">注意事项</label>
                 <div class="controls">
-                    <textarea class="textarea" style="width:400px;" rows="5"></textarea>
+                    <textarea class="textarea" style="width:400px;" rows="5" name="warnings">${detail.attention}</textarea>
                 </div>
             </div>
 
             <div class="control-group">
                 <label class="control-label" for="lname">优惠策略</label>
                 <div class="controls">
-                    <textarea class="textarea" style="width:400px;" rows="5"></textarea>
+                    <textarea class="textarea" style="width:400px;" rows="5" name="preferential">${detail.preferential}</textarea>
                 </div>
             </div>
 
@@ -457,7 +464,8 @@
 
     $(".add-detail-image").click(function(){
         var $detailImage = $(".detail-image").last().clone(true);
-        $detailImage.find("input").attr("value","").find("a").attr("data-content","").attr("href","")
+        $detailImage.find("input").attr("value","")
+        $detailImage.find("a").attr("data-content","").attr("href","").html("")
         $(".detail-image").last().append($detailImage)
         return false;
     })
@@ -465,6 +473,25 @@
         var $question = $(".question-answer").last().clone(true);
         $question.find(".question").val("").find(".answer").val("")
         $(".question-answer").last().append($question);
+        return false;
+    })
+
+    var ask = ${detail.ask};
+    function answers(){
+        var oldAnswer = $(".question-answer").last();
+        oldAnswer.find(".question").val(ask[0].question)
+        oldAnswer.find(".answer").val(ask[0].question)
+        for(var i = 1;i<ask.length;i++){
+            var answers = $(".question-answer").last().clone();
+            answers.find(".question").val(ask[i].question)
+            answers.find(".answer").val(ask[i].answer)
+            answers.show();
+            $(".question-answer").last().after(answers);
+        }
+    }
+    answers()
+    $(".delete-answer").click(function(){
+        $(this).parent().remove();
         return false;
     })
 

@@ -350,5 +350,10 @@ public class Product {
         this.online = online;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.hospitalPay = BigDecimal.valueOf(0);
+        this.onlinePay = BigDecimal.valueOf(0);
+        this.pPrice = BigDecimal.valueOf(0);
+        this.pNum = 12;
+        this.remainNum = totalNum;
     }
 }
