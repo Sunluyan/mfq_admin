@@ -591,7 +591,6 @@ public class UserService {
         Date today = DateUtil.getToday();
         OrderInfoExample example = new OrderInfoExample();
 
-
         List<Integer> status = Lists.newArrayList();
         status.add(OrderStatus.PAY_OK.getValue());
         status.add(OrderStatus.ORDER_OK.getValue());

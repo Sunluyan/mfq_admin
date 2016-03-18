@@ -9,6 +9,9 @@
 }
 </style>
 
+<link href="/static/bootstrap-3.3.4/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+<script type="text/javascript" src="/static/bootstrap-3.3.4/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+
 <div class="container" id="enlarge-body">
     <div class="container">
 
@@ -20,8 +23,25 @@
 			<div class="input-group-addon">手机号码：<input type="text" class="form-control" name="mobile" value="${mobile}" size="20"></div>
 	    </div>
 		<div class="input-group">
-			<div class="input-group-addon">安&nbsp;&nbsp;全&nbsp;&nbsp;码：<input type="text" class="form-control" name="securityCode" value="${securityCode}" size="20"></div>
+			<div class="input-group-addon">验&nbsp;&nbsp;证&nbsp;&nbsp;码：<input type="text" class="form-control" name="securityCode" value="${securityCode}" size="20"></div>
 	    </div>
+        <div class="input-group">
+            <div class="input-group-addon">生单时间：
+                <div class="input-append date" id="ob" name="ob"
+                     data-date="${ob!}" data-date-format="yyyy-mm-dd">
+                    <input class="span2" id="date1" name="ob" size="16" type="text"
+                           value="${ob!}">
+                    <span class="add-on"><i class="icon-th"></i></span>
+                </div>
+                至
+                <div class="input-append date" id="oe" name="oe"
+                     data-date="${oe!}" data-date-format="yyyy-mm-dd">
+                    <input class="span2" id="date2" name="oe" size="16" type="text"
+                           value="${oe!}">
+                    <span class="add-on"><i class="icon-th"></i></span>
+                </div>
+            </div>
+        </div>
         <div class="input-group">
             <div class="input-group-addon">订单状态：
                 <select name="status">
@@ -53,6 +73,7 @@
 						<td>验证码</td>
                         <td>在线支付</td>
                         <td>订单类型</td>
+                        <td>下单时间</td>
                         <td>用户</td>
                         <td>操作</td>
                     </tr>
@@ -78,6 +99,7 @@
                         </td>
 						<td>${order.securityCode}</td>
                         <td>${order.onlinePay}</td>
+                        <td>${order.createdAt?string("yyyy-MM-dd")!}</td>
                         <td>
                         	<#if order.payType == 1>
 								在线＋到院
@@ -125,6 +147,28 @@
 </div>
 
 <script>
+
+    $('#ob').datetimepicker({
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0,
+    });
+    $('#oe').datetimepicker({
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+
     function pageSubmit(pageNo){
     	document.getElementById("page").value=pageNo;
 		document.orderform.submit();
