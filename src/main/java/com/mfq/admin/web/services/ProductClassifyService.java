@@ -49,7 +49,7 @@ public class ProductClassifyService {
 		if(rootId == 0){
 			example.or().andRootIdEqualTo(rootId);
 		}else{
-			example.or().andRootIdNotEqualTo(rootId);
+			example.or().andRootIdNotEqualTo(0);
 		}
 		example.setOrderByClause("root_id desc");
 		return mapper.selectByExample(example);

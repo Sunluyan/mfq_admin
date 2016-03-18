@@ -476,8 +476,9 @@
         return false;
     })
 
-    var ask = ${detail.ask};
+    var ask = "${detail.ask}";
     function answers(){
+        if(ask == "" || ask == null)return;
         var oldAnswer = $(".question-answer").last();
         oldAnswer.find(".question").val(ask[0].question)
         oldAnswer.find(".answer").val(ask[0].question)
