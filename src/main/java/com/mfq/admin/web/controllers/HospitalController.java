@@ -104,6 +104,7 @@ public class HospitalController {
     		@RequestParam(value = "name", defaultValue = "") String name,
     		@RequestParam(value = "img_file") MultipartFile imgFile,
     		@RequestParam(value = "address", defaultValue = "") String address,
+    		@RequestParam(value = "desc", defaultValue = "") String desc,
     		@RequestParam(value = "cityname",defaultValue = "") String cityname,
     		Model model){
     	try{
@@ -117,8 +118,7 @@ public class HospitalController {
 	        } else { // 判断是否需要更新img
 	            img = "";
 	        }
-	        AreaCity city = cityService.findByName(cityname);
-	    	Hospital hospital = service.saveHospital(hospitalId, name, img, address,city.getId());
+	    	Hospital hospital = service.saveHospital(hospitalId, name, img, address,desc);
 	    	model.addAttribute("hospital", hospital);
 	    	return "redirect:/hospital/list/";
 	    	

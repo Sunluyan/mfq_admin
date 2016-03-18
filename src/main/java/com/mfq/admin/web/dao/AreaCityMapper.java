@@ -5,9 +5,11 @@ import com.mfq.admin.web.bean.AreaCity;
 import com.mfq.admin.web.bean.example.AreaCityExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Component;
 
 
 @MQMDao
+@Component
 public interface AreaCityMapper {
     int countByExample(AreaCityExample example);
 

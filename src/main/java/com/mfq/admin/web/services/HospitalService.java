@@ -6,7 +6,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import com.mfq.admin.web.bean.Hospital;
-import com.mfq.admin.web.bean.example.HospitalExample;
+import com.mfq.admin.web.bean.HospitalExample;
 import com.mfq.admin.web.dao.HospitalMapper;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
@@ -49,29 +49,29 @@ public class HospitalService {
 		return mapper.selectByExample(example);
 	}
 
-	public Hospital saveHospital(long hospitalId, String name, String img, String address,long cityid) {
-		Hospital hospital = null;
+	public Hospital saveHospital(long hospitalId, String name, String img, String address,String desc) {
+		Hospital hospital ;
 		if(hospitalId > 0){
 			hospital = mapper.selectByPrimaryKey(hospitalId);
-			saveOrUpdateHospital(hospital, name, img, address, cityid);
-			mapper.updateByPrimaryKey(hospital);
+			saveOrUpdateHospital(hospital, name, img, address,desc);
+			mapper.updateByPrimaryKeySelective(hospital);
 		}else{
 			hospital = new Hospital();
-			saveOrUpdateHospital(hospital, name, img, address, cityid);
-			mapper.insert(hospital);
+			saveOrUpdateHospital(hospital, name, img, address,desc);
+			mapper.insertSelective(hospital);
 		}
 		return hospital;
 	}
-	
-	private Hospital saveOrUpdateHospital(Hospital hospital, String name, String img, String address,long cityid){
+		private Hospital saveOrUpdateHospital(Hospital hospital, String name, String img, String address,
+										  String desc){
 		
 		hospital.setName(name);
 		hospital.setAddress(address);
 		if (StringUtils.isNotBlank(img)) {
 			hospital.setImg(img);
         }
-		hospital.setCityId(cityid);
 		hospital.setUpdatedAt(new Date());
+		hospital.setDescription(desc);
 		return hospital;
 	}
 

@@ -9,8 +9,8 @@
     <result column="address" jdbcType="VARCHAR" property="address" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
   </resultMap>
-
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -70,9 +70,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, name, city_id, img, address, created_at, updated_at
+    id, name, city_id, img, address, created_at, updated_at, description
   </sql>
-  <select id="selectByExample" parameterType="com.mfq.admin.web.bean.example.HospitalExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.mfq.admin.web.bean.HospitalExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
@@ -96,7 +96,7 @@
     delete from hospital
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.mfq.admin.web.bean.example.HospitalExample">
+  <delete id="deleteByExample" parameterType="com.mfq.admin.web.bean.HospitalExample">
     delete from hospital
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -105,10 +105,10 @@
   <insert id="insert" parameterType="com.mfq.admin.web.bean.Hospital">
     insert into hospital (id, name, city_id, 
       img, address, created_at, 
-      updated_at)
+      updated_at, description)
     values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{cityId,jdbcType=BIGINT}, 
       #{img,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{createdAt,jdbcType=TIMESTAMP}, 
-      #{updatedAt,jdbcType=TIMESTAMP})
+      #{updatedAt,jdbcType=TIMESTAMP}, #{description,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.mfq.admin.web.bean.Hospital">
     insert into hospital
@@ -134,6 +134,9 @@
       <if test="updatedAt != null">
         updated_at,
       </if>
+      <if test="description != null">
+        description,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -157,9 +160,12 @@
       <if test="updatedAt != null">
         #{updatedAt,jdbcType=TIMESTAMP},
       </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.mfq.admin.web.bean.example.HospitalExample" resultType="java.lang.Integer">
+  <select id="countByExample" parameterType="com.mfq.admin.web.bean.HospitalExample" resultType="java.lang.Integer">
     select count(*) from hospital
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -189,6 +195,9 @@
       <if test="record.updatedAt != null">
         updated_at = #{record.updatedAt,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.description != null">
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -202,7 +211,8 @@
       img = #{record.img,jdbcType=VARCHAR},
       address = #{record.address,jdbcType=VARCHAR},
       created_at = #{record.createdAt,jdbcType=TIMESTAMP},
-      updated_at = #{record.updatedAt,jdbcType=TIMESTAMP}
+      updated_at = #{record.updatedAt,jdbcType=TIMESTAMP},
+      description = #{record.description,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -228,6 +238,9 @@
       <if test="updatedAt != null">
         updated_at = #{updatedAt,jdbcType=TIMESTAMP},
       </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -238,8 +251,8 @@
       img = #{img,jdbcType=VARCHAR},
       address = #{address,jdbcType=VARCHAR},
       created_at = #{createdAt,jdbcType=TIMESTAMP},
-      updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      description = #{description,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
-
 </mapper>

@@ -2,13 +2,15 @@ package com.mfq.admin.web.dao;
 
 import com.mfq.admin.web.annotation.MQMDao;
 import com.mfq.admin.web.bean.Hospital;
-import com.mfq.admin.web.bean.example.HospitalExample;
+import com.mfq.admin.web.bean.HospitalExample;
 import java.util.List;
+
+import lombok.extern.apachecommons.CommonsLog;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
-@MQMDao
 @Component
+@MQMDao
 public interface HospitalMapper {
     int countByExample(HospitalExample example);
 

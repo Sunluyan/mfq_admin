@@ -40,13 +40,21 @@
         <p/>
       </div>
 
-      <div class="control-group">
-        <label class="control-label" for="cname">医院名称</label>
-        <div class="controls">
-          <input type="text" class="input-large" id="name" name="name" value="${hospital.name!}">
-          <span class="help-inline"><strong class="text-error">*</strong></span>
+        <div class="control-group">
+            <label class="control-label" for="cname">医院名称</label>
+            <div class="controls">
+                <input type="text" class="input-large" id="name" name="name" value="${hospital.name!}">
+                <span class="help-inline"><strong class="text-error">*</strong></span>
+            </div>
         </div>
-      </div>
+
+        <div class="control-group">
+            <label class="control-label" for="cname">医院简介</label>
+            <div class="controls">
+                <textarea name="desc" id="desc" style="width:250px;" rows="5">${hospital.description!}</textarea>
+                <span class="help-inline"><strong class="text-error">*</strong></span>
+            </div>
+        </div>
 
       <div class="control-group">
         <label class="control-label" for="cname">医院图片</label>
@@ -71,11 +79,13 @@
 	<div class="control-group">
 		<label class="control-label" for="alias">所属区域</label>
 		<div class="controls">
-          <select id="s_province" name="s_province"></select>  
-	    <select id="s_city" name="cityname" ></select>  
-         <script class="resources library" src="/static/js/hospital/area.js" type="text/javascript"></script>
-	    
-	    <script type="text/javascript">_init_area();</script>
+            <input type="text" class="input-large" id="address" name="cityname" value="${hospital.cityId!}">
+
+        <#--<select id="s_province" name="s_province"></select>  -->
+	    <#--<select id="s_city" name="cityname" ></select>  -->
+            <#--<script class="resources library" src="/static/js/hospital/area.js" type="text/javascript"></script>-->
+	        <#--<script type="text/javascript">_init_area();</script>-->
+
 	    </div>
 	    <div id="show"></div>
 		
@@ -125,8 +135,9 @@
   		isclick = false;
   	}
   })
-  
-  
+
+
+
   
 </script>
 

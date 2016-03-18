@@ -17,6 +17,8 @@ public class Hospital {
 
     private Date updatedAt;
 
+    private String description;
+
     public Long getId() {
         return id;
     }
@@ -71,5 +73,13 @@ public class Hospital {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description == null ? null : description.trim();
     }
 }

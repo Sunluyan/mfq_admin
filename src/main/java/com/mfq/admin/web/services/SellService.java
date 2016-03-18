@@ -8,7 +8,6 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import com.mfq.admin.web.bean.*;
-import com.mfq.admin.web.bean.example.HospitalExample;
 import com.mfq.admin.web.bean.example.ProductClassifyExample;
 import com.mfq.admin.web.bean.example.ProductExample;
 import com.mfq.admin.web.bean.example.ProductImgExample;
@@ -17,8 +16,6 @@ import com.mfq.admin.web.dao.*;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -153,11 +150,10 @@ public class SellService {
      */
     public void findByPage(long page, String orderno, String proname, String hosname, String orderby, Model model, String online) {
         long start = (page - 1) * PageSize;
-        // 商品列表
-
         //List<Product> items = productService.findByPage(start, PageSize);
         ProductExample productExample = new ProductExample();
         ProductExample.Criteria or = productExample.or();
+        or.andFlagNotEqualTo(-1);
         if (StringUtils.isNotBlank(proname)) {
             or.andNameLike("%" + proname + "%");
         }
