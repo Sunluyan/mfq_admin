@@ -26,8 +26,8 @@
             <div class="control-group">
                 <label class="control-label" for="cname">商品名称</label>
                 <div class="controls">
-                    <input type="text" maxlength="8" class="input-large" id="name" name="name" value="${item.name!}">
-                    <p class="help-inline"><strong class="text-error">*</strong>8个字以内</p>
+                    <input type="text" maxlength="12" class="input-large" id="name" name="name" value="${item.name!}">
+                    <p class="help-inline"><strong class="text-error">*</strong>12个字以内</p>
                 </div>
             </div>
 
@@ -60,17 +60,14 @@
                     <input type="file" id="file1" name="before" value="${before}"><span class="help-inline">
                     <a rel="popover" data-content="<img src='${before}'/>" href="${before}"
                        target="_blank" class="text-error img-link">${before}</a></span></br>
-                    </button>
 
                     <input type="file" id="file1" name="after" value="${after}"><span class="help-inline">
                     <a rel="popover" data-content="<img src='${after}'/>" href="${after}"
                        target="_blank" class="text-error img-link">${after}</a></span></br>
-                    </button>
 
                     <input type="file" id="file1" name="beautiful" value="${beautiful}"><span class="help-inline">
                     <a rel="popover" data-content="<img src='${beautiful}'/>" href="${beautiful}"
                        target="_blank" class="text-error img-link">${beautiful}</a></span></br>
-                    </button>
                 </div>
             </div>
 
@@ -476,7 +473,7 @@
         return false;
     })
 
-    var ask = "${detail.ask}";
+    var ask = '${detail.ask}';
     function answers(){
         if(ask == "" || ask == null)return;
         var oldAnswer = $(".question-answer").last();
@@ -496,6 +493,15 @@
         return false;
     })
 
+    $(".img-link").hover(function () {
+        $(".img-link").popover({
+            html: true
+        })
+
+        $(this).popover("show")
+    }, function () {
+
+    })
 
 </script>
 

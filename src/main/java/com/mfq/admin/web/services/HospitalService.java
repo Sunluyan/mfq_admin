@@ -10,33 +10,34 @@ import com.mfq.admin.web.bean.HospitalExample;
 import com.mfq.admin.web.dao.HospitalMapper;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
 public class HospitalService {
 
     @Resource
-	HospitalMapper mapper;
+    HospitalMapper mapper;
 
     public Hospital findById(long id) {
         return mapper.selectByPrimaryKey(id);
     }
 
     public List<Hospital> findAll() {
-		HospitalExample example = new HospitalExample();
+        HospitalExample example = new HospitalExample();
         return mapper.selectByExample(example);
     }
-    
-    public List<Hospital> findByNameAndCity(String name,Integer id) {
-		HospitalExample example = new HospitalExample();
-		if(StringUtils.isNotBlank(name)){
-			example.or().andNameLike("%"+name+"%");
-		}
-		if(id != null){
-			example.or().andIdEqualTo((long)id);
-		}
-		System.out.println(example);
-		List<Hospital> list = mapper.selectByExample(example);
+
+    public List<Hospital> findByNameAndCity(String name, Integer id) {
+        HospitalExample example = new HospitalExample();
+        if (StringUtils.isNotBlank(name)) {
+            example.or().andNameLike("%" + name + "%");
+        }
+        if (id != null) {
+            example.or().andIdEqualTo((long) id);
+        }
+        System.out.println(example);
+        List<Hospital> list = mapper.selectByExample(example);
         return list;
     }
 
@@ -44,35 +45,66 @@ public class HospitalService {
         return mapper.insert(h);
     }
 
-	public List<Hospital> queryAll() {
-		HospitalExample example = new HospitalExample();
-		return mapper.selectByExample(example);
-	}
+    public List<Hospital> queryAll() {
+        HospitalExample example = new HospitalExample();
+        return mapper.selectByExample(example);
+    }
 
-	public Hospital saveHospital(long hospitalId, String name, String img, String address,String desc) {
-		Hospital hospital ;
-		if(hospitalId > 0){
-			hospital = mapper.selectByPrimaryKey(hospitalId);
-			saveOrUpdateHospital(hospital, name, img, address,desc);
-			mapper.updateByPrimaryKeySelective(hospital);
-		}else{
-			hospital = new Hospital();
-			saveOrUpdateHospital(hospital, name, img, address,desc);
-			mapper.insertSelective(hospital);
-		}
-		return hospital;
-	}
-		private Hospital saveOrUpdateHospital(Hospital hospital, String name, String img, String address,
-										  String desc){
-		
-		hospital.setName(name);
-		hospital.setAddress(address);
-		if (StringUtils.isNotBlank(img)) {
-			hospital.setImg(img);
+    @Transactional
+    public Hospital saveHospital(long hospitalId, String name, String img, String address, String desc, String[] details) throws Exception {
+        Hospital hospital;
+        if (hospitalId > 0) {
+            hospital = mapper.selectByPrimaryKey(hospitalId);
+            saveOrUpdateHospital(hospital, name, img, address, desc);
+
+            if (StringUtils.isNotEmpty(hospital.getDetails())) {
+                String[] oldDetails = hospital.getDetails().split(",");
+                if (oldDetails.length != 0) {
+                    for (int i = 0; i < oldDetails.length; i++) {
+                        if (StringUtils.isEmpty(details[i])) {
+                            details[i] = oldDetails[i];
+                        }
+                    }
+                }
+            }
+
+            String detail = "";
+            for (String s : details) {
+                if (StringUtils.isNotEmpty(s)) {
+                    detail += s + ",";
+                }
+            }
+
+            hospital.setDetails(detail);
+
+
+            mapper.updateByPrimaryKeySelective(hospital);
+        } else {
+            hospital = new Hospital();
+            saveOrUpdateHospital(hospital, name, img, address, desc);
+
+            String detail = "";
+            for (String s : details) {
+                detail += s + ",";
+            }
+
+            hospital.setDetails(detail);
+            mapper.insertSelective(hospital);
         }
-		hospital.setUpdatedAt(new Date());
-		hospital.setDescription(desc);
-		return hospital;
-	}
+        return hospital;
+    }
+
+    private Hospital saveOrUpdateHospital(Hospital hospital, String name, String img, String address,
+                                          String desc) {
+
+        hospital.setName(name);
+        hospital.setAddress(address);
+        if (StringUtils.isNotBlank(img)) {
+            hospital.setImg(img);
+        }
+        hospital.setUpdatedAt(new Date());
+        hospital.setDescription(desc);
+        return hospital;
+    }
 
 }

@@ -93,19 +93,7 @@ public class SellController extends BaseController {
         return "redirect:/sell/items/";
     }
 
-    @RequestMapping(value = "/sell/item/edit/", method = RequestMethod.GET)
-    public String edit(
-            @RequestParam(defaultValue = "0", required = false) Long id,
-            Model model) {
-        try {
-            sellService.buildEditModel(id, model);
-            model.addAttribute("t", 1);  //状态添加
-            return "/sell/item_edit";
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "/sell/item_edit";
-    }
+
 
     @RequestMapping(value = "/sell/upload/img/", method = {RequestMethod.POST})
     @ResponseBody
@@ -146,8 +134,21 @@ public class SellController extends BaseController {
         } catch (Exception e) {
             logger.error("classify data is error {}", e);
         }
-        logger.info("sell classify ret is {}", ret);
         return ret;
+    }
+
+    @RequestMapping(value = "/sell/item/edit/", method = RequestMethod.GET)
+    public String edit(
+            @RequestParam(defaultValue = "0", required = false) Long id,
+            Model model) {
+        try {
+            sellService.buildEditModel(id, model);
+            model.addAttribute("t", 1);  //状态添加
+            return "/sell/item_edit";
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "/sell/item_edit";
     }
 
 

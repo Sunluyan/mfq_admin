@@ -59,15 +59,40 @@
       <div class="control-group">
         <label class="control-label" for="cname">医院图片</label>
         <div class="controls">
-              <input type="file" id="img_file" name="img_file" value="${hospital.img!}"><br><span class="help-inline"><strong class="text-error">${hospital.img!}
-             <br> <img src="${hospital.img!}" class="hos-img" />
-             
-             <img src="${hospital.img!}" class="hos-img-hidden"/></strong>
-              </span>
+            <input type="file" id="file1" name="img_file" value="${hospital.img!}"><span class="help-inline">
+            <a rel="popover" data-content="<img src='${hospital.img!}'/>" href="${hospital.img!}"
+               target="_blank" class="text-error img-link">${hospital.img!}</a></span></br>
         </div>
       </div>
 
-      <div class="control-group">
+        <div class="control-group">
+            <label class="control-label" for="cname">医院详情图片</label>
+            <div class="controls">
+            <#list details as detail>
+                <div class="detail-image">
+                    <input type="file" id="file1" name="details" class="details" value="${detail}"><span class="help-inline">
+                    <a rel="popover"  data-content="<img src='${detail}'/>" href="${detail}" target="_blank" class="text-error img-link link">${detail}</a></span>
+                    </br>
+                </div>
+            </#list>
+
+            <#if details == "">
+                <div class="detail-image">
+                    <input type="file" id="file1" name="details" class="details" value=""><span class="help-inline">
+                    <a rel="popover" data-content="<img src=''/>" href="" target="_blank" class="text-error img-link link"></a></span>
+                    </br>
+                </div>
+            </#if>
+
+
+                <button class="btn add-detail-image">添加</button>
+
+            </div>
+        </div>
+
+
+
+        <div class="control-group">
         <label class="control-label" for="alias">医院地址</label>
         <div class="controls">
           <input type="text" class="input-large" id="address" name="address" value="${hospital.address!}">
@@ -131,12 +156,43 @@
   		$(this).css({
   			width:"100px",
   			height:"33px",
-  		})
+  		});
   		isclick = false;
   	}
+  });
+  $(".img-link").hover(function () {
+      $(".img-link").popover({
+          html: true
+      });
+
+      $(this).popover("show")
+  }, function () {
+      $(this).popover("hide")
+  });
+
+
+  var isChoiced = false;
+
+  if($(".link:last").attr("href") != null && $(".link:last").attr("href") != ""){
+      isChoiced = true;
+  }
+
+  $(".details:last").change(function(){
+      isChoiced = true;
+  });
+
+  $(".add-detail-image").click(function(){
+      var $detailImage = $(".detail-image").last().clone(true);
+      if(!isChoiced){
+        return false;
+      }
+
+      $detailImage.find("input").attr("value","")
+      $detailImage.find("a").attr("data-content","").attr("href","").html("")
+      $(".detail-image").last().append($detailImage)
+      isChoiced = false;
+      return false;
   })
-
-
 
   
 </script>

@@ -19,6 +19,16 @@ public class Hospital {
 
     private String description;
 
+    private String details;
+
+    public String getDetails() {
+        return details;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
+    }
+
     public Long getId() {
         return id;
     }
@@ -81,5 +91,22 @@ public class Hospital {
 
     public void setDescription(String description) {
         this.description = description == null ? null : description.trim();
+    }
+
+
+
+    @Override
+    public String toString() {
+        return "Hospital{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", cityId=" + cityId +
+                ", img='" + img + '\'' +
+                ", address='" + address + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", description='" + description + '\'' +
+                ", details='" + details + '\'' +
+                '}';
     }
 }
