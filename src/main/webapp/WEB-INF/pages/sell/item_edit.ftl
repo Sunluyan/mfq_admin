@@ -55,7 +55,7 @@
             </div>
 
             <div class="control-group">
-                <label class="control-label" for="cname">美丽日记整容前后</label>
+                <label class="control-label" for="cname">蜕变对比前后</label>
                 <div class="controls">
                     <input type="file" id="file1" name="before" value="${before}"><span class="help-inline">
                     <a rel="popover" data-content="<img src='${before}'/>" href="${before}"
@@ -72,7 +72,7 @@
             </div>
 
             <div class="control-group">
-                <label class="control-label" for="cname">手术纪实</label>
+                <label class="control-label" for="cname">第三视角</label>
                 <div class="controls">
                     <input type="file" id="file1" name="surgery" value="${surgery}"><span class="help-inline">
                     <a rel="popover" data-content="<img src='${surgery}'/>" href="${surgery}"
@@ -468,17 +468,19 @@
     })
     $(".add-question").click(function(){
         var $question = $(".question-answer").last().clone(true);
-        $question.find(".question").val("").find(".answer").val("")
+        $question.find(".question").val("");
+        $question.find(".answer").val("");
         $(".question-answer").last().append($question);
         return false;
     })
 
-    var ask = '${detail.ask}';
+    var str = '${detail.ask}';
+    var ask = eval('(' + str + ')');
     function answers(){
         if(ask == "" || ask == null)return;
         var oldAnswer = $(".question-answer").last();
         oldAnswer.find(".question").val(ask[0].question)
-        oldAnswer.find(".answer").val(ask[0].question)
+        oldAnswer.find(".answer").val(ask[0].answer)
         for(var i = 1;i<ask.length;i++){
             var answers = $(".question-answer").last().clone();
             answers.find(".question").val(ask[i].question)

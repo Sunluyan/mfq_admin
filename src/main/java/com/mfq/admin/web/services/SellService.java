@@ -382,7 +382,7 @@ public class SellService {
                 pimg.setDesc("");
                 pimg.setIndex(i);
                 pimg.setFlag(0);
-
+                logger.info("pid:"+id+"   img"+imgs[i]);
                 long result = productImgMapper.insert(pimg);
                 if (result > 0) {
                     System.out.println("insert img " + i);
