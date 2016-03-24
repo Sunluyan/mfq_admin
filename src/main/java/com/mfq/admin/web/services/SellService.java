@@ -74,12 +74,110 @@ public class SellService {
             item = productService.findById(id);
             ProductDetailNewExample example = new ProductDetailNewExample();
             example.or().andPidEqualTo(id.intValue());
-            detail = productDetailNewMapper.selectByExampleWithBLOBs(example).get(0);
-
+            List<ProductDetailNew> details = productDetailNewMapper.selectByExampleWithBLOBs(example);
+            if(details.size()>0) {
+                detail = details.get(0);
+            }
 
         }
+
+
         model.addAttribute("item", item); // 产品
         model.addAttribute("detail", detail); // 产品详情
+        model.addAttribute("types", ProductType.values());
+
+
+
+        List<Hospital> hospitals = hospitalService.findAll(); // 医院
+        model.addAttribute("hospitals", hospitals);
+
+        ProductImgExample productImgExample = new ProductImgExample();
+        productImgExample.createCriteria().andPidEqualTo(id);
+        productImgExample.setOrderByClause(" `index` ");
+        List<ProductImg> imgs = productImgMapper.selectByExample(productImgExample);
+
+        model.addAttribute("item_img", imgs);//产品主要图片
+        productImageService.getImages(model,id);
+
+        ProductClassifyExample productClassifyExample = new ProductClassifyExample();
+        List<ProductClassify> classify = productClassifyMapper.selectByExample(productClassifyExample);
+        model.addAttribute("classify", classify); // 分类
+
+        long classId = 0, rootId = 0;
+        long hospitalId = 0;
+        if (classify.size() > 0) {
+            classId = classify.get(0).getId();
+        }
+        if (hospitals.size() > 0) {
+            hospitals.get(0).getId();
+        }
+        logger.info("item {}", item);
+        if (item != null && item.getId() != null && item.getId() > 0) {
+            classId = item.getTid();
+            hospitalId = item.getHospitalId();
+        }
+
+        for(ProductClassify c:classify){
+            if(c.getId() == classId){
+                if(c.getRootId() == 0){
+                    rootId = c.getId();
+
+                }else {
+                    rootId = c.getRootId();
+                }
+
+            }
+        }
+
+        List<HomeClassify> hclasses = homeClassifyService.queryAll();
+        model.addAttribute("rootId",rootId);
+        model.addAttribute("classId", classId);
+        model.addAttribute("hospitalId", hospitalId);
+        model.addAttribute("cityId", item.getCityId());
+        model.addAttribute("type2", item.getType2());
+        model.addAttribute("homeclass", hclasses);
+
+        //加入分期情况
+        List<ProFqRecord> proFqRecords = productService.findProFqRecordByPid(item.getId());
+        model.addAttribute("fqs",proFqRecords);
+    }
+
+
+
+
+
+    public void buildEditModel_old(Long id, Model model) {
+        Product item = null;
+        ProductDetailNew detail = null;
+
+        if (id == null || id == 0) {
+            item = new Product();
+            detail = new ProductDetailNew();
+            item.setTotalNum(0l);
+            item.setViewNum(0l);
+            item.setSaleNum(0l);
+            item.setFlag(PFlag.DEFAULT.getValue());
+            item.setImg("");
+            item.setOnline(false);
+            item.setDateStart(new Date()); // 默认开始日期
+            item.setDateEnd(DateUtil.addYear(new Date(), 1)); // 默认结束日期－有效期一年
+        } else {
+
+            item = productService.findById(id);
+//            ProductDetailNewExample example = new ProductDetailNewExample();
+//            example.or().andPidEqualTo(id.intValue());
+//            List<ProductDetailNew> details = productDetailNewMapper.selectByExampleWithBLOBs(example);
+//            if(details.size()>0) {
+//                detail = details.get(0);
+//            }
+            ProductDetail p_detail = productService.findDetailByPid(id);
+            model.addAttribute("detail",p_detail);
+
+        }
+
+
+        model.addAttribute("item", item); // 产品
+//        model.addAttribute("detail", detail); // 产品详情
         model.addAttribute("types", ProductType.values());
 
 
@@ -150,9 +248,11 @@ public class SellService {
      */
     public void findByPage(long page, String orderno, String proname, String hosname, String orderby, Model model, String online) {
         long start = (page - 1) * PageSize;
+        // 商品列表
+
         //List<Product> items = productService.findByPage(start, PageSize);
         ProductExample productExample = new ProductExample();
-        ProductExample.Criteria or = productExample.or();
+        ProductExample.Criteria or = productExample.createCriteria();
         or.andFlagNotEqualTo(-1);
         if (StringUtils.isNotBlank(proname)) {
             or.andNameLike("%" + proname + "%");
@@ -176,7 +276,7 @@ public class SellService {
             for (Hospital hospital : hospitalsByName) {
                 hosIds.add(hospital.getId());
             }
-            productExample.or().andHospitalIdIn(hosIds);
+            productExample.or().andHospitalIdIn(hosIds).andFlagNotEqualTo(-1);
         }
         List<Product> items = productMapper.findByPageAndExample(start, PageSize, productExample, orderby);
 
@@ -464,18 +564,5 @@ public class SellService {
         productImageService.saveDetails(pid,detail);
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }

@@ -71,6 +71,26 @@ public class SellController extends BaseController {
         return "/sell/items";
     }
 
+
+
+    @RequestMapping(value = "/sell/items2/", method = {RequestMethod.GET, RequestMethod.POST})
+    public String index2(
+            @RequestParam(defaultValue = "1", required = false) long page,
+            @RequestParam(defaultValue = "", required = false) String orderno,
+            @RequestParam(defaultValue = "", required = false) String proname,
+            @RequestParam(defaultValue = "", required = false) String hosname,
+            @RequestParam(defaultValue = "id desc", required = false) String orderby,
+            @RequestParam(defaultValue = "motherfucker", required = false) String online,
+            Model model) {
+        try {
+
+            sellService.findByPage(page, orderno, proname, hosname, orderby, model, online);
+        } catch (Exception e) {
+            logger.info("sell items error {}", e);
+        }
+        return "/sell/items2";
+    }
+
     @RequestMapping(value = "/sell/item/add/", method = RequestMethod.GET)
     public String add(Model model) {
 
@@ -151,6 +171,20 @@ public class SellController extends BaseController {
         return "/sell/item_edit";
     }
 
+    @RequestMapping(value = "/sell/item/edit_old/", method = RequestMethod.GET)
+    public String editOld(
+            @RequestParam(defaultValue = "0", required = false) Long id,
+            Model model) {
+        try {
+            sellService.buildEditModel_old(id, model);
+            model.addAttribute("t", 1);  //状态添加
+            return "/sell/item_edit2";
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "/sell/item_edit2";
+    }
+
 
     @RequestMapping(value = "/sell/item/", method = RequestMethod.POST)
     public String saveItem(
@@ -166,7 +200,7 @@ public class SellController extends BaseController {
 
             @RequestParam(value = "classify", required = true) int rootId,
             @RequestParam(value = "classify2", required = true) int classifyId,
-            @RequestParam(value = "type2", required = true) String type2,//手术方式 激光,手术
+            @RequestParam(value = "type2", defaultValue = "") String type2,//手术方式 激光,手术
             @RequestParam(value = "type", required = true) int type,//产品类别 特价,普通等
             @RequestParam(value = "hospital", required = true) Long hospitalId,
             @RequestParam(value = "is_online", defaultValue = "false") boolean isOnline,
@@ -276,86 +310,86 @@ public class SellController extends BaseController {
 
 
 //old
-//    @RequestMapping(value = "/sell/item/", method = RequestMethod.POST)
-//    public String saveItem(
-//            @RequestParam(value = "id", required = false) Long id,
-//            @RequestParam(value = "name", required = true) String name,
-//            @RequestParam(value = "files") MultipartFile[] file,
-//            @RequestParam(value = "classify", required = true) int rootId,
-//            @RequestParam(value = "classify2", required = true) int classifyId,
-//            @RequestParam(value = "type", required = true) int type,
-//            @RequestParam(value = "type2", required = true) String type2,
-//            @RequestParam(value = "city_id", required = true) int cityId,
-//            @RequestParam(value = "hospital", required = true) int hospitalId,
-//            @RequestParam(value = "price", required = true) BigDecimal price,
-//            @RequestParam(value = "market_price", required = true) BigDecimal marketPrice,
-//            @RequestParam(value = "online_pay", defaultValue = "0") BigDecimal onlinePay,
-//            @RequestParam(value = "dateStart", required = true) String dateStart,
-//            @RequestParam(value = "dateEnd", required = true) String dateEnd,
-//            @RequestParam(value = "flag", defaultValue = "0") int flag,
-//            @RequestParam(value = "is_online", defaultValue = "false") boolean isOnline,
-//            @RequestParam(value = "total_num", defaultValue = "0") long totalNum,
-//            @RequestParam(value = "sale_num", defaultValue = "0") long saleNum,
-//            @RequestParam(value = "view_num", defaultValue = "0") long viewNum,
-//            @RequestParam(value = "consume_step", defaultValue = "") String consumeStep,
-//            @RequestParam(value = "reserve", defaultValue = "") String reserve,
-//            @RequestParam(value = "special_note", defaultValue = "") String specialNote,
-//            @RequestParam(value = "cure_means", defaultValue = "") String cureMeans,
-//            @RequestParam(value = "cure_dur", defaultValue = "") String cureDur,
-//            @RequestParam(value = "cure_hospital", defaultValue = "") int cureHospital,
-//            @RequestParam(value = "recover_dur", defaultValue = "") String recoverDur,
-//            @RequestParam(value = "merit", defaultValue = "") String merit,
-//            @RequestParam(value = "cure_method", defaultValue = "") String cureMethod,
-//            @RequestParam(value = "crowd", defaultValue = "") String crowd,
-//            @RequestParam(value = "taboo_crowd", defaultValue = "") String tabooCrowd,
-//            @RequestParam(value = "warnings", defaultValue = "") String warning,
-//            @RequestParam(value = "cure_num", defaultValue = "") String cureNum,
-//            @RequestParam(value = "anes_method", defaultValue = "") String anesMethod,
-//            @RequestParam(value = "doctor_level", defaultValue = "") String doctorLevel,
-//            @RequestParam(value = "cure_cycle", defaultValue = "") String cureCycle,
-//            @RequestParam(value = "fq", required = true) int fq,
-//            @RequestParam(value = "fq_price",required = true,defaultValue = "0") float fq_price,
-//            Model model) {
-//
-//        Date start = DateUtil.convertYYYYMMDD(dateStart);
-//        Date end = DateUtil.convertYYYYMMDD(dateEnd);
-//
-//        String body = "";
-//        try {
-//            String [] imgs  = {"", "", "", ""};
-//            for(int i=0;i<file.length;i++){
-//            	if (!file[i].isEmpty()) {
-//                    File tmpFile = new File("/tmp/" + UUID.randomUUID().toString());
-//                    file[i].transferTo(tmpFile);
-//                    imgs[i] = QiniuManipulater.qiniuUploadProdImg(tmpFile);
-//                }else {
-//                	imgs[i] = "";
-//                }
-//            }
-//
-//            BigDecimal hospitalPay = price.subtract(onlinePay);
-//            Product p = sellService.saveItem(fq, type2,id, name, rootId,classifyId, type, cityId,
-//                    hospitalId, price, marketPrice, onlinePay, hospitalPay, start, end, flag,
-//                    StringUtils.isNotBlank(imgs[0])?imgs[0]:null, isOnline, totalNum, totalNum, saleNum, viewNum, consumeStep, reserve,
-//                    specialNote, body, cureMeans, cureDur, cureHospital, recoverDur, merit, cureMethod, crowd, tabooCrowd, warning, cureNum, anesMethod, doctorLevel, cureCycle,fq_price);
-//
-//            if(!"".equals(imgs[0])){
-//            	sellService.saveProductImg(p.getId(), imgs);
-//            }
-//
-//            logger.info("save item ok! pid={}, p={}", p == null ? 0 : p.getId(),
-//                    p);
-//
-//            return "redirect:/sell/items/";
-//        } catch (Exception e) {
-//            logger.error("save item error", e);
-//        }
-//
-//        model.addAttribute("msg", "上传产品图片异常！");
-//        sellService.buildEditModel(id, model);
-//
-//        return "/sell/item_edit";
-//    }
+    @RequestMapping(value = "/sell/item2/", method = RequestMethod.POST)
+    public String saveItem(
+            @RequestParam(value = "id", required = false) Long id,
+            @RequestParam(value = "name", required = true) String name,
+            @RequestParam(value = "files") MultipartFile[] file,
+            @RequestParam(value = "classify", required = true) int rootId,
+            @RequestParam(value = "classify2", required = true) int classifyId,
+            @RequestParam(value = "type", required = true) int type,
+            @RequestParam(value = "type2", defaultValue = "") String type2,
+            @RequestParam(value = "city_id", required = true) int cityId,
+            @RequestParam(value = "hospital", required = true) int hospitalId,
+            @RequestParam(value = "price", required = true) BigDecimal price,
+            @RequestParam(value = "market_price", required = true) BigDecimal marketPrice,
+            @RequestParam(value = "online_pay", defaultValue = "0") BigDecimal onlinePay,
+            @RequestParam(value = "dateStart", required = true) String dateStart,
+            @RequestParam(value = "dateEnd", required = true) String dateEnd,
+            @RequestParam(value = "flag", defaultValue = "0") int flag,
+            @RequestParam(value = "is_online", defaultValue = "false") boolean isOnline,
+            @RequestParam(value = "total_num", defaultValue = "0") long totalNum,
+            @RequestParam(value = "sale_num", defaultValue = "0") long saleNum,
+            @RequestParam(value = "view_num", defaultValue = "0") long viewNum,
+            @RequestParam(value = "consume_step", defaultValue = "") String consumeStep,
+            @RequestParam(value = "reserve", defaultValue = "") String reserve,
+            @RequestParam(value = "special_note", defaultValue = "") String specialNote,
+            @RequestParam(value = "cure_means", defaultValue = "") String cureMeans,
+            @RequestParam(value = "cure_dur", defaultValue = "") String cureDur,
+            @RequestParam(value = "cure_hospital", defaultValue = "") int cureHospital,
+            @RequestParam(value = "recover_dur", defaultValue = "") String recoverDur,
+            @RequestParam(value = "merit", defaultValue = "") String merit,
+            @RequestParam(value = "cure_method", defaultValue = "") String cureMethod,
+            @RequestParam(value = "crowd", defaultValue = "") String crowd,
+            @RequestParam(value = "taboo_crowd", defaultValue = "") String tabooCrowd,
+            @RequestParam(value = "warnings", defaultValue = "") String warning,
+            @RequestParam(value = "cure_num", defaultValue = "") String cureNum,
+            @RequestParam(value = "anes_method", defaultValue = "") String anesMethod,
+            @RequestParam(value = "doctor_level", defaultValue = "") String doctorLevel,
+            @RequestParam(value = "cure_cycle", defaultValue = "") String cureCycle,
+            @RequestParam(value = "fq", required = true) int fq,
+            @RequestParam(value = "fq_price",required = true,defaultValue = "0") float fq_price,
+            Model model) {
+
+        Date start = DateUtil.convertYYYYMMDD(dateStart);
+        Date end = DateUtil.convertYYYYMMDD(dateEnd);
+
+        String body = "";
+        try {
+            String [] imgs  = {"", "", "", ""};
+            for(int i=0;i<file.length;i++){
+            	if (!file[i].isEmpty()) {
+                    File tmpFile = new File("/tmp/" + UUID.randomUUID().toString());
+                    file[i].transferTo(tmpFile);
+                    imgs[i] = QiniuManipulater.qiniuUploadProdImg(tmpFile);
+                }else {
+                	imgs[i] = "";
+                }
+            }
+
+            BigDecimal hospitalPay = price.subtract(onlinePay);
+            Product p = sellService.saveItem(fq, type2,id, name, rootId,classifyId, type, cityId,
+                    hospitalId, price, marketPrice, onlinePay, hospitalPay, start, end, flag,
+                    StringUtils.isNotBlank(imgs[0])?imgs[0]:null, isOnline, totalNum, totalNum, saleNum, viewNum, consumeStep, reserve,
+                    specialNote, body, cureMeans, cureDur, cureHospital, recoverDur, merit, cureMethod, crowd, tabooCrowd, warning, cureNum, anesMethod, doctorLevel, cureCycle,fq_price);
+
+            if(!"".equals(imgs[0])){
+            	sellService.saveProductImg(p.getId(), imgs);
+            }
+
+            logger.info("save item ok! pid={}, p={}", p == null ? 0 : p.getId(),
+                    p);
+
+            return "redirect:/sell/items/";
+        } catch (Exception e) {
+            logger.error("save item error", e);
+        }
+
+        model.addAttribute("msg", "上传产品图片异常！");
+        sellService.buildEditModel(id, model);
+
+        return "/sell/item_edit";
+    }
 
     @RequestMapping(value = "/sell/activity/", method = RequestMethod.GET)
     public String activity(Model model,

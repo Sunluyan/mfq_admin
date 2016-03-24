@@ -10,7 +10,7 @@
 <script type="text/javascript" charset="utf-8" src="/static/ueditor/lang/zh-cn/zh-cn.js"></script>
 
 <script type="text/javascript" src="/static/bootstrap-3.3.4/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
-<form class="form-horizontal" method="POST" action="/sell/item/" enctype="multipart/form-data">
+<form class="form-horizontal" method="POST" action="/sell/item2/" enctype="multipart/form-data">
     <div class="container">
         <div class="row-fluid">
         <#if msg??>
@@ -81,11 +81,11 @@
                     </#list>  -->
                     </select>
 
-                    <select name="type2">
-                        <option value="激光">激光</option>
-                        <option value="针剂">针剂</option>
-                        <option value="手术">手术</option>
-                    </select>
+                    <#--<select name="type2">-->
+                        <#--<option value="激光">激光</option>-->
+                        <#--<option value="针剂">针剂</option>-->
+                        <#--<option value="手术">手术</option>-->
+                    <#--</select>-->
                 </div>
             </div>
 
@@ -155,7 +155,6 @@
                     <p class="help-inline"><strong class="text-error">*</strong>价格只能为数字</p>
                 </div>
             </div>
-
 
             <div class="control-group">
                 <label class="control-label" for="lname">市场价</label>
@@ -476,67 +475,67 @@
 
 <script type="text/javascript">
     function docheck() {
-        if ($("#t").val() == 0) {
-            if ($("#file1").val() == '') {
-                alert("产品图片不能为空");
-                return false;
-            }
-        }
-        if ($.trim($("#name").val()).length < 1) {
-            alert("产品名称不能为空");
-            return false;
-        }
-        if ($.isNumeric($.trim($("#price").val())) == false) {
-            alert("价格必须是数字");
-            return false;
-        }
-        if ($.isNumeric($.trim($("#market_price").val())) == false) {
-            alert("价格必须是数字");
-            return false;
-        }
-        if ($.isNumeric($.trim($("#online_pay").val())) == false) {
-            alert("预付款必须是数字");
-            return false;
-        }
-        if ($.isNumeric($.trim($("#total_num").val())) == false) {
-            alert("产品数量必须是数字");
-            return false;
-        }
-        if (parseInt($("#total_num").val()) < 1) {
-            alert("产品数量须大于1");
-            return false;
-        }
-        if ($.trim($("#cure_means").val()).length < 1) {
-            alert("治疗手段不能为空");
-            return false;
-        }
-        if ($.trim($("#cure_dur").val()).length < 1) {
-            alert("治疗时长不能为空");
-            return false;
-        }
-        if ($.trim($("#recover_dur").val()).length < 1) {
-            alert("恢复时间不能为空");
-            return false;
-        }
-
-        if ($.trim($("#cure_num").val()).length < 1) {
-            alert("治疗次数不能为空");
-            return false;
-        }
-        if ($.trim($("#anes_method").val()).length < 1) {
-            alert("麻醉方法不能为空");
-            return false;
-        }
-        if ($.trim($("#doctor_level").val()).length < 1) {
-            alert("医师级别未选择");
-            return false;
-        }
-        if ($.trim($("#cure_cycle").val()).length < 1) {
-            alert("治疗周期不能为空");
-            return false;
-        }
-
-        return true;
+//        if ($("#t").val() == 0) {
+//            if ($("#file1").val() == '') {
+//                alert("产品图片不能为空");
+//                return false;
+//            }
+//        }
+//        if ($.trim($("#name").val()).length < 1) {
+//            alert("产品名称不能为空");
+//            return false;
+//        }
+//        if ($.isNumeric($.trim($("#price").val())) == false) {
+//            alert("价格必须是数字");
+//            return false;
+//        }
+//        if ($.isNumeric($.trim($("#market_price").val())) == false) {
+//            alert("价格必须是数字");
+//            return false;
+//        }
+//        if ($.isNumeric($.trim($("#online_pay").val())) == false) {
+//            alert("预付款必须是数字");
+//            return false;
+//        }
+//        if ($.isNumeric($.trim($("#total_num").val())) == false) {
+//            alert("产品数量必须是数字");
+//            return false;
+//        }
+//        if (parseInt($("#total_num").val()) < 1) {
+//            alert("产品数量须大于1");
+//            return false;
+//        }
+//        if ($.trim($("#cure_means").val()).length < 1) {
+//            alert("治疗手段不能为空");
+//            return false;
+//        }
+//        if ($.trim($("#cure_dur").val()).length < 1) {
+//            alert("治疗时长不能为空");
+//            return false;
+//        }
+//        if ($.trim($("#recover_dur").val()).length < 1) {
+//            alert("恢复时间不能为空");
+//            return false;
+//        }
+//
+//        if ($.trim($("#cure_num").val()).length < 1) {
+//            alert("治疗次数不能为空");
+//            return false;
+//        }
+//        if ($.trim($("#anes_method").val()).length < 1) {
+//            alert("麻醉方法不能为空");
+//            return false;
+//        }
+//        if ($.trim($("#doctor_level").val()).length < 1) {
+//            alert("医师级别未选择");
+//            return false;
+//        }
+//        if ($.trim($("#cure_cycle").val()).length < 1) {
+//            alert("治疗周期不能为空");
+//            return false;
+//        }
+        alert("旧版本不支持提交,想 请联系管理员.")
+        return false;
     }
 
     $('#date1').datetimepicker({

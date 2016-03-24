@@ -124,11 +124,11 @@
                     <select id='classify2' name="classify2">
                         <option value="0">全部</option>
                     </select>
-                    <select name="type2">
-                        <option value="激光">激光</option>
-                        <option value="针剂">针剂</option>
-                        <option value="手术">手术</option>
-                    </select>
+                    <#--<select name="type2">-->
+                        <#--<option value="激光">激光</option>-->
+                        <#--<option value="针剂">针剂</option>-->
+                        <#--<option value="手术">手术</option>-->
+                    <#--</select>-->
 
                 </div>
             </div>
