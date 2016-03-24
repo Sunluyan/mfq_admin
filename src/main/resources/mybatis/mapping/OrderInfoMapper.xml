@@ -540,7 +540,7 @@
     <if test="status != null and status != 100">
       and order_info.status=#{status}
     </if>
-    <if test="">
+    <if test="ob !=null and oe !=null">
       and (order_info.created_at BETWEEN #{ob} and #{oe} )
     </if>
      and order_info.status NOT IN (0,3)

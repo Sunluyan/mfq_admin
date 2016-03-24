@@ -468,7 +468,6 @@ public class SellController extends BaseController {
 
                 if (id == null || id.equals("0")) {//添加
                     sellService.saveOffline(name, DateUtil.convertLong(begin), DateUtil.convertLong(end), smallUrl, link, place, time, Integer.parseInt(isEnd));
-
                 } else {//修改
                     sellService.updateOffline(Integer.parseInt(id), name, DateUtil.convertLong(begin), DateUtil.convertLong(end), smallUrl, link, place, time, Integer.parseInt(isEnd));
                 }
