@@ -265,7 +265,7 @@ public class SellController extends BaseController {
                 surgeryUrl = QiniuManipulater.qiniuUploadProdImg(tmpFile);
             }
             String beautifulUrl = "";
-            if(!beautifulUrl.isEmpty()){
+            if(!beautiful.isEmpty()){
                 File tmpFile = new File("/tmp/" + UUID.randomUUID().toString());
                 beautiful.transferTo(tmpFile);
                 beautifulUrl = QiniuManipulater.qiniuUploadProdImg(tmpFile);
