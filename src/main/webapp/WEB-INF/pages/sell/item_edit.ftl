@@ -398,12 +398,6 @@
 
 <script type="text/javascript">
     function docheck() {
-        if ($("#t").val() == 0) {
-            if ($("#file1").val() == '') {
-                alert("产品图片不能为空");
-                return false;
-            }
-        }
         if ($.trim($("#name").val()).length < 1) {
             alert("产品名称不能为空");
             return false;
