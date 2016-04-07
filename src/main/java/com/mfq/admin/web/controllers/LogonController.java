@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.mfq.admin.web.bean.Status;
 import com.mfq.admin.web.bean.SysPassport;
 import com.mfq.admin.web.bean.SysUser;
 import com.mfq.admin.web.bean.User;
@@ -69,7 +70,7 @@ public class LogonController extends BaseController {
             String passwordMd5 = PasswordUtils.encode(password);
             System.out.println(passwordMd5);
             SysUserExample example = new SysUserExample();
-            example.or().andUsernameEqualTo(username);
+            example.or().andUsernameEqualTo(username).andStatusNotEqualTo(-1);
 
             List<SysUser> users = sysUserMapper.selectByExample(example);
             if (users.size()>0 && users != null) {
@@ -103,7 +104,7 @@ public class LogonController extends BaseController {
 
 
     public static void main(String[] args) {
-        String ttt=PasswordUtils.encode("zhanghui");
+        String ttt=PasswordUtils.encode("zhanghuizuishuai");
         System.out.print(ttt);
     }
 

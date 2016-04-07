@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import com.mfq.admin.web.bean.SysAcl;
+import com.mfq.admin.web.bean.example.SysAclExample;
 import com.mfq.admin.web.dao.SysAclMapper;
 import org.springframework.stereotype.Service;
 
@@ -55,6 +56,12 @@ public class SysAclService {
         }else{
             return mapper.findAll(type.getId(), start, limit);
         }
+    }
+
+    public SysAcl findByAcl(SysAcl sysAcl){
+        SysAclExample example = new SysAclExample();
+        example.or().andNameEqualTo(sysAcl.getName()).andUrlEqualTo(sysAcl.getUrl());
+        return mapper.selectByExample(example).get(0);
     }
 
     public List<SysAcl> findMenuChildren(long pid){

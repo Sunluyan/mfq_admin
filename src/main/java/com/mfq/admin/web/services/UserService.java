@@ -693,7 +693,7 @@ public class UserService {
 
     public long getCountProduct(){
         ProductExample example = new ProductExample();
-        example.or().andFlagNotEqualTo(-1);
+        example.or().andFlagNotEqualTo(-1).andOnlineEqualTo(1);
         long count = productMapper.countByExample(example);
         return count;
     }

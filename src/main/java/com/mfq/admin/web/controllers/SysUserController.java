@@ -47,6 +47,14 @@ public class SysUserController {
     public SysUserController() {
     }
 
+    @RequestMapping(value = "/sysuser/delete/", method = RequestMethod.GET)
+    public String userDelete(HttpServletRequest request, Model model,
+                             @RequestParam(value = "id",required = true)Integer id) {
+
+        sysUserService.updateStatus(id.longValue(),Status.DELETED);
+        return "redirect:/sysuser/list/"; // 添加成功，跳转到列表页
+    }
+
     @RequestMapping(value = "/sysuser/list/", method = { RequestMethod.GET })
     public String userList(HttpServletRequest request, Model model)
             throws Exception {
@@ -76,16 +84,16 @@ public class SysUserController {
         model.addAttribute("hospitals", hospitals);
         return "/sysuser/user_add";
     }
-    
+
     @RequestMapping(value = "/sysuser/add/", method = RequestMethod.POST)
     public String submitUserAdd(HttpServletRequest request, Model model,
-            @RequestParam(value = "username", required = true) String username,
-            @RequestParam(value = "realname", required = true) String realname,
-            @RequestParam(value = "password", required = true) String password,
-            @RequestParam(value = "hospital", required = true) String hospital,
-            @RequestParam(value = "mobile", required = true) String mobile,
-            @RequestParam(value = "role", required = true) String role,
-            @RequestParam(value = "status", required = true) int status) {
+                                @RequestParam(value = "username", required = true) String username,
+                                @RequestParam(value = "realname", required = true) String realname,
+                                @RequestParam(value = "password", required = true) String password,
+                                @RequestParam(value = "hospital", required = true) String hospital,
+                                @RequestParam(value = "mobile", required = true) String mobile,
+                                @RequestParam(value = "role", required = true) String role,
+                                @RequestParam(value = "status", required = true) int status) {
 
         String msg = "";
         try{
@@ -98,10 +106,10 @@ public class SysUserController {
                 user = new SysUser(username, realname, mobile, roleId);
                 user.setStatus(Status.fromValue(status));
                 user.setHospitalId(0l);
-                
+
                 //医院用户 roleid 为 6 7
                 if(roleId == 6 || roleId == 7){
-                	user.setHospitalId(hospitalId);
+                    user.setHospitalId(hospitalId);
                 }
                 long uid=sysUserService.createUser(user, password);
                 if(uid==0){
@@ -109,6 +117,71 @@ public class SysUserController {
                     return "redirect:/sysuser/add/";       // 调用user_add的模版
                 }
 
+            }
+        }catch(Exception e){
+            logger.error("exception_in_adduser", e);
+        }
+        if(StringUtils.isNotBlank(msg)){
+            model.addAttribute("error", msg);
+            return "redirect:/sysuser/add/";       // 调用user_add的模版
+        }else{
+            return "redirect:/sysuser/list/"; // 添加成功，跳转到列表页
+        }
+    }
+
+    @RequestMapping(value = "/sysuser/edit/", method = RequestMethod.GET)
+    public String userEditPage(HttpServletRequest request, Model model,
+                               @RequestParam(value = "id",required = true)Integer id) {
+
+        List<SysRole> roles = sysRoleService.queryAll();
+        List<Status> statuses = Lists.newArrayList();
+        List<Hospital> hospitals = hospitalService.queryAll();
+        for(Status s : Status.values()){
+            statuses.add(s);
+        }
+        model.addAttribute("roles", roles);
+        model.addAttribute("statuses", statuses);
+        model.addAttribute("hospitals", hospitals);
+
+        SysUser user = sysUserService.querySysUser(id);
+        model.addAttribute("user",user);
+
+        return "/sysuser/user_edit";
+    }
+
+    @RequestMapping(value = "/sysuser/edit/", method = RequestMethod.POST)
+    public String userEdit(HttpServletRequest request, Model model,
+                                @RequestParam(value = "id", required = true) Integer id,
+                                @RequestParam(value = "username", required = true) String username,
+                                @RequestParam(value = "realname", required = true) String realname,
+                                @RequestParam(value = "password", required = true) String password,
+                                @RequestParam(value = "hospital", required = true) String hospital,
+                                @RequestParam(value = "mobile", required = true) String mobile,
+                                @RequestParam(value = "role", required = true) String role,
+                                @RequestParam(value = "status", required = true) int status) {
+
+        String msg = "";
+        try{
+            SysUser user = sysUserService.querySysUser(id.longValue());
+            if(user == null ){
+                msg = "用户不存在！";
+            }else{
+                Long roleId = Long.parseLong(role);
+                Long hospitalId = Long.parseLong(hospital);
+                user = new SysUser(username, realname, mobile, roleId);
+                user.setId(id.longValue());
+                user.setStatus(Status.fromValue(status));
+                user.setHospitalId(0l);
+
+                //医院用户 roleid 为 6 7
+                if(roleId == 6 || roleId == 7){
+                    user.setHospitalId(hospitalId);
+                }
+                int count = sysUserService.updateSysuser(user);
+                if(count==0){
+                    model.addAttribute("error", "创建时间失败!!");
+                    return "redirect:/sysuser/edit/";       // 调用user_add的模版
+                }
             }
         }catch(Exception e){
             logger.error("exception_in_adduser", e);

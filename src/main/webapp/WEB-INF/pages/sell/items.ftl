@@ -1,7 +1,18 @@
 <#include "commons/header.ftl" />
 <#assign toolbar="items" />
 <#include "commons/toolbar.ftl" />
-
+<style>
+    .disable{
+        color:#999;
+        text-decoration: none;
+        cursor: default;
+    }
+    .disable:hover{
+        color:#999;
+        text-decoration: none;
+        cursor: default;
+    }
+</style>
 <div class="container" id="enlarge-body">
     <div class="container">
 
@@ -85,7 +96,9 @@
                         <a href="javascript:void(0)" class="next">后一页</a>
                     </li>
                     <li><span>总数:${itemcount}</span></li>
-                    <a href="/sell/item/add/">增加商品</a>
+                    <a href="/sell/item/add/">添加产品</a>
+                    <a href="javascript:void(0)" class="xiajia disable" >下架产品</a>
+                    <a href="javascript:void(0)" class="xiajia disable" >上架产品</a>
                 </ul>
             </div>
             <div>
@@ -99,7 +112,8 @@
                         <th>价格</th>
                         <th>是否上线</th>
                         <th>有效日期</th>
-                        <th>操作</th>
+                        <th colspan="2">操作</th>
+                        <th><input type="checkbox"  class="choice-all"/> </th>
                     </tr>
                     </thead>
                     <tbody>
@@ -126,6 +140,9 @@
 
                         <td><a href="/sell/item/edit/?id=${item.id}">修改</a></td>
                         <td><a href="/sell/item/delete/?id=${item.id}">删除</a></td>
+                        <td>
+                            <input type="checkbox" class="choice" data="${item.id}" />
+                        </td>
                     </tr>
                     </#list>
 
@@ -134,6 +151,79 @@
             </div>
         </div>
     </div>
+    <script>
+        var $xiajia = $(".xiajia");
+        var allChoice = $(".choice").length;
+        var choicedLength = 0;
+        $(".choice-all").click(function(){
+            if($(this).is(":checked") == true){
+                $(".choice").attr("checked",true)
+                choicedLength = allChoice;
+                $xiajia.removeClass("disable");
+            }else{
+                $(".choice").attr("checked",false)
+                $xiajia.addClass("disable");
+            }
+        })
+
+        $(".choice").click(function(){
+            if($(this).is(":checked") == true){
+                choicedLength ++;
+            }else{
+                choicedLength --
+            }
+            if(choicedLength == 0){
+                $xiajia.addClass("disable");
+            }
+            if(choicedLength > 0){
+                $xiajia.removeClass("disable");
+            }
+            console.log(choicedLength+"    "+allChoice)
+            if(choicedLength != allChoice){
+                $(".choice-all").attr("checked",false)
+            }
+            if(choicedLength == allChoice){
+                $(".choice-all").attr("checked",true)
+            }
+        })
+
+        $(".xiajia").click(function(){
+            if(this.className.indexOf("disable")!=-1){
+                return false;
+            }
+            var ids  = "";
+            $(".choice").each(function(){
+                if($(this).is(":checked") == true)
+                    ids += $(this).attr("data")+","
+            })
+            var type = 0;
+            if($(this).html().indexOf("上")==-1){
+                type = 0
+            }else{
+                type = 1;
+            }
+
+            $.ajax({
+                url:"/ajax",
+                data:{
+                    method:"updateProductOnline",
+                    ids:ids,
+                    type:type
+                },
+                success:function(){
+                    window.location.reload();
+                },
+                error:function(){
+                    alert("下架失败!")
+                }
+            })
+
+
+        })
+
+
+
+    </script>
 </div>
 
 

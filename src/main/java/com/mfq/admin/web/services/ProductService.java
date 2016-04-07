@@ -18,10 +18,12 @@ import com.mfq.admin.web.dao.ProFqRecordMapper;
 import com.mfq.admin.web.dao.ProductDetailMapper;
 import com.mfq.admin.web.dao.ProductDetailNewMapper;
 import com.mfq.admin.web.dao.ProductMapper;
+import com.mfq.admin.web.utils.JSONUtil;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 
 @Service
@@ -191,7 +193,7 @@ public class ProductService {
                            String img, Boolean isFq, BigDecimal price, BigDecimal marketPrice,
                            Date start, Date end,Long totalNum,int type,String type2,
                            Boolean isOnline) throws Exception{
-        Product product = new Product(id,name,tid,hosId,cityId,flag,img, ProductType.fromId(type),type2,isFq,price,marketPrice,
+        Product product = new Product(id,name,tid,hosId,cityId,flag, StringUtils.isEmpty(img)?null:img, ProductType.fromId(type),type2,isFq,price,marketPrice,
                 start,end,totalNum,isOnline,null,new Date());
         Integer count = mapper.updateByPrimaryKeySelective(product);
 
@@ -211,6 +213,8 @@ public class ProductService {
                                 String[] questions,String[] answers) throws Exception{
 
         String ask = twoListParseToJson(questions,answers,"question","answer");
+        ask = ask.replaceAll("\\\\r","");
+        ask = ask.replaceAll("\\\\n","");
         ProductDetailNew productDetailNew = new ProductDetailNew(null,pid.intValue(),desc,preferential,attention,
                 0,ask);
         int count = productDetailNewMapper.insertSelective(productDetailNew);
@@ -227,6 +231,8 @@ public class ProductService {
     public Product editProDetail(Long pid ,String desc,String preferential,String attention,
                                  String[] questions,String[] answers) throws Exception{
         String ask = twoListParseToJson(questions,answers,"question","answer");
+        ask = ask.replaceAll("\\\\r","");
+        ask = ask.replaceAll("\\\\n","");
         ProductDetailNew productDetailNew = new ProductDetailNew(null,pid.intValue(),desc,preferential,attention,
                 0,ask);
         ProductDetailNewExample example = new ProductDetailNewExample();
@@ -235,7 +241,6 @@ public class ProductService {
         if(count != 1){
             throw new Exception("修改产品详情出错");
         }
-
         return null;
     }
 
@@ -262,4 +267,21 @@ public class ProductService {
         return jsonArray.toString();
     }
 
+    public String updateProductOnline(String id,Integer type) {
+        ProductExample example = new ProductExample();
+        String[] idStrs = id.split(",");
+        List<Long> ids = new ArrayList<>();
+        for (String idStr : idStrs) {
+            ids.add(Long.parseLong(idStr));
+        }
+        example.or().andIdIn(ids);
+        Product product = new Product();
+        if(type == 0){
+            product.setOnline(false);
+        }else{
+            product.setOnline(true);
+        }
+        mapper.updateByExampleSelective(product,example);
+        return JSONUtil.successResultJson();
+    }
 }

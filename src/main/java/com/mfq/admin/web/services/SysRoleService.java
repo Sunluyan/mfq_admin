@@ -8,6 +8,7 @@ import java.util.Set;
 import javax.annotation.Resource;
 
 import com.mfq.admin.web.bean.SysRole;
+import com.mfq.admin.web.bean.SysUser;
 import com.mfq.admin.web.bean.example.SysRoleExample;
 import com.mfq.admin.web.dao.SysRoleMapper;
 import org.springframework.stereotype.Service;
@@ -51,4 +52,5 @@ public class SysRoleService {
         example.or().andRolenameEqualTo(rolename);
         return mapper.selectByExample(example).get(0);
     }
+
 }

@@ -273,6 +273,7 @@ public class SellController extends BaseController {
 
 
 
+
             //用二级分类
             if (classifyId != 0) {
                 rootId = classifyId;
@@ -295,7 +296,7 @@ public class SellController extends BaseController {
             productService.addProFqRecord(id.intValue(),fq_price);
 
             //上传图片
-            sellService.saveProImages(id,imgs,beforeUrl,afterUrl,beautifulUrl,surgeryUrl,details);
+            sellService.saveProImages(id,imgs,beforeUrl,afterUrl,beautifulUrl,surgeryUrl,details,null);
 
             return "redirect:/sell/items/";
         } catch (Exception e) {

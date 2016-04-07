@@ -31,6 +31,16 @@
                 </div>
             </div>
 
+            <#--<div class="control-group">-->
+                <#--<label class="control-label" for="cname">产品小图</label>-->
+                <#--<div class="controls">-->
+                    <#--<input type="file" name="square" value=""><span class="help-inline">-->
+                    <#--<a rel="popover" data-content="<img src=''/>" href=""-->
+                       <#--target="_blank" class="text-error img-link"></a></span></br>-->
+                    <#--</button>-->
+                <#--</div>-->
+            <#--</div>-->
+
             <div class="control-group">
                 <label class="control-label" for="cname">产品图片</label>
                 <div class="controls">
@@ -261,7 +271,6 @@
             <div class="control-group" data-toggle="collapse" data-target>
                 <label class="control-label" for="alias">问答</label>
                 <div class="controls">
-
                     <div class="accordion" id="accordion2">
                         <div class="accordion-group">
                             <div class="accordion-heading">
@@ -468,8 +477,7 @@
         return false;
     })
 
-    var str = '${detail.ask}';
-    var ask = eval('(' + str + ')');
+    var ask = ${detail.ask}
     function answers(){
         if(ask == "" || ask == null)return;
         var oldAnswer = $(".question-answer").last();
@@ -493,7 +501,6 @@
         $(".img-link").popover({
             html: true
         })
-
         $(this).popover("show")
     }, function () {
 

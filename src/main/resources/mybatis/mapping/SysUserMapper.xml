@@ -279,10 +279,10 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
 
-  <select id="querySysUserByPage" resultType="com.mfq.admin.web.bean.SysUser">
+  <select id="querySysUserByPage" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from sys_user limit #{start}, #{limit}
+    from sys_user where status != -1 limit #{start}, #{limit}
   </select>
 
 </mapper>

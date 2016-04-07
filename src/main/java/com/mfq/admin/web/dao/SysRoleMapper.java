@@ -5,7 +5,10 @@ import com.mfq.admin.web.bean.SysRole;
 import com.mfq.admin.web.bean.example.SysRoleExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Component;
+
 @MQMDao
+@Component
 public interface SysRoleMapper {
     int countByExample(SysRoleExample example);
 

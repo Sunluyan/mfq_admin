@@ -63,9 +63,6 @@
                 </table>
             </div>
 
-
-
-
         </div>
 
     </div>
@@ -78,7 +75,7 @@
             return;
         }
 
-        window.open("/sysuser/delete/?id="+uid);
+        window.location.href = "/sysuser/delete/?id="+uid;
 
     }
 </script>

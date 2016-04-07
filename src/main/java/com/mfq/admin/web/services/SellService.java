@@ -264,6 +264,7 @@ public class SellService {
                 or.andOnlineEqualTo(0);
             }
         }
+
         if (StringUtils.isNotBlank(hosname)) {
             //如果医院不是null的话,通过医院名称把医院id查出来,然后当做条件查询产品
             HospitalExample hospitalExample = new HospitalExample();
@@ -276,7 +277,7 @@ public class SellService {
             for (Hospital hospital : hospitalsByName) {
                 hosIds.add(hospital.getId());
             }
-            productExample.or().andHospitalIdIn(hosIds).andFlagNotEqualTo(-1);
+            or.andHospitalIdIn(hosIds).andFlagNotEqualTo(-1);
         }
         List<Product> items = productMapper.findByPageAndExample(start, PageSize, productExample, orderby);
 
@@ -554,13 +555,14 @@ public class SellService {
 
     @Transactional
     public void saveProImages(Long pid,String[] proImages,String before,String after,String beautiful,
-                              String surgery,String[] detail) throws Exception{
+                              String surgery,String[] detail,String square) throws Exception{
         saveProductImg(pid,proImages);
 
         productImageService.saveOrInsert(pid,before, ProductImageType.BEFORE);
         productImageService.saveOrInsert(pid,after, ProductImageType.AFTER);
         productImageService.saveOrInsert(pid,beautiful, ProductImageType.BEAUTIFUL);
         productImageService.saveOrInsert(pid,surgery, ProductImageType.SURGERY);
+//        productImageService.saveOrInsert(pid,square, ProductImageType.SQUARE);
         productImageService.saveDetails(pid,detail);
 
     }

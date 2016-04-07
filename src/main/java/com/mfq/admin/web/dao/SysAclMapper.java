@@ -5,7 +5,10 @@ import com.mfq.admin.web.bean.SysAcl;
 import com.mfq.admin.web.bean.example.SysAclExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Component;
+
 @MQMDao
+@Component
 public interface SysAclMapper {
     int countByExample(SysAclExample example);
 

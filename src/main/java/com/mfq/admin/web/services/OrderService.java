@@ -397,15 +397,18 @@ public class OrderService {
     public List<FinanceOrder> createFinanceOrders(List<OrderInfo> lists) throws Exception {
 
         List<FinanceOrder> data = Lists.newArrayList();
-
+        logger.info(lists.size()+" 个 OrderInfo");
         for (OrderInfo info : lists){
             User user = userService.queryUser(info.getUid());
             UserQuota quota = userQuotaService.queryUserQuota(info.getUid());
             PayRecord payRecord = payRecordService.queryPayRecordByOrderNo(info.getOrderNo());
-
+            if(payRecord == null){
+                payRecord = new PayRecord();
+                payRecord.setId(232L);
+            }
+            logger.info(payRecord == null?"payrecord == null":payRecord.toString());
             if(user==null || quota==null ||payRecord == null){
                 logger.info("finance order is null {}|{}|{}", info.getUid(), info.getOrderNo(),info.getId());
-                continue;
             }
 
             Product product= productService.findById(info.getPid());
@@ -414,15 +417,15 @@ public class OrderService {
             Hospital hospital = hospitalService.findById(product.getHospitalId());
 
             if(hospital == null){hospital = new Hospital();hospital.setId(0l);}
-            Coupon coupon = couponMapper.findByCouponNum(payRecord.getCardNo());
+//            Coupon coupon = couponMapper.findByCouponNum(payRecord.getCardNo());
+//            if(coupon == null){coupon = new Coupon();}
 
-            if(coupon == null){coupon = new Coupon();}
 
-            FinanceOrder order = new FinanceOrder(user, quota, info, hospital, product, payRecord, coupon);
+            FinanceOrder order = new FinanceOrder(user, quota, info, hospital, product, payRecord, new Coupon());
             data.add(order);
 
         }
-
+        logger.info(data.size()+"  个 FinanceOrder");
 
 
         return data;
@@ -459,7 +462,6 @@ public class OrderService {
             List<Product> products = productService.findByHidAndName(hid, pname);
             for (Product p : products) {
                 pids.add(p.getId());
-
             }
         }
 
@@ -564,7 +566,7 @@ public class OrderService {
          financeUser.setMn_count_at((Integer)counts.get("mnCountAt"));
          financeUser.setFl_count_at((Integer)counts.get("flCountAt"));
          
-         //
+
          
          
          financeUser.setOrders(createFinanceByPayRecords(list));

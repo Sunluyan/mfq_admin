@@ -5,7 +5,10 @@ import com.mfq.admin.web.bean.SysPermission;
 import com.mfq.admin.web.bean.example.SysPermissionExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Component;
+
 @MQMDao
+@Component
 public interface SysPermissionMapper {
     int countByExample(SysPermissionExample example);
 

@@ -196,7 +196,7 @@ public class PayRecordService {
 
 		List<PayRecord> pays = mapper.selectByExample(example);
 		if(pays.size()>0){
-			return pays.get(0);
+			return pays.get(pays.size()-1);
 		}else {
 			return null;
 		}

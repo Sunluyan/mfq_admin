@@ -198,4 +198,8 @@ public class SysUserService {
 
         return ret;
     }
+
+    public int updateSysuser(SysUser user) {
+        return mapper.updateByPrimaryKeySelective(user);
+    }
 }

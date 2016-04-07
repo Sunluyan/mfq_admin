@@ -132,11 +132,27 @@ public class UserController {
             return delInterview(request);
         } else if(method.equals("interViewChek")){
             return interViewChek(request);
+        } else if(method.equals("updateProductOnline")){
+            return updateProductOnline(request);
         }
 
         return null;
     }
 
+    private String updateProductOnline(HttpServletRequest request) {
+        try{
+            String ids = request.getParameter("ids");
+            Integer type = Integer.parseInt(request.getParameter("type"));
+            if(StringUtils.isEmpty(ids)){
+                return JSONUtil.toJson(9983, "id为空", null);
+            }
+            return productService.updateProductOnline(ids,type);
+
+        }catch(Exception e){
+            logger.info("下架产品出错" + e);
+            return JSONUtil.toJson(9983, e.getMessage(), null);
+        }
+    }
 
 
     /**

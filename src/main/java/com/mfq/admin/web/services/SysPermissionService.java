@@ -109,6 +109,7 @@ public class SysPermissionService {
             acl.setUrl(url);
             acl.setIndex(index);
             aclService.insertOne(acl);
+            acl = aclService.findByAcl(acl);
         }else{ // edit
             acl = aclService.findById(id);
             acl.setName(name);
@@ -118,6 +119,8 @@ public class SysPermissionService {
             acl.setIndex(index);
             aclService.updateOne(acl);
         }
+
+        deleteByAcl(acl.getId());
         for(String role : ps){
             SysPermission model = new SysPermission();
             model.setAcl(acl.getId());

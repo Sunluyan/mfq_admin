@@ -101,7 +101,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.mfq.admin.web.bean.SysAcl" >
+  <insert id="insert" keyProperty="id"  parameterType="com.mfq.admin.web.bean.SysAcl" >
     insert into sys_acl (id, pid, `name`,
       url, `type`, `index`, created_at
       )
@@ -109,7 +109,7 @@
       #{url,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{index,jdbcType=INTEGER}, #{createdAt,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.mfq.admin.web.bean.SysAcl" >
+  <insert id="insertSelective" keyProperty="id" parameterType="com.mfq.admin.web.bean.SysAcl" >
     insert into sys_acl
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
