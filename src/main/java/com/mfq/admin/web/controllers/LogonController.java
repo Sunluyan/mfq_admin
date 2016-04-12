@@ -16,6 +16,7 @@ import com.mfq.admin.web.dao.SysUserMapper;
 import org.apache.commons.lang.StringUtils;
 import org.apache.xmlbeans.impl.xb.xsdschema.ListDocument;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.mfq.admin.web.security.UserHolder;
@@ -53,8 +54,7 @@ public class LogonController extends BaseController {
 
     @RequestMapping("/xlogin/")
     public String xlogin(HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
-    	System.out.println("xlogin");
+            HttpServletResponse response,Model model) throws Exception {
         String _r = URLDecoder.decode(RequestUtils.getString(request, "_r", ""),
                 "UTF-8");
         if (_r.contains("/logout/")) {
@@ -83,13 +83,13 @@ public class LogonController extends BaseController {
                     operationLogDao.addLog(username, "login_ok",
                             String.format("[%s] login ok.", username),
                             request.getRemoteAddr());
+                }else{
+                    model.addAttribute("msg","账户名或密码错误");
                 }
                 CookieUtils.setLoginCookie(request, response, passport, false);
                 _r = StringUtils.isBlank(_r) ? "/" : _r;
                 return "redirect:" + _r;
             }
-
-
         }
         return "redirect:/login/" + queryString;
     }

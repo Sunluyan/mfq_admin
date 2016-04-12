@@ -190,6 +190,7 @@ public class SellController extends BaseController {
     public String saveItem(
             @RequestParam(value = "id", required = false) Long id,
             @RequestParam(value = "name", required = true) String name,
+            @RequestParam(value = "square") MultipartFile square,
             @RequestParam(value = "files",required = true) MultipartFile[] file,
             @RequestParam(value = "before",required = true) MultipartFile before,
             @RequestParam(value = "after",required = true) MultipartFile after,
@@ -270,6 +271,12 @@ public class SellController extends BaseController {
                 beautiful.transferTo(tmpFile);
                 beautifulUrl = QiniuManipulater.qiniuUploadProdImg(tmpFile);
             }
+            String squareUrl = "";
+            if(!square.isEmpty()){
+                File tmpFile = new File("/tmp/" + UUID.randomUUID().toString());
+                square.transferTo(tmpFile);
+                squareUrl = QiniuManipulater.qiniuUploadProdImg(tmpFile);
+            }
 
 
 
@@ -296,14 +303,14 @@ public class SellController extends BaseController {
             productService.addProFqRecord(id.intValue(),fq_price);
 
             //上传图片
-            sellService.saveProImages(id,imgs,beforeUrl,afterUrl,beautifulUrl,surgeryUrl,details,null);
+            sellService.saveProImages(id,imgs,beforeUrl,afterUrl,beautifulUrl,surgeryUrl,details,squareUrl);
 
             return "redirect:/sell/items/";
         } catch (Exception e) {
             logger.error("save item error", e);
         }
 
-        model.addAttribute("msg", "上传产品图片异常！");
+        model.addAttribute("msg", "上传产品异常！");
         sellService.buildEditModel(id, model);
 
         return "/sell/item_edit";
@@ -392,13 +399,15 @@ public class SellController extends BaseController {
         return "/sell/item_edit";
     }
 
-    @RequestMapping(value = "/sell/activity/", method = RequestMethod.GET)
+    @RequestMapping(value = "/sell/activity/", method ={ RequestMethod.GET,RequestMethod.POST})
     public String activity(Model model,
                            @RequestParam(value = "page", defaultValue = "0") Integer page,
                            @RequestParam(value = "name", defaultValue = "") String name,
                            @RequestParam(value = "isOnline", defaultValue = "0") Integer isOnline
     ) {
         List<Activity> activities = sellService.selectActivity(page, name, isOnline);
+        model.addAttribute("name",name);
+        model.addAttribute("isOnline",isOnline);
         model.addAttribute("items", activities);
         return "/sell/activity";
     }

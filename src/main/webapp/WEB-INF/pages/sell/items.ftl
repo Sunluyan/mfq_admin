@@ -139,7 +139,7 @@
                             － ${item.dateEnd?string("yyyy-MM-dd HH:mm:ss")}</td>
 
                         <td><a href="/sell/item/edit/?id=${item.id}">修改</a></td>
-                        <td><a href="/sell/item/delete/?id=${item.id}">删除</a></td>
+                        <td><a href="/sell/item/delete/?id=${item.id}" class="delete-product">删除</a></td>
                         <td>
                             <input type="checkbox" class="choice" data="${item.id}" />
                         </td>
@@ -217,8 +217,12 @@
                     alert("下架失败!")
                 }
             })
+        })
 
-
+        $(".delete-product").click(function () {
+            if(!confirm("确认删除吗?")){
+                return false;
+            }
         })
 
 

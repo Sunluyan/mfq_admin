@@ -36,7 +36,7 @@
 		<div class="input-group">
 			<div class="input-group-addon">支付类型：
 				<select name="payApi">
-					<option value=""></option>
+					<option value="">全部</option>
 					<#list payApis as api>
 					<option value="${api.code}" <#if ((api.code))== ((pay_api))>selected</#if> >${api.pay}</option>
 					</#list>
@@ -44,7 +44,7 @@
 			</div>
 			<div class="input-group-addon">支付方式：
 				<select name="payType">
-					<option value=""></option>
+					<option value="">全部</option>
 					<#list pays as pay>
 					<option value="${pay.id}" <#if ((pay.id))== ((pay_type))>selected</#if>>${pay}</option>
 					</#list>

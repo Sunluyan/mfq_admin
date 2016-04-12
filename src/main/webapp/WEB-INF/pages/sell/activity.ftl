@@ -9,18 +9,19 @@
 <div class="container" id="enlarge-body">
     <div class="container">
 
-        <form class="form-inline well" action="/sell/activity/" method="GET">
+        <form class="form-inline well" action="/sell/activity/" method="POST">
             <div class="form-group">
                 <label for="proName">活动名称：</label>
-                <input type="text" class="form-control" id="activityName" name="activityName" value="${proname}"
+                <input type="text" class="form-control" id="activityName" name="name" value="${name}"
                        size="20">
                 <br/><br/>
 
                 <label for="hosName">线上/线下：</label>
                 <select id="online" name="isOnline" class="online select-group" style="width:100px;">
-                    <option value="0">无</option>
-                    <option value="1">线上</option>
-                    <option value="2">线下</option>
+
+                    <option value="0" <#if isOnline == 0>selected</#if>>无</option>
+                    <option value="1" <#if isOnline == 1>selected</#if>>线上</option>
+                    <option value="2" <#if isOnline == 2>selected</#if>>线下</option>
                 </select>
 
 
@@ -73,7 +74,7 @@
                         <td >${item.id}</td>
                         <td>${item.activityName}</td>
                         <td><#if item.type == 1>线上</#if><#if item.type == 2>线下</#if></td>
-                        <td><a href="${item.link}" target="_blank">${item.link?substring(0,30)+"......"}</a> </td>
+                        <td><a href="${item.link}" target="_blank"><#if item.link??>${item.link?substring(0,30)+"......"}</#if></a> </td>
                         <td>${item.beginAt?string("yyyy-MM-dd")} - ${item.endAt?string("yyyy-MM-dd")}</td>
                         <td>
                             <a class="delete">删除</a>

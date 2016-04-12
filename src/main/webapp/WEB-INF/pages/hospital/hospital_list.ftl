@@ -21,7 +21,12 @@
 				<select class="area-choice" name="cityid" class="form-control">
 					<option value="0" selected="selected">不限</option>
 					<#list citys as city>
-						<option value="${city.id}">${city.name}</option>
+                        <#if cityId == city.id>
+                            <option value="${city.id}" selected>${city.name}</option>
+                        </#if>
+                        <#if cityId != city.id>
+                            <option value="${city.id}">${city.name}</option>
+                        </#if>
 					</#list>
 				</select>
 			</div>

@@ -13,7 +13,7 @@
   </#if>
   </div>
 
-  <form class="form-horizontal" method="POST" action="/sysuser/permission_edit/" enctype="multipart/form-data">
+  <form class="form-horizontal" autocomplete="off" method="POST" action="/sysuser/permission_edit/" enctype="multipart/form-data">
 
     <fieldset>
       <legend>权限维护 </legend>

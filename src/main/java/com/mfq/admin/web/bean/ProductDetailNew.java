@@ -84,5 +84,20 @@ public class ProductDetailNew {
         this.attention = attention;
         this.flag = flag;
         this.ask = ask;
+
+
+    }
+
+    @Override
+    public String toString() {
+        return "ProductDetailNew{" +
+                "id=" + id +
+                ", pid=" + pid +
+                ", description='" + description + '\'' +
+                ", preferential='" + preferential + '\'' +
+                ", attention='" + attention + '\'' +
+                ", flag=" + flag +
+                ", ask='" + ask + '\'' +
+                '}';
     }
 }

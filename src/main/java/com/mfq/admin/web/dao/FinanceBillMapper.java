@@ -22,6 +22,10 @@ public interface FinanceBillMapper {
 
     List<FinanceBill> selectByExample(FinanceBillExample example);
 
+    List<FinanceBill> selectByExampleLimit(@Param("example") FinanceBillExample example,
+                                                  @Param("start")Long start,
+                                                  @Param("size")Long size);
+
     FinanceBill selectByPrimaryKey(Long id);
 
     int updateByExampleSelective(@Param("record") FinanceBill record, @Param("example") FinanceBillExample example);

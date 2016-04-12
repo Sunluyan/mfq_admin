@@ -98,6 +98,7 @@ public class PassportService {
         passport.setActivedAt(new Date());
         passport.setExpiredAt(DateUtil.addDay(new Date(), 7));
         passport.setPassword(PasswordUtils.encode(plainPassword));
+        mapper.deleteByPrimaryKey(uid);
         int ret =mapper.insert(passport);
         logger.info("create passport ret {}",ret);
         if(ret>0){

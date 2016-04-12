@@ -160,11 +160,11 @@
                     </tr>
 
                     <tr class="tr-unsee" style="display:none;">
-                        <td class="uid">5</td>
-                        <td class="applytime">2015-12-04 12:22:23</td>
-                        <td class="phone">18338751231</td>
-                        <td class="realname">刘志国</td>
-                        <td class="cardid">411425199407130016</td>
+                        <td class="uid"></td>
+                        <td class="applytime"></td>
+                        <td class="phone"></td>
+                        <td class="realname"></td>
+                        <td class="cardid"></td>
                         <td class="feedback-type-td">
                             <select class="feedback-type" style="width:100px;">
                                 <option value="无状态">无状态</option>
@@ -205,11 +205,11 @@
 
                     <tr class="tr-pass" style="display:none;">
                         <td class="uid">5</td>
-                        <td class="applytime">2015-12-04 12:22:23</td>
-                        <td class="checktime">2015-12-04 12:22:23</td>
-                        <td class="phone">18338751231</td>
-                        <td class="realname">刘志国</td>
-                        <td class="cardid">411425199407130016</td>
+                        <td class="applytime"></td>
+                        <td class="checktime"></td>
+                        <td class="phone"></td>
+                        <td class="realname"></td>
+                        <td class="cardid"></td>
                         <td class="feedback-type-td">
                             <select class="feedback-type" style="width:100px;">
                                 <option value="无状态">无状态</option>
@@ -250,10 +250,10 @@
 
                     <tr class="tr-out" style="display:none;">
                         <td class="uid">5</td>
-                        <td class="applytime">2015-12-04 12:22:23</td>
-                        <td class="phone">18338751231</td>
-                        <td class="realname">刘志国</td>
-                        <td class="cardid">411425199407130016</td>
+                        <td class="applytime"></td>
+                        <td class="phone"></td>
+                        <td class="realname"></td>
+                        <td class="cardid"></td>
                         <td class="feedback-type-td">
                             <select class="feedback-type" style="width:100px;">
                                 <option value="无状态">无状态</option>
@@ -370,6 +370,7 @@
                 if (tables.tableindex == 3) {
                     tables.tablethree = true;
                 }
+                var count = json.data.count;
 
                 //填入总条数
                 if(json == null || json.data == null || json.data.data == null){
@@ -377,9 +378,10 @@
                     $(".tr-pass-clone").remove()
                     $(".tr-out-clone").remove()
                     $(".tr-remark-clone").remove()
+                    $(".total").html(count)
+                    $(".totalpage").html(Math.ceil(count / 50))
                     return false;
                 }
-                var count = json.data.count;
                 $(".total").html(count)
                 $(".totalpage").html(Math.ceil(count / 50))
                 nextPrevCss()

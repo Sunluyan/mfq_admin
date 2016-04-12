@@ -31,15 +31,15 @@
                 </div>
             </div>
 
-            <#--<div class="control-group">-->
-                <#--<label class="control-label" for="cname">产品小图</label>-->
-                <#--<div class="controls">-->
-                    <#--<input type="file" name="square" value=""><span class="help-inline">-->
-                    <#--<a rel="popover" data-content="<img src=''/>" href=""-->
-                       <#--target="_blank" class="text-error img-link"></a></span></br>-->
-                    <#--</button>-->
-                <#--</div>-->
-            <#--</div>-->
+            <div class="control-group">
+                <label class="control-label" for="cname">产品小图(1:1)</label>
+                <div class="controls">
+                    <input type="file" name="square" value="${square}"><span class="help-inline">
+                    <a rel="popover" data-content="<img src='${square}'/>" href="${square}"
+                       target="_blank" class="text-error img-link">${square}</a></span></br>
+                    </button>
+                </div>
+            </div>
 
             <div class="control-group">
                 <label class="control-label" for="cname">产品图片</label>

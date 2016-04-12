@@ -27,6 +27,7 @@ public class ProductImageService {
     @Transactional
     public void saveOrInsert(Long pid, String image, ProductImageType type) throws Exception {
         if(StringUtils.isBlank(image))return;
+
         ProductImage productImage = new ProductImage();
         productImage.setType(type.getId());
         productImage.setPid(pid.intValue());
@@ -101,10 +102,15 @@ public class ProductImageService {
                 System.out.println(productImage.getType() + "   "+ ProductImageType.SURGERY.getId());
                 model.addAttribute("surgery",productImage.getImg());
             }
+            else if(productImage.getType() == ProductImageType.SQUARE.getId()){
+                System.out.println(productImage.getType() + "   "+ ProductImageType.SQUARE.getId());
+                model.addAttribute("square",productImage.getImg());
+            }
             else if(productImage.getType() == ProductImageType.DETAIL.getId()){
                 System.out.println(productImage.getType() + "   "+ ProductImageType.DETAIL.getId());
                 details.add(productImage.getImg());
             }
+
         }
         model.addAttribute("details",details);
     }

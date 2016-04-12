@@ -153,7 +153,7 @@ public class OrderController extends BaseController {
 
 			Product product = productService.findById(order.getPid());
 			if(product == null){return "order/order_view";}
-			if((loginUser.getHospitalId() != product.getHospitalId())&& loginUser.getRoleId() != 1){
+			if((loginUser.getHospitalId() != product.getHospitalId())&& (loginUser.getRoleId() == 5||loginUser.getRoleId() == 6)){
 				model.addAttribute("msg","医院不对应");
 				return "order/order_view";
 			}
@@ -164,7 +164,7 @@ public class OrderController extends BaseController {
 //			}
 
 			int up_price = 0;
-			if(loginUser.getRoleId() == 1) {
+			if(loginUser.getRoleId() != 5 && loginUser.getRoleId() != 6) {
 				if(OrderStatus.PAY_OK.getValue() == order.getStatus()){ // 且订单是支付成功的状态
 					up_price = 1;
 					hasright = 1;
@@ -285,9 +285,6 @@ public class OrderController extends BaseController {
 			@RequestParam(value = "oe", required = false) String oe,
 			Model model) {
 		try{
-			//中文编码
-    		hospitalName=new String(hospitalName.getBytes("ISO-8859-1"),"UTF-8");
-
 			if (StringUtils.isBlank(ob)) {
 				String date = DateUtil.formatShort(DateUtil.addDay(new Date(), -7));
 				Date d = DateUtil.convertShort(date);

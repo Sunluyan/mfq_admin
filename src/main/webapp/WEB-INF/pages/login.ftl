@@ -3,6 +3,15 @@
 <#include "commons/toolbar.ftl" />
 
 <div class="container">
+    <div class="row-fluid">
+    <#if msg??>
+        <div class="alert text-center">
+            <a class="close" data-dismiss="alert">×</a>
+        ${msg}
+        </div>
+    </#if>
+    </div>
+
   <form id="login" class="well form-inline horizontal-center" action="/xlogin/" method="POST">
     <label for="user">用户名</label>
     <input id="user" name="user" type="text" class="input-small" placeholder="请输入用户名" value="">

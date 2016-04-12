@@ -537,7 +537,7 @@ public class SellService {
         ActivityExample example = new ActivityExample();
         ActivityExample.Criteria criteria = example.createCriteria();
         if(StringUtils.isNotBlank(name)){
-            criteria.andActivityNameLike(name);
+            criteria.andActivityNameLike("%"+name+"%");
         }
         if(isOnline != 0){
             criteria.andTypeEqualTo(isOnline);
@@ -562,7 +562,7 @@ public class SellService {
         productImageService.saveOrInsert(pid,after, ProductImageType.AFTER);
         productImageService.saveOrInsert(pid,beautiful, ProductImageType.BEAUTIFUL);
         productImageService.saveOrInsert(pid,surgery, ProductImageType.SURGERY);
-//        productImageService.saveOrInsert(pid,square, ProductImageType.SQUARE);
+        productImageService.saveOrInsert(pid,square, ProductImageType.SQUARE);
         productImageService.saveDetails(pid,detail);
 
     }

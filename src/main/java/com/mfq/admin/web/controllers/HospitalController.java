@@ -58,6 +58,7 @@ public class HospitalController {
         //通过数据库查询，得到所有已有citys，并去重
         List<AreaCity> citys = cityService.findAllExistAreaCity();
 
+        model.addAttribute("cityId",cityid);
         model.addAttribute("citys", citys);
         model.addAttribute("hospitals", list);
         model.addAttribute("hosname", hosname);

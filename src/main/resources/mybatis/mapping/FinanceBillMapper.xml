@@ -415,13 +415,21 @@
         and finance.status = -1
       </if>
       <if test = "type == 0 ">
-        <![CDATA[
-      			and finance.status = 1 and finance.bill_at >= #{endTime}
-      		]]>
+        and finance.status = 1 and finance.bill_at >= #{endTime}
       </if>
     </if>
     group by finance.order_no
 
     limit #{start},#{size}
+  </select>
+
+  <select id="selectByExampleLimit" resultMap="BaseResultMap" parameterType="map">
+    select
+    <include refid="Base_Column_List" />
+    from finance_bill
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+    LIMIT #{start},#{size}
   </select>
 </mapper>

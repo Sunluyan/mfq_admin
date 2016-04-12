@@ -9,7 +9,7 @@
     <div class="well text-important">${error}</div></#if>
     <div class="row-fluid">
 
-        <form method="POST">
+        <form method="POST" autocomplete=off>
             <div class="control-group">
                 <div>
                     <div class="input-append">
@@ -30,7 +30,7 @@
                 </div>
                 <div>
                     <div class="input-append">
-                        <input class="input-large" id="password" type="password" placeholder="******" name="password">
+                        <input class="input-large" id="password" type="password" placeholder="留空不修改密码" name="password">
                         <span class="add-on">用户的密码</span>
                     </div>
                 </div>
@@ -107,10 +107,6 @@
         }
         if ($.trim($("#realname").val()).length < 1) {
             $("#rnamehelp").text('真实名字不能为空');
-            return false;
-        }
-        if ($.trim($("#password").val()).length < 1) {
-            alert('密码不能为空');
             return false;
         }
         if ($.trim($("#mobile").val()).length < 1) {

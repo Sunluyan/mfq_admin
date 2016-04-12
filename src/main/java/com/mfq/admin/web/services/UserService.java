@@ -253,10 +253,10 @@ public class UserService {
                 or.andIdCardEqualTo(cardid);
             }
             if(StringUtils.isNotEmpty(applytimefrom) && StringUtils.isNotEmpty(applytimeto)){
-                or.andCreatedAtBetween(new Date(applytimefrom),new Date(applytimeto));
+                or.andCreatedAtBetween(DateUtil.convertYYYYMMDD(applytimefrom),DateUtil.convertYYYYMMDD(applytimeto));
             }
             if(StringUtils.isNotEmpty(checktimefrom) && StringUtils.isNotEmpty(checktimeto)){
-                or.andUpdatedAtBetween(new Date(checktimefrom),new Date(checktimeto));
+                or.andUpdatedAtBetween(DateUtil.convertYYYYMMDD(checktimefrom),DateUtil.convertYYYYMMDD(checktimeto));
             }
             //根据条件查询userQuota数据
             List<UserQuota> list = quotaMapper.certifyDataExample(usersQuotaExample,start,PageSize);

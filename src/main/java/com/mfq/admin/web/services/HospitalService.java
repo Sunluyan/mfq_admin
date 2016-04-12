@@ -28,15 +28,16 @@ public class HospitalService {
         return mapper.selectByExample(example);
     }
 
-    public List<Hospital> findByNameAndCity(String name, Integer id) {
+    public List<Hospital> findByNameAndCity(String name, Integer cityId) {
         HospitalExample example = new HospitalExample();
+        HospitalExample.Criteria  criteria= example.or();
         if (StringUtils.isNotBlank(name)) {
-            example.or().andNameLike("%" + name + "%");
+            criteria.andNameLike("%" + name + "%");
         }
-        if (id != null) {
-            example.or().andIdEqualTo((long) id);
+        if (cityId != null) {
+            criteria.andCityIdEqualTo((long) cityId);
         }
-        System.out.println(example);
+
         List<Hospital> list = mapper.selectByExample(example);
         return list;
     }

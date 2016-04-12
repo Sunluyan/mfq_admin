@@ -98,7 +98,7 @@
                 <div class="control-group">
                     <label class="control-label" for="alias">选择产品</label>
                     <div class="controls">
-                        <input type="text" name="pids" placeholder="输入产品id,以逗号分开" value="${at.pids}">
+                        <input type="text" name="pids" class="pids" placeholder="输入产品id,以逗号分开" value="${at.pids}">
                     </div>
                 </div>
 
@@ -131,7 +131,7 @@
 
 
             <div class="form-actions">
-                <button type="submit" class="btn btn-primary">保 存</button>
+                <button type="submit" class="btn btn-primary" onclick="return docheck();">保 存</button>
                 &nbsp;&nbsp;
                 <button type="button" class="btn" onclick="history.back();">取消返回</button>
             </div>
@@ -167,7 +167,38 @@
 <script type="text/javascript">
 
     function docheck() {
-
+        if($("#name").val().length <1 || $("#name").val().length >30){
+            alert("活动名称不能过短或过长")
+            return false;
+        }
+        if($(".type").val() == "无"){
+            alert("活动类型错误")
+            return false;
+        }
+        if($("#dateStart").val().length < 3 || $("#dateEnd").val().length < 3){
+            alert("日期错误")
+            return false;
+        }
+        if($(".type").val() == "online"){
+            if($(".pids").val() == ""){
+                alert("选择产品不能为空")
+                return false;
+            }
+        }else if($(".type").val() == "offline"){
+            if($("#link").val().length < 3){
+                alert("链接不能为空")
+                return false;
+            }
+            if($("#place").val().length < 3){
+                alert("活动地址不能为空")
+                return false;
+            }
+            if($("#time").val().length < 3){
+                alert("活动时间不能为空")
+                return false;
+            }
+        }
+        return true;
     }
 
     $('#date1').datetimepicker({

@@ -178,6 +178,9 @@ public class SysUserController {
                     user.setHospitalId(hospitalId);
                 }
                 int count = sysUserService.updateSysuser(user);
+                if(StringUtils.isNotBlank(password)) {
+                    SysPassport passport = passportService.createPassport(id, password);
+                }
                 if(count==0){
                     model.addAttribute("error", "创建时间失败!!");
                     return "redirect:/sysuser/edit/";       // 调用user_add的模版

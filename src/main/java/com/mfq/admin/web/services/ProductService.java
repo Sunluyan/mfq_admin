@@ -19,6 +19,9 @@ import com.mfq.admin.web.dao.ProductDetailMapper;
 import com.mfq.admin.web.dao.ProductDetailNewMapper;
 import com.mfq.admin.web.dao.ProductMapper;
 import com.mfq.admin.web.utils.JSONUtil;
+import com.mfq.admin.web.utils.UserTraceLogger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
@@ -29,6 +32,7 @@ import org.springframework.util.StringUtils;
 @Service
 public class ProductService {
 
+    private static final Logger logger = LoggerFactory.getLogger(ProductService.class);
     @Resource
     ProductMapper mapper;
     
@@ -236,8 +240,10 @@ public class ProductService {
         ProductDetailNew productDetailNew = new ProductDetailNew(null,pid.intValue(),desc,preferential,attention,
                 0,ask);
         ProductDetailNewExample example = new ProductDetailNewExample();
+        logger.info(productDetailNew.toString());
         example.or().andPidEqualTo(pid.intValue());
-        int count = productDetailNewMapper.updateByExampleSelective(productDetailNew,example);
+
+        int count = productDetailNewMapper.updateByExampleWithBLOBs(productDetailNew,example);
         if(count != 1){
             throw new Exception("修改产品详情出错");
         }

@@ -38,7 +38,7 @@ public class PayRecordService {
 
     public List<PayRecord> selectByOrderNo(String orderNo) {
         PayRecordExample example = new PayRecordExample();
-        example.or().andOrderNoEqualTo(orderNo).andStatusEqualTo(2).andAmountNotEqualTo(BigDecimal.valueOf(19));
+        example.or().andOrderNoEqualTo(orderNo).andStatusEqualTo(2).andAmountNotEqualTo(BigDecimal.valueOf(19));//19块的是保险
         return mapper.selectByExample(example);
     }
 
