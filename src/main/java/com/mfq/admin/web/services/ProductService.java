@@ -243,9 +243,9 @@ public class ProductService {
         logger.info(productDetailNew.toString());
         example.or().andPidEqualTo(pid.intValue());
 
-        int count = productDetailNewMapper.updateByExampleWithBLOBs(productDetailNew,example);
+        int count = productDetailNewMapper.updateByExampleSelective(productDetailNew,example);
         if(count != 1){
-            throw new Exception("修改产品详情出错");
+            addProDetail(pid,desc,preferential,attention,questions,answers);
         }
         return null;
     }

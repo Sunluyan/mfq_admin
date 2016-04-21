@@ -151,6 +151,7 @@ public class UserService {
             if(page == null || page.equals("")){
                 page = 1;
             }
+
             Integer start = (page - 1) * PageSize;
             //通过feedbacktype查出所有符合要求的
             UserFeedbackExample userFeedbackExample = new UserFeedbackExample();
@@ -158,13 +159,18 @@ public class UserService {
             List<UserFeedback> userFeedbacks = userFeedbackMapper.selectByExample(userFeedbackExample);
             //通过authStatus查出所有符合要求的
             UsersQuotaExample usersQuotaExample = new UsersQuotaExample();
-            usersQuotaExample.or().andAuthStatusEqualTo(typeToAuthstatus(type));
+
+            if(StringUtils.isNotEmpty(applytimefrom) && StringUtils.isNotEmpty(applytimeto)){
+                usersQuotaExample.or().andAuthStatusEqualTo(typeToAuthstatus(type)).andCreatedAtBetween(DateUtil.convertYYYYMMDD(applytimefrom),DateUtil.convertYYYYMMDD(applytimeto));
+            }else{
+                usersQuotaExample.or().andAuthStatusEqualTo(typeToAuthstatus(type));
+            }
+
             List<UserQuota>  userQuotas = quotaMapper.selectByExample(usersQuotaExample);
             //提取共同的uids
             List<Long> uids = new ArrayList<>();
             for (UserFeedback userFeedback : userFeedbacks) {
                 for (UserQuota userQuota : userQuotas) {
-                    System.out.println(userQuota.getUid() + "..." +userFeedback.getUid());
                     if(userQuota.getUid()-userFeedback.getUid()==0){
                         uids.add(userQuota.getUid());
                     }
@@ -192,7 +198,6 @@ public class UserService {
             for(int i = 0;i<userFeedbacks.size();i++){
                 boolean find = false;
                 for(Long uuid : uids){
-                    System.out.println(uuid +"  "+ userFeedbacks.get(i).getUid()+"  "+ userFeedbacks.get(i).getUid().hashCode());
                     if(uuid == userFeedbacks.get(i).getUid()){
                         find = true;
                     }

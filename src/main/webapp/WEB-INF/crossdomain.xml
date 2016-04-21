@@ -7,4 +7,5 @@
     <allow-access-from domain="*.meifengqi.com" />
     <allow-access-from domain="mfqzz.com" />
     <allow-access-from domain="*.mfqzz.com" />
+    <allow-access-from domain="112.126.81.8" />
 </cross-domain-policy>

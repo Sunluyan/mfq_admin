@@ -202,7 +202,7 @@ $(function () {
 
 
     $(".tijiao").click(function(){
-
+        
         fm = $("#frm-shenpi").serialize()
         $.ajax({
             url:"/ajax",

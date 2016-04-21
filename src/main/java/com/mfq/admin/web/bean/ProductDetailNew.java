@@ -77,7 +77,7 @@ public class ProductDetailNew {
     }
 
     public ProductDetailNew(Integer id, Integer pid, String description, String preferential, String attention, Integer flag, String ask) {
-        this.id = id;
+        this.id = null;
         this.pid = pid;
         this.description = description;
         this.preferential = preferential;
