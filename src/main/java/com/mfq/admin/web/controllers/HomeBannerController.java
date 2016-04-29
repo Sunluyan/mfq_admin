@@ -80,7 +80,6 @@ public class HomeBannerController {
     		@RequestParam(value = "mobile", defaultValue="", required = true) String mobile,
     		@RequestParam(value = "page", defaultValue="0", required = true)long page,
     		Model model) {
-
         try{
             List<HomeBanner> banners = service.queryHomeBanners();
             model.addAttribute("items", banners);

@@ -157,6 +157,7 @@ public class OrderController extends BaseController {
 				model.addAttribute("msg","医院不对应");
 				return "order/order_view";
 			}
+
 //			if (loginUser.getRoleId() == 6) { // 管理员 或 医院财务
 //				if(OrderStatus.PAY_OK.getValue() == order.getStatus()){ // 且订单是支付成功的状态
 //					hasright = 1;
@@ -169,6 +170,7 @@ public class OrderController extends BaseController {
 					up_price = 1;
 					hasright = 1;
 				}else if (OrderStatus.BOOK_OK.getValue() == order.getStatus()){
+					hasright = 1;
 					up_price = 2;
 				}
 			}
@@ -180,6 +182,58 @@ public class OrderController extends BaseController {
         }
         return "order/order_view";
     }
+
+
+	@RequestMapping(value = "/order/view/", method = RequestMethod.POST)
+	public String orderSubmit(
+			@RequestParam(defaultValue = "", required = false) String orderNo,
+			@RequestParam(defaultValue = "", required = false) String payNo,
+			@RequestParam(defaultValue = "", required = false) String tpp,
+			Model model) {
+		try{
+			OrderInfo order = orderService.findByOrderNo(orderNo);
+			//如果是支付完成的订单
+			if(order.getStatus() == OrderStatus.PAY_OK.getValue()){
+				long result = orderService.updateOrder(order.getId(), OrderStatus.PAY_OK.getValue(), OrderStatus.ORDER_OK.getValue());
+
+				if(result > 0){
+					model.addAttribute("msg", "订单已使用。。。");
+					model.addAttribute("success", true);
+					order = orderService.findByOrderNo(orderNo);
+				}else{
+					model.addAttribute("msg", "订单不满足条件或已完成。");
+					model.addAttribute("success", false);
+				}
+				orderView(model, order);
+			}
+			//如果是未支付的订单,改成已支付,并制造流水.
+			else if(order.getStatus() == OrderStatus.BOOK_OK.getValue()) {
+				//修改订单状态
+				long result = orderService.updateOrder(order.getId(), OrderStatus.BOOK_OK.getValue(), OrderStatus.PAY_OK.getValue());
+
+				//制造流水
+				PayRecord payRecord = new PayRecord();
+				payRecord.setAmount(order.getPrice());
+				payRecord.setTradeNo(payNo);
+				payRecord.setOrderNo(order.getOrderNo());
+				payRecord.setBalance(BigDecimal.ZERO);
+				payRecord.setUid(order.getUid());
+				payRecord.setTpp(tpp);
+				payRecord.setStatus(PayStatus.PAID.getValue());
+				payRecord.setPayAt(new Date());
+				payRecord.setUpdatedAt(new Date());
+				payRecord.setCallbackAt(new Date());
+				payRecord.setOrderType(OrderType.ONLINE.getId());
+				payService.insertSelective(payRecord);
+				orderView(model, order);
+			}
+
+
+		}catch (Exception e){
+			logger.error("Exception_Order_SubmitOrder", e);
+		}
+		return "order/order_view";
+	}
 
 
 	/**
@@ -213,30 +267,7 @@ public class OrderController extends BaseController {
 	}
     
     
-    @RequestMapping(value = "/order/view/", method = RequestMethod.POST)
-    public String orderSubmit(
-            @RequestParam(defaultValue = "", required = false) String orderNo,
-            Model model) {
-    	try{
-            OrderInfo order = orderService.findByOrderNo(orderNo);
-            
-            long result = orderService.updateOrder(order.getId(), OrderStatus.PAY_OK.getValue(), OrderStatus.ORDER_OK.getValue());
-            
-            if(result > 0){
-            	model.addAttribute("msg", "订单已使用。。。");
-            	model.addAttribute("success", true);
-            	order = orderService.findByOrderNo(orderNo);
-            }else{
-            	model.addAttribute("msg", "订单不满足条件或已完成。");
-            	model.addAttribute("success", false);
-            }
-            orderView(model, order);
-            
-    	}catch (Exception e){
-    		logger.error("Exception_Order_SubmitOrder", e);
-    	}
-    	return "order/order_view";
-    }
+
     
     
 	private void orderView(Model model, OrderInfo order) {

@@ -201,6 +201,10 @@ public class PayRecordService {
 			return null;
 		}
 	}
+    public long insertSelective(PayRecord payRecord){
+        return mapper.insertSelective(payRecord);
+    }
+
 
 //
 //	final String CACHE_LIST = "chche_payrecords";

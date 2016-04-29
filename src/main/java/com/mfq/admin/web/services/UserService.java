@@ -684,7 +684,7 @@ public class UserService {
         BigDecimal totlePrice = BigDecimal.valueOf(0);
 
         for(OrderInfo o:orders){
-            totlePrice = totlePrice.add(o.getPrice());
+            totlePrice = totlePrice.add(o.getOnlinePay());
         }
         model.addAttribute("total",totlePrice);
 
