@@ -20,8 +20,12 @@ mfq-yqds!!!
 workdev123
 
  2、停止tomcat服务
+ cd ~/tomcat/webapps/ROOT/
 ps -ef|grep tomcat|grep -v grep|awk '{print $2}'|xargs kill -9
-
+jar -vxf mfq-admin.war
+~/tomcat/bin/startup.sh
+cd ~/tomcat/logs/
+tail -1000f admin-mqm.log
 4、解压jar包
 jar -vxf mfq-app.war
 
@@ -30,6 +34,7 @@ jar -vxf mfq-app.war
 
 5.查看日志
 cd ~/tomcat/logs/
+tail -1000f admin-mqm.log
 tail -1000f mfq-app.log
 
 去正式数据库

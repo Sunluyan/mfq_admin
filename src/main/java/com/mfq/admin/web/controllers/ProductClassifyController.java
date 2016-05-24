@@ -193,6 +193,8 @@ public class ProductClassifyController {
 		        		
 		        		model.addAttribute("id", classe.getId());
 		        		model.addAttribute("name", classe.getName());
+						//modified by sunluyan 2016/5/5 Android 与 ios 读取name，desp内容相一致
+						model.addAttribute("desp",classe.getDesp());
 		        		model.addAttribute("img", classe.getHgImage());
         			}
 	        		ret = "classes/edit1";

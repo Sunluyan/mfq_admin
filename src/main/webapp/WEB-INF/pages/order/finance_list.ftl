@@ -114,10 +114,10 @@
             <img src="/static/img/loading.gif" class="loading" width="20" height="20" style="margin-top: 6px;margin-left: 5px; display:none;">
           </ul>
             <div>
-                <legend>分期用户列表（共<span class="totalpage">1</span>页，当前第<span class="page">1</span>页，共<span class="total">0</span>条）
+                <legend>分期用户列表（共<span class="totalpage">${page}</span>页，当前第<span class="page">1</span>页，共<span class="total">0</span>条）
                 
-                <div class="next" onselectstart= "return false;">></div>
-                <div class="prev disabled" onselectstart= "return false;"><</div>
+                <div class="next" onselectstart= "pageSubmit(${page - 1})">></div>
+                <div class="prev disabled" onselectstart= "pageSubmit(${page + 1})"><</div>
                   </legend>
 
 
@@ -152,6 +152,7 @@
                 </table>
 
             </div>
+
         </div>
 
     </div>

@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
+import com.mfq.admin.web.bean.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
@@ -579,7 +579,7 @@ public class OrderController extends BaseController {
     	if(request.getParameter("applytimefrom")!=null)applytimefrom = request.getParameter("applytimefrom");
     	if(request.getParameter("applytimeto")!=null)applytimeto = request.getParameter("applytimeto");
     	if(request.getParameter("type")!=null && !request.getParameter("type").equals("") )type=Integer.parseInt(request.getParameter("type"));
-    	if(request.getParameter("count")!=null && !request.getParameter("count").equals("") )count=request.getParameter("type");
+    	if(request.getParameter("count")!=null && !request.getParameter("count").equals("") )count=request.getParameter("count");
     	
     	List<Map<String,Object>> list = orderService.selectFinanceByPage(page, size, uid, realname, phone, idcard, applytimefrom, applytimeto, type,count);
 

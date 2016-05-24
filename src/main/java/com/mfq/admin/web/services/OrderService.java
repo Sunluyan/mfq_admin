@@ -105,7 +105,6 @@ public class OrderService {
         } else {
             orders = mapper.findByPage(orderNo, uid,
                     securityCode, status, ob, oe, start, PageSize);
-
         }
 
 
@@ -275,6 +274,7 @@ public class OrderService {
             result.add(map);
         }
         return result;
+
     }
 
     /**
